@@ -5,8 +5,12 @@ import java.util.List;
 
 public class Email {
     private String subject;
-    private String sender;
-    private String recipient;
+    private Address sender;
+
+    private List<Address> to;
+    private List<Address> cc;
+    private List<Address> bcc;
+
     private String content;
     private Date sentDate;
     private boolean isRead;
