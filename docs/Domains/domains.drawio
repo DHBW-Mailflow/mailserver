@@ -1,0 +1,28 @@
+<mxfile host="app.diagrams.net" modified="2023-11-06T23:03:47.421Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36" etag="tgrvoJYZMU6pb2bvkjCw" version="22.0.8" type="device">
+  <diagram name="Seite-1" id="7m4TIuj2nCQRDfSSDwgh">
+    <mxGraphModel dx="1195" dy="615" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="nNFG4G1OrawHcs5zrb0x-2" value="Kerndomäne" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="155" y="240" width="90" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="nNFG4G1OrawHcs5zrb0x-3" value="Unterstützende Domäne" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="414.41" y="240" width="150" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="nNFG4G1OrawHcs5zrb0x-4" value="&lt;div style=&quot;font-size: 11px; line-height: 130%;&quot;&gt;&lt;ul style=&quot;line-height: 130%; font-size: 12px;&quot;&gt;&lt;li&gt;Emails versenden (aus Sicht des Clients)&lt;ul style=&quot;line-height: 130%;&quot;&gt;&lt;li&gt;Emails Empfangen (aus Sicht des Servers)&lt;/li&gt;&lt;li style=&quot;&quot;&gt;Emails Weiterleiten (aus Sicht des Servers)&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;align=left;labelPosition=center;verticalLabelPosition=middle;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="47.5" y="270" width="305" height="210" as="geometry" />
+        </mxCell>
+        <mxCell id="nNFG4G1OrawHcs5zrb0x-5" value="Generische Domäne" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="656.76" y="240" width="130" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="nNFG4G1OrawHcs5zrb0x-6" value="&lt;div style=&quot;line-height: 130%;&quot;&gt;&lt;ul style=&quot;line-height: 130%;&quot;&gt;&lt;li&gt;Spamfilter&lt;/li&gt;&lt;li&gt;Kategorisierung&lt;/li&gt;&lt;ul style=&quot;line-height: 130%;&quot;&gt;&lt;li&gt;Emails löschen&lt;/li&gt;&lt;li&gt;Emails in Ordner verschieben&lt;/li&gt;&lt;/ul&gt;&lt;li&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;Synchronisation&lt;/span&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;align=left;labelPosition=center;verticalLabelPosition=middle;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="352.5" y="270.91" width="273.81" height="209.09" as="geometry" />
+        </mxCell>
+        <mxCell id="nNFG4G1OrawHcs5zrb0x-8" value="&lt;div style=&quot;line-height: 130%;&quot;&gt;&lt;ul style=&quot;line-height: 130%;&quot;&gt;&lt;li&gt;Autorisierung&lt;/li&gt;&lt;li&gt;Authentifizierung&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;align=center;labelPosition=center;verticalLabelPosition=middle;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="617" y="290" width="209.52" height="160" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
