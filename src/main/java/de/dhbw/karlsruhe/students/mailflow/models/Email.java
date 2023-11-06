@@ -16,10 +16,13 @@ public class Email {
     private boolean isRead;
     private List<Header> headers;
 
-    public Email(String subject, String sender, String recipient, String content, Date sentDate, List<Header> headers) {
+    public Email(String subject, Address sender, List<Address> to, List<Address> cc, List<Address> bcc, String content,
+            Date sentDate, List<Header> headers) {
         this.subject = subject;
         this.sender = sender;
-        this.recipient = recipient;
+        this.to = to;
+        this.cc = cc;
+        this.bcc = bcc;
         this.content = content;
         this.sentDate = sentDate;
         this.headers = headers;
@@ -34,8 +37,16 @@ public class Email {
         return sender;
     }
 
-    public String getRecipient() {
-        return recipient;
+    public List<Address> getTo() {
+        return to;
+    }
+
+    public List<Address> getCc() {
+        return cc;
+    }
+
+    public List<Address> getBcc() {
+        return bcc;
     }
 
     public String getContent() {

@@ -31,10 +31,6 @@ public class Mailbox {
         return username;
     }
 
-    public boolean authenticate(String password) {
-        return TimingSafe.areStringsEqual(this.password, password);
-    }
-
     public HashSet<Email> getEmails() {
         return emails;
     }
