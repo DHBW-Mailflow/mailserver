@@ -2,12 +2,10 @@ package de.dhbw.karlsruhe.students.mailflow.models;
 
 import java.util.HashSet;
 
-import de.dhbw.karlsruhe.students.mailflow.helpers.TimingSafe;
-
 public class Mailbox {
 
     /**
-     * The human readable name of this mailbox, e.g. `manuel@mueller.de` in
+     * The address of this mailbox, e.g. `manuel@mueller.de` in
      * {@literal Manuel Müller <manuel@mueller.de>}
      */
     private Address address;
