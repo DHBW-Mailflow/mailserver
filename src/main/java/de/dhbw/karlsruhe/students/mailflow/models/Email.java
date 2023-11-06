@@ -2,6 +2,7 @@ package de.dhbw.karlsruhe.students.mailflow.models;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 public class Email {
     private String subject;
@@ -15,9 +16,10 @@ public class Email {
     private Date sentDate;
     private boolean isRead;
     private List<Header> headers;
+    private Set<Attachment> attachments;
 
     public Email(String subject, Address sender, List<Address> to, List<Address> cc, List<Address> bcc, String content,
-            Date sentDate, List<Header> headers) {
+            Date sentDate, List<Header> headers, Set<Attachment> attachments) {
         this.subject = subject;
         this.sender = sender;
         this.to = to;
@@ -26,6 +28,7 @@ public class Email {
         this.content = content;
         this.sentDate = sentDate;
         this.headers = headers;
+        this.attachments = attachments;
         this.isRead = false;
     }
 
@@ -33,7 +36,7 @@ public class Email {
         return subject;
     }
 
-    public String getSender() {
+    public Address getSender() {
         return sender;
     }
 
@@ -67,5 +70,9 @@ public class Email {
 
     public List<Header> getHeaders() {
         return headers;
+    }
+
+    public Set<Attachment> getAttachments() {
+        return attachments;
     }
 }
