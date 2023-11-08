@@ -1,4 +1,4 @@
-package de.dhbw.karlsruhe.students.mailflow.helpers;
+package de.dhbw.karlsruhe.students.mailflow.core.domain.common.helpers;
 
 import java.security.MessageDigest;
 

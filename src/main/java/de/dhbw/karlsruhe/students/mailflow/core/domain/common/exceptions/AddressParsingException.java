@@ -1,4 +1,4 @@
-package de.dhbw.karlsruhe.students.mailflow.exceptions;
+package de.dhbw.karlsruhe.students.mailflow.core.domain.common.exceptions;
 
 public class AddressParsingException extends Exception {
 

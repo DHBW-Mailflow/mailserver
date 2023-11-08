@@ -1,10 +1,17 @@
-package de.dhbw.karlsruhe.students.mailflow.models;
+package de.dhbw.karlsruhe.students.mailflow.core.domain.email;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-public class Email {
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.entities.Address;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.entities.Attachment;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.entities.Header;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.valueObjects.EmailId;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.common.models.AggregateRoot;;
+
+public final class Email extends AggregateRoot<EmailId> {
+
     private String subject;
     private Address sender;
 
@@ -18,8 +25,10 @@ public class Email {
     private List<Header> headers;
     private Set<Attachment> attachments;
 
-    public Email(String subject, Address sender, List<Address> to, List<Address> cc, List<Address> bcc, String content,
+    private Email(EmailId id, String subject, Address sender, List<Address> to, List<Address> cc, List<Address> bcc,
+            String content,
             Date sentDate, List<Header> headers, Set<Attachment> attachments) {
+        super(id);
         this.subject = subject;
         this.sender = sender;
         this.to = to;
@@ -30,6 +39,12 @@ public class Email {
         this.headers = headers;
         this.attachments = attachments;
         this.isRead = false;
+    }
+
+    public static Email create(String subject, Address sender, List<Address> to, List<Address> cc, List<Address> bcc,
+            String content,
+            Date sentDate, List<Header> headers, Set<Attachment> attachments) {
+        return new Email(EmailId.CreateUnique(), subject, sender, to, cc, bcc, content, sentDate, headers, attachments);
     }
 
     public String getSubject() {

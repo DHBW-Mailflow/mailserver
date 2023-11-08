@@ -1,9 +1,13 @@
-package de.dhbw.karlsruhe.students.mailflow.models;
+package de.dhbw.karlsruhe.students.mailflow.core.domain.mailbox;
 
 import java.util.HashSet;
 
-public class Mailbox {
+import de.dhbw.karlsruhe.students.mailflow.core.domain.common.models.AggregateRoot;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.entities.Address;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.mailbox.valueObjects.MailboxId;
 
+public class Mailbox extends AggregateRoot<MailboxId> {
     /**
      * The address of this mailbox, e.g. `manuel@mueller.de` in
      * {@literal Manuel Müller <manuel@mueller.de>}
@@ -15,18 +19,17 @@ public class Mailbox {
      */
     private String name;
 
-    private String username;
     private String password;
     private HashSet<Email> emails;
 
-    public Mailbox(String username, String password) {
-        this.username = username;
+    private Mailbox(MailboxId id, String password) {
+        super(id);
         this.password = password;
         this.emails = new HashSet<>();
     }
 
-    public String getUsername() {
-        return username;
+    public static Mailbox create(String password) {
+        return new Mailbox(MailboxId.CreateUnique(), password);
     }
 
     public HashSet<Email> getEmails() {
