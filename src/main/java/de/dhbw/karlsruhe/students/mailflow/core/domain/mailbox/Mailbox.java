@@ -29,7 +29,7 @@ public class Mailbox extends AggregateRoot<MailboxId> {
     }
 
     public static Mailbox create(String password) {
-        return new Mailbox(MailboxId.CreateUnique(), password);
+        return new Mailbox(MailboxId.createUnique(), password);
     }
 
     public HashSet<Email> getEmails() {

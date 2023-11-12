@@ -2,7 +2,9 @@ package de.dhbw.karlsruhe.students.mailflow.core.domain.email.entities;
 
 import de.dhbw.karlsruhe.students.mailflow.core.domain.common.models.Entity;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.valueObjects.AttachmentId;
-
+/*
+ * Representation of an e-mail attachment, consisting of the data bytes, contenttype and filename
+ */
 public class Attachment extends Entity<AttachmentId> {
     private String filename;
     private byte[] content;
@@ -16,7 +18,7 @@ public class Attachment extends Entity<AttachmentId> {
     }
 
     public static Attachment create(String filename, byte[] content, String contentType) {
-        return new Attachment(AttachmentId.CreateUnique(), filename, content, contentType);
+        return new Attachment(AttachmentId.createUnique(), filename, content, contentType);
     }
 
     public String getFilename() {

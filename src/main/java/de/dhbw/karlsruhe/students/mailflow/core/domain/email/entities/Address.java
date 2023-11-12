@@ -18,7 +18,7 @@ public class Address extends Entity<AddressId> {
     }
 
     public static Address create(String localPart, String domain) {
-        return new Address(AddressId.CreateUnique(), localPart, domain);
+        return new Address(AddressId.createUnique(), localPart, domain);
     }
 
     public String getLocalPart() {

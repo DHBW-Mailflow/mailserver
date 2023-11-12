@@ -9,7 +9,9 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.entities.Attachment
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.entities.Header;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.valueObjects.EmailId;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.common.models.AggregateRoot;;
-
+/**
+ * Representation of an e-mail as AggregateRoot
+ */
 public final class Email extends AggregateRoot<EmailId> {
     private String subject;
     private Address sender;
@@ -43,7 +45,7 @@ public final class Email extends AggregateRoot<EmailId> {
     public static Email create(String subject, Address sender, List<Address> to, List<Address> cc, List<Address> bcc,
             String content,
             Date sentDate, List<Header> headers, Set<Attachment> attachments) {
-        return new Email(EmailId.CreateUnique(), subject, sender, to, cc, bcc, content, sentDate, headers, attachments);
+        return new Email(EmailId.createUnique(), subject, sender, to, cc, bcc, content, sentDate, headers, attachments);
     }
 
     public String getSubject() {

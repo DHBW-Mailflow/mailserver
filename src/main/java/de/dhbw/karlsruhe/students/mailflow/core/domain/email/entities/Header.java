@@ -3,6 +3,9 @@ package de.dhbw.karlsruhe.students.mailflow.core.domain.email.entities;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.common.models.Entity;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.valueObjects.HeaderId;
 
+/**
+ * Representation of a custom e-mail header, consisting of a name and a value,
+ */
 public class Header extends Entity<HeaderId> {
     private String name;
     private String value;
@@ -14,7 +17,7 @@ public class Header extends Entity<HeaderId> {
     }
 
     public static Header create(String name, String value) {
-        return new Header(HeaderId.CreateUnique(), name, value);
+        return new Header(HeaderId.createUnique(), name, value);
     }
 
     @Override
