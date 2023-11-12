@@ -11,7 +11,6 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.valueObjects.EmailI
 import de.dhbw.karlsruhe.students.mailflow.core.domain.common.models.AggregateRoot;;
 
 public final class Email extends AggregateRoot<EmailId> {
-
     private String subject;
     private Address sender;
 

@@ -9,7 +9,6 @@ package de.dhbw.karlsruhe.students.mailflow.core.domain.common.models;
  * @param <TId> The type of the identifier for the entity.
  */
 public abstract class Entity<TId> {
-
     private TId id;
 
     /**
@@ -67,5 +66,4 @@ public abstract class Entity<TId> {
     public String toString() {
         return "Entity [id=" + id + "]";
     }
-
 }
