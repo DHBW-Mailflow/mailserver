@@ -2,6 +2,7 @@ package de.dhbw.karlsruhe.students.mailflow.core.domain.email.entities;
 
 import de.dhbw.karlsruhe.students.mailflow.core.domain.common.models.Entity;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.valueObjects.AttachmentId;
+
 /*
  * Representation of an e-mail attachment, consisting of the data bytes, contenttype and filename
  */

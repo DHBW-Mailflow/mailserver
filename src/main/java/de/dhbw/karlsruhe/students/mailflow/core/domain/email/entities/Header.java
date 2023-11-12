@@ -4,7 +4,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.common.models.Entity;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.valueObjects.HeaderId;
 
 /**
- * Representation of a custom e-mail header, consisting of a name and a value,
+ * Representation of a custom e-mail header, consisting of a name and a value
  */
 public class Header extends Entity<HeaderId> {
     private String name;
