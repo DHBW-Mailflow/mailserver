@@ -7,7 +7,7 @@ import java.util.Set;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.entities.Address;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.entities.Attachment;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.entities.Header;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.valueObjects.EmailId;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.EmailId;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.common.models.AggregateRoot;;
 
 /**
@@ -91,5 +91,15 @@ public final class Email extends AggregateRoot<EmailId> {
 
     public Set<Attachment> getAttachments() {
         return attachments;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return super.equals(other);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 }

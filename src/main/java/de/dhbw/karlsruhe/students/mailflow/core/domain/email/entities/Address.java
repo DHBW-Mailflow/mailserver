@@ -1,7 +1,7 @@
 package de.dhbw.karlsruhe.students.mailflow.core.domain.email.entities;
 
 import de.dhbw.karlsruhe.students.mailflow.core.domain.common.models.Entity;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.valueObjects.AddressId;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.AddressId;
 
 /**
  * Representation of an e-mail address, consisting of a localPart and a domain,
@@ -32,5 +32,15 @@ public class Address extends Entity<AddressId> {
     @Override
     public String toString() {
         return getLocalPart() + "@" + getDomain();
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return super.equals(other);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 }

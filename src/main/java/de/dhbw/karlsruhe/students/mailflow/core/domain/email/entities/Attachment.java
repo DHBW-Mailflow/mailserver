@@ -1,7 +1,7 @@
 package de.dhbw.karlsruhe.students.mailflow.core.domain.email.entities;
 
 import de.dhbw.karlsruhe.students.mailflow.core.domain.common.models.Entity;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.valueObjects.AttachmentId;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.AttachmentId;
 
 /*
  * Representation of an e-mail attachment, consisting of the data bytes, contenttype and filename
@@ -32,5 +32,15 @@ public class Attachment extends Entity<AttachmentId> {
 
     public String getContentType() {
         return contentType;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return super.equals(other);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 }

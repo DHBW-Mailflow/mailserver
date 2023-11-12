@@ -7,16 +7,16 @@ package de.dhbw.karlsruhe.students.mailflow.core.domain.common.models;
  * to aggregates and encapsulate the
  * consistency rules and operations within the aggregate.
  *
- * @param <TId> The type of the identifier for the aggregate root.
+ * @param <TID> The type of the identifier for the aggregate root.
  */
-public abstract class AggregateRoot<TId> extends Entity<TId> {
+public abstract class AggregateRoot<TID> extends Entity<TID> {
     /**
      * Creates a new aggregate root with the specified identifier.
      *
      * @param id The unique identifier for the aggregate root.
      * @throws IllegalArgumentException if the provided ID is null.
      */
-    protected AggregateRoot(TId id) {
+    protected AggregateRoot(TID id) {
         super(id);
     }
 }

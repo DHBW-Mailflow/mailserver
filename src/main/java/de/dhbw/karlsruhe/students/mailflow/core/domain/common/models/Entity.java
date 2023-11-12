@@ -6,10 +6,10 @@ package de.dhbw.karlsruhe.students.mailflow.core.domain.common.models;
  * Entities are objects with distinct identities. Two objects are considered
  * equal if their identifier is equal.
  * 
- * @param <TId> The type of the identifier for the entity.
+ * @param <TID> The type of the identifier for the entity.
  */
-public abstract class Entity<TId> {
-    private TId id;
+public abstract class Entity<TID> {
+    private TID id;
 
     /**
      * Creates a new entity with the specified identifier.
@@ -17,7 +17,7 @@ public abstract class Entity<TId> {
      * @param id The unique identifier for the entity.
      * @throws IllegalArgumentException if the provided ID is null.
      */
-    protected Entity(TId id) {
+    protected Entity(TID id) {
         if (id == null) {
             throw new IllegalArgumentException("id cannot be null");
         }
@@ -29,7 +29,7 @@ public abstract class Entity<TId> {
      *
      * @return The entity's unique identifier.
      */
-    public TId getId() {
+    public TID getId() {
         return id;
     }
 

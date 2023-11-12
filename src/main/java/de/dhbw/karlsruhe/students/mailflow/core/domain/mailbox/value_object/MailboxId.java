@@ -1,4 +1,4 @@
-package de.dhbw.karlsruhe.students.mailflow.core.domain.mailbox.valueObjects;
+package de.dhbw.karlsruhe.students.mailflow.core.domain.mailbox.value_object;
 
 import java.util.UUID;
 
