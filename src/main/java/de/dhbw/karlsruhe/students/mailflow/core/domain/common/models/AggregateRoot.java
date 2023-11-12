@@ -10,7 +10,6 @@ package de.dhbw.karlsruhe.students.mailflow.core.domain.common.models;
  * @param <TId> The type of the identifier for the aggregate root.
  */
 public abstract class AggregateRoot<TId> extends Entity<TId> {
-
     /**
      * Creates a new aggregate root with the specified identifier.
      *
@@ -20,5 +19,4 @@ public abstract class AggregateRoot<TId> extends Entity<TId> {
     protected AggregateRoot(TId id) {
         super(id);
     }
-
 }

@@ -4,7 +4,6 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.common.models.Entity;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.valueObjects.HeaderId;
 
 public class Header extends Entity<HeaderId> {
-
     private String name;
     private String value;
 
@@ -22,5 +21,4 @@ public class Header extends Entity<HeaderId> {
     public String toString() {
         return name + ": " + value;
     }
-
 }
