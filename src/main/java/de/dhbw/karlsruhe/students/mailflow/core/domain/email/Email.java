@@ -27,7 +27,7 @@ public final class Email extends AggregateRoot<EmailId> {
         this.attachments = attachments;
     }
 
-    public static Email create(String subject, String content, List<Header> headers, EmailMetadata emailMetadata,
+    public static Email create(String content, List<Header> headers, EmailMetadata emailMetadata,
             Set<Attachment> attachments) {
         return new Email(EmailId.createUnique(), content, headers, emailMetadata, attachments);
     }
