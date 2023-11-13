@@ -10,8 +10,6 @@ services:
       - "587:587"
       - "993:993"
     environment:
-      - ENABLE_RSPAMD=1
-      - ENABLE_CLAMAV=1
       - ENABLE_FAIL2BAN=1
     cap_add:
       - NET_ADMIN # For Fail2Ban to work
