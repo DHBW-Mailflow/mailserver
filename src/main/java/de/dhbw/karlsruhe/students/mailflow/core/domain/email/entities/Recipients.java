@@ -21,4 +21,26 @@ public class Recipients extends Entity<RecipientsId> {
     public static Recipients create(List<Address> to, List<Address> cc, List<Address> bcc) {
         return new Recipients(RecipientsId.createUnique(), to, cc, bcc);
     }
+
+    public List<Address> getTo() {
+        return to;
+    }
+
+    public List<Address> getCc() {
+        return cc;
+    }
+
+    public List<Address> getBcc() {
+        return bcc;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return super.equals(other);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }
