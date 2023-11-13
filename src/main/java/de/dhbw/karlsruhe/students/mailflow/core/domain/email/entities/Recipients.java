@@ -4,9 +4,10 @@ import java.util.List;
 
 import de.dhbw.karlsruhe.students.mailflow.core.domain.common.models.Entity;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.RecipientsId;
-
+/**
+ * Representation of e-mail recipients, consisting of the main to, the cc and the bcc
+ */
 public class Recipients extends Entity<RecipientsId> {
-
     private List<Address> to;
     private List<Address> cc;
     private List<Address> bcc;
