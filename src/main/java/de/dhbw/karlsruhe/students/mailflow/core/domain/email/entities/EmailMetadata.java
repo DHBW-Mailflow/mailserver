@@ -1,22 +1,25 @@
 package de.dhbw.karlsruhe.students.mailflow.core.domain.email.entities;
 
-import java.sql.Date;
-
 import de.dhbw.karlsruhe.students.mailflow.core.domain.common.models.Entity;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.EmailMetadataId;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Recipients;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Subject;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.SentDate;
 
 /**
  * Representation of the e-mail metadata, consisting of the data subject,sender,
  * recipents,sentDate and the isRead status
  */
 public class EmailMetadata extends Entity<EmailMetadataId> {
-    private String subject;
+    private Subject subject;
     private Address sender;
     private Recipients recipients;
-    private Date sentDate;
+    private SentDate sentDate;
     private boolean isRead;
 
-    private EmailMetadata(EmailMetadataId id, String subject, Address sender, Recipients recipients, Date sentDate) {
+    private EmailMetadata(EmailMetadataId id, Subject subject, Address sender, Recipients recipients,
+            SentDate sentDate) {
         super(id);
         this.subject = subject;
         this.sender = sender;
@@ -25,11 +28,11 @@ public class EmailMetadata extends Entity<EmailMetadataId> {
         this.isRead = false;
     }
 
-    public static EmailMetadata create(String subject, Address sender, Recipients recipients, Date sentDate) {
+    public static EmailMetadata create(Subject subject, Address sender, Recipients recipients, SentDate sentDate) {
         return new EmailMetadata(EmailMetadataId.createUnique(), subject, sender, recipients, sentDate);
     }
 
-    public String getSubject() {
+    public Subject getSubject() {
         return subject;
     }
 
@@ -41,7 +44,7 @@ public class EmailMetadata extends Entity<EmailMetadataId> {
         return recipients;
     }
 
-    public Date getSentDate() {
+    public SentDate getSentDate() {
         return sentDate;
     }
 

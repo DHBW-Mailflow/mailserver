@@ -4,10 +4,10 @@ import java.util.List;
 import java.util.Set;
 
 import de.dhbw.karlsruhe.students.mailflow.core.domain.common.models.AggregateRoot;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.entities.Attachment;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.entities.EmailMetadata;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.entities.Header;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Attachment;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.EmailId;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Header;
 
 /**
  * Representation of an e-mail as AggregateRoot
