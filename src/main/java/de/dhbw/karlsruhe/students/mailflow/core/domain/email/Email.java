@@ -8,7 +8,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.entities.Address;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.entities.Attachment;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.entities.Header;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.EmailId;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.common.models.AggregateRoot;;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.common.models.AggregateRoot;
 
 /**
  * Representation of an e-mail as AggregateRoot
