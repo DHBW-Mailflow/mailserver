@@ -1,75 +1,43 @@
 package de.dhbw.karlsruhe.students.mailflow.core.domain.email;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.entities.Address;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.entities.Attachment;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.entities.Header;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.entities.Recipients;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.EmailId;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.common.models.AggregateRoot;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.entities.Attachment;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.entities.EmailMetadata;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.entities.Header;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.EmailId;
 
 /**
  * Representation of an e-mail as AggregateRoot
  */
 public final class Email extends AggregateRoot<EmailId> {
-    private String subject;
-    private Address sender;
-
-    private Recipients recipients;
-
+    private EmailMetadata emailMetadata;
     private String content;
-    private Date sentDate;
-    private boolean isRead;
     private List<Header> headers;
     private Set<Attachment> attachments;
 
-    private Email(EmailId id, String subject, Address sender, Recipients recipients, String content, Date sentDate,
-            List<Header> headers, Set<Attachment> attachments) {
+    private Email(EmailId id, String content, List<Header> headers, EmailMetadata emailMetadata,
+            Set<Attachment> attachments) {
         super(id);
-        this.subject = subject;
-        this.sender = sender;
-        this.recipients = recipients;
+        this.emailMetadata = emailMetadata;
         this.content = content;
-        this.sentDate = sentDate;
         this.headers = headers;
         this.attachments = attachments;
-        this.isRead = false;
     }
 
-    public static Email create(String subject, Address sender, Recipients recipients, String content, Date sentDate,
-            List<Header> headers, Set<Attachment> attachments) {
-        return new Email(EmailId.createUnique(), subject, sender, recipients, content, sentDate, headers, attachments);
-    }
-
-    public String getSubject() {
-        return subject;
-    }
-
-    public Address getSender() {
-        return sender;
-    }
-
-    public Recipients getRecipients() {
-        return recipients;
+    public static Email create(String subject, String content, List<Header> headers, EmailMetadata emailMetadata,
+            Set<Attachment> attachments) {
+        return new Email(EmailId.createUnique(), content, headers, emailMetadata, attachments);
     }
 
     public String getContent() {
         return content;
     }
 
-    public Date getSentDate() {
-        return sentDate;
-    }
-
-    public boolean isRead() {
-        return isRead;
-    }
-
     public void setRead(boolean read) {
-        isRead = read;
+        emailMetadata.setRead(read);
     }
 
     public List<Header> getHeaders() {
@@ -88,5 +56,9 @@ public final class Email extends AggregateRoot<EmailId> {
     @Override
     public int hashCode() {
         return super.hashCode();
+    }
+
+    public EmailMetadata getEmailMetadata() {
+        return emailMetadata;
     }
 }
