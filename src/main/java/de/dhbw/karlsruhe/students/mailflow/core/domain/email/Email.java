@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import de.dhbw.karlsruhe.students.mailflow.core.domain.common.models.AggregateRoot;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.entities.EmailMetadata;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.EmailMetadata;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Attachment;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.EmailId;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Header;
@@ -14,6 +14,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Heade
  */
 public final class Email extends AggregateRoot<EmailId> {
     private EmailMetadata emailMetadata;
+    private boolean isRead;
     private String content;
     private List<Header> headers;
     private Set<Attachment> attachments;
@@ -37,7 +38,11 @@ public final class Email extends AggregateRoot<EmailId> {
     }
 
     public void setRead(boolean read) {
-        emailMetadata.setRead(read);
+        this.isRead = read;
+    }
+
+    public boolean getRead() {
+        return isRead;
     }
 
     public List<Header> getHeaders() {
