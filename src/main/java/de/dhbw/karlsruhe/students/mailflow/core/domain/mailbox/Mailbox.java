@@ -22,13 +22,18 @@ public class Mailbox extends AggregateRoot<MailboxId> {
 
     private Set<Email> emails;
 
-    private Mailbox(MailboxId id) {
+    private String password;
+
+    private Mailbox(MailboxId id, Address address, String name, String password) {
         super(id);
         this.emails = new HashSet<>();
+        this.password = password;
+        this.name = name;
+        this.address = address;
     }
 
-    public static Mailbox create() {
-        return new Mailbox(MailboxId.createUnique());
+    public static Mailbox create(Address address, String name, String password) {
+        return new Mailbox(MailboxId.createUnique(), address, name, password);
     }
 
     public Set<Email> getEmails() {
