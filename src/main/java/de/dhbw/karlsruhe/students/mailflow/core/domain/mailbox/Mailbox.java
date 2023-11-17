@@ -20,17 +20,15 @@ public class Mailbox extends AggregateRoot<MailboxId> {
      */
     private String name;
 
-    private String password;
     private Set<Email> emails;
 
-    private Mailbox(MailboxId id, String password) {
+    private Mailbox(MailboxId id) {
         super(id);
-        this.password = password;
         this.emails = new HashSet<>();
     }
 
-    public static Mailbox create(String password) {
-        return new Mailbox(MailboxId.createUnique(), password);
+    public static Mailbox create() {
+        return new Mailbox(MailboxId.createUnique());
     }
 
     public Set<Email> getEmails() {
