@@ -1,12 +1,12 @@
 package de.dhbw.karlsruhe.students.mailflow.core.domain.email;
 
-import java.util.List;
+import java.util.Collections;
 import java.util.Set;
 
 import de.dhbw.karlsruhe.students.mailflow.core.domain.common.models.AggregateRoot;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.EmailMetadata;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Attachment;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.EmailId;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.EmailMetadata;
 
 /**
  * Representation of an e-mail as AggregateRoot
@@ -28,6 +28,10 @@ public final class Email extends AggregateRoot<EmailId> {
     public static Email create(String content, EmailMetadata emailMetadata,
             Set<Attachment> attachments) {
         return new Email(EmailId.createUnique(), content, emailMetadata, attachments);
+    }
+
+    public static Email create(String content, EmailMetadata emailMetadata) {
+        return new Email(EmailId.createUnique(), content, emailMetadata, Collections.emptySet());
     }
 
     public String getContent() {
