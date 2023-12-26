@@ -17,7 +17,7 @@ public final class Email extends AggregateRoot<EmailId> {
     private String content;
     private Set<Attachment> attachments;
 
-    private Email(EmailId id, String content, EmailMetadata emailMetadata,
+    public Email(EmailId id, String content, EmailMetadata emailMetadata,
             Set<Attachment> attachments) {
         super(id);
         this.emailMetadata = emailMetadata;
