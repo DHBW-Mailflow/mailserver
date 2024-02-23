@@ -3,9 +3,10 @@ package de.dhbw.karlsruhe.students.mailflow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import java.io.FileInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 
@@ -18,14 +19,21 @@ import de.dhbw.karlsruhe.students.mailflow.core.external.email.EmlParser;
 
 import jakarta.mail.MessagingException;
 
-public class ParseEmlFIleTest {
+public class ParseEmlTest {
     @Test
     public void parsesEmlFileToEmailModel() throws MessagingException, IOException {
         // Arrange
-        InputStream inputStream = new FileInputStream("src/test/assets/eml_files/microsoft-example-eml-message.eml");
+        InputStream inputStream = new ByteArrayInputStream("""
+                From: someone@example.com
+                To: someone_else@example.com
+                Subject: An RFC 822 formatted message
+
+                This is the plain text body of the message. Note the blank line
+                between the header information and the body of the message.""".getBytes(StandardCharsets.UTF_8));
 
         // Act
-        EmlParser parser = new EmlParser(inputStream);
+        EmlParser parser = new EmlParser();
+        parser.setInputStream(inputStream);
 
         Email email = parser.parseToEmail();
 

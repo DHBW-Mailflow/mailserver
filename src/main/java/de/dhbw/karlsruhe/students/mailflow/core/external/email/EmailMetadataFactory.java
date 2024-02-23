@@ -22,11 +22,10 @@ public class EmailMetadataFactory {
     }
 
     public static EmailMetadataFactory withMessage(Message message) {
-        EmailMetadataFactory factory = new EmailMetadataFactory(message);
-        return factory;
+        return new EmailMetadataFactory(message);
     }
 
-    private List<Address> getRecipients(RecipientType recipientType) throws MessagingException {
+    private List<Address> getRecipientAddresses(RecipientType recipientType) throws MessagingException {
         List<Address> addresses = new ArrayList<>();
 
         jakarta.mail.Address[] recipients = message.getRecipients(recipientType);
@@ -65,8 +64,9 @@ public class EmailMetadataFactory {
                 new Subject(message.getSubject()),
                 this.getAddress(message.getFrom()[0]),
                 this.getHeaders(),
-                new Recipients(this.getRecipients(RecipientType.TO), this.getRecipients(RecipientType.CC),
-                        this.getRecipients(RecipientType.BCC)),
+                new Recipients(this.getRecipientAddresses(RecipientType.TO),
+                        this.getRecipientAddresses(RecipientType.CC),
+                        this.getRecipientAddresses(RecipientType.BCC)),
                 new SentDate(message.getSentDate()));
     }
 }
