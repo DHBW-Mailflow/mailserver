@@ -23,7 +23,7 @@ public class EmlParser implements EmailParser {
         return createEmailWithMessage(message);
     }
 
-    public Message getMessage(Session session, InputStream inputStream)throws EmailParsingException  {
+    private Message getMessage(Session session, InputStream inputStream) throws EmailParsingException {
         try {
             return new MimeMessage(session, inputStream);
         } catch (MessagingException e) {
@@ -32,7 +32,7 @@ public class EmlParser implements EmailParser {
 
     }
 
-    public Email createEmailWithMessage(Message message) throws EmailParsingException {
+    private Email createEmailWithMessage(Message message) throws EmailParsingException {
         try {
             return Email.create(message.getContent().toString(),
                     EmailMetadataFactory.withMessage(message).build(), null);
