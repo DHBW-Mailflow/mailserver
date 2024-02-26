@@ -13,7 +13,7 @@ public class EmailMetadataFactory {
     private Message message;
 
     private EmailMetadataFactory(Message message) {
-        if(message == null){
+        if (message == null){
             throw new IllegalArgumentException("Message must not be null");
         }
         this.message = message;
