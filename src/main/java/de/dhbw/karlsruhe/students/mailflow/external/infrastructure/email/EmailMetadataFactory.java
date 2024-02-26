@@ -1,26 +1,23 @@
-package de.dhbw.karlsruhe.students.mailflow.core.external.email;
+package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email;
+
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.*;
+import jakarta.mail.Message;
+import jakarta.mail.Message.RecipientType;
+import jakarta.mail.MessagingException;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.EmailMetadata;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Header;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Recipients;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.SentDate;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Subject;
-import jakarta.mail.Message;
-import jakarta.mail.MessagingException;
-import jakarta.mail.Message.RecipientType;
-
 public class EmailMetadataFactory {
     private Message message;
 
-    public EmailMetadataFactory(Message message) {
+    private EmailMetadataFactory(Message message) {
+        if(message == null){
+            throw new IllegalArgumentException("Message must not be null");
+        }
         this.message = message;
     }
-
     public static EmailMetadataFactory withMessage(Message message) {
         return new EmailMetadataFactory(message);
     }
@@ -52,9 +49,12 @@ public class EmailMetadataFactory {
     private List<Header> getHeaders() throws MessagingException {
         List<Header> headers = new ArrayList<>();
 
-        this.message.getAllHeaders().asIterator().forEachRemaining(x -> {
-            headers.add(new Header(x.getName(), x.getValue()));
-        });
+        this.message
+                .getAllHeaders()
+                .asIterator()
+                .forEachRemaining(x -> {
+                    headers.add(new Header(x.getName(), x.getValue()));
+                });
 
         return headers;
     }

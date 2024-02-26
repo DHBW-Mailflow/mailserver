@@ -1,7 +1,12 @@
 package de.dhbw.karlsruhe.students.mailflow;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.parsing.EmailParser;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Subject;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.EmlParser;
+import jakarta.mail.MessagingException;
+import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -10,16 +15,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 
-import org.junit.jupiter.api.Test;
-
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Subject;
-import de.dhbw.karlsruhe.students.mailflow.core.external.email.EmlParser;
-
-import jakarta.mail.MessagingException;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class ParseEmlTest {
+
     @Test
     public void parsesEmlFileToEmailModel() throws MessagingException, IOException {
         // Arrange
@@ -32,10 +32,8 @@ public class ParseEmlTest {
                 between the header information and the body of the message.""".getBytes(StandardCharsets.UTF_8));
 
         // Act
-        EmlParser parser = new EmlParser();
-        parser.setInputStream(inputStream);
-
-        Email email = parser.parseToEmail();
+        EmailParser parser = new EmlParser();
+        Email email = parser.parseToEmail(inputStream);
 
         // Assert
         assertNotNull(email);
