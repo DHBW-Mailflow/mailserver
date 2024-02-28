@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.imap.ImapClientConfig;
 import de.dhbw.karlsruhe.students.mailflow.core.application.imap.JamesImapClient;
+import jakarta.mail.Folder;
 import jakarta.mail.Session;
 
 public class ImapHandshakeTest {
@@ -26,8 +27,8 @@ public class ImapHandshakeTest {
 
         // Act
         var store = session.getStore("imap");
-        store.connect("127.0.0.1", config.port(), "admin", "admin");
-        store.getDefaultFolder();
+        store.connect(config.host(), config.port(), "admin", "admin");
+        store.getFolder("INBOX").open(Folder.READ_ONLY);
 
         server.stop();
     }

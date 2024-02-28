@@ -54,8 +54,23 @@
         </dependency>
         <dependency>
             <groupId>org.apache.james</groupId>
-            <artifactId>james-server-imapserver</artifactId>
-            <version>3.0-M2</version>
+            <artifactId>james-server-protocols-imap4</artifactId>
+            <version>3.8.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.james</groupId>
+            <artifactId>event-bus-in-vm</artifactId>
+            <version>3.8.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.james</groupId>
+            <artifactId>metrics-logger</artifactId>
+            <version>3.8.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.23.0</version>
         </dependency>
     </dependencies>
 
