@@ -64,6 +64,11 @@
         </dependency>
         <dependency>
             <groupId>org.apache.james</groupId>
+            <artifactId>apache-james-mailbox-store</artifactId>
+            <version>3.8.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.james</groupId>
             <artifactId>metrics-logger</artifactId>
             <version>3.8.1</version>
         </dependency>
