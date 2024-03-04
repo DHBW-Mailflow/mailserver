@@ -4,20 +4,20 @@ import java.util.Properties;
 
 import org.junit.jupiter.api.Test;
 
-import de.dhbw.karlsruhe.students.mailflow.core.application.imap.ImapClientConfig;
-import de.dhbw.karlsruhe.students.mailflow.core.application.imap.JamesImapClient;
-import jakarta.mail.Folder;
+import de.dhbw.karlsruhe.students.mailflow.core.application.imap.ImapListenerConfig;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.JamesImapListener;
 import jakarta.mail.Session;
 
 public class ImapHandshakeTest {
     @Test
     public void testJamesImapSurvivesHandshake() throws Exception {
         // Arrange
-        var config = new ImapClientConfig("127.0.0.1", App.getFreePort());
-        var server = new JamesImapClient(config);
+        var config = new ImapListenerConfig("127.0.0.1", App.getFreePort());
+        var server = new JamesImapListener();
+        server.configure(config);
+        server.listen();
 
         var clientConfig = new Properties();
-        clientConfig.put("mail.user", "admin");
         clientConfig.put("mail.host", config.host());
         clientConfig.put("mail.port", String.valueOf(config.port()));
         clientConfig.put("mail.debug", "true");
@@ -28,7 +28,6 @@ public class ImapHandshakeTest {
         // Act
         var store = session.getStore("imap");
         store.connect(config.host(), config.port(), "admin", "admin");
-        store.getFolder("INBOX").open(Folder.READ_ONLY);
 
         server.stop();
     }

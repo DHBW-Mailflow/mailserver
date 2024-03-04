@@ -3,9 +3,9 @@ package de.dhbw.karlsruhe.students.mailflow;
 import java.io.IOException;
 import java.net.ServerSocket;
 
-import de.dhbw.karlsruhe.students.mailflow.core.application.imap.ImapClient;
-import de.dhbw.karlsruhe.students.mailflow.core.application.imap.ImapClientConfig;
-import de.dhbw.karlsruhe.students.mailflow.core.application.imap.JamesImapClient;
+import de.dhbw.karlsruhe.students.mailflow.core.application.imap.ImapListener;
+import de.dhbw.karlsruhe.students.mailflow.core.application.imap.ImapListenerConfig;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.JamesImapListener;
 
 /**
  * Hello world!
@@ -13,9 +13,12 @@ import de.dhbw.karlsruhe.students.mailflow.core.application.imap.JamesImapClient
  */
 public class App {
     public static void main(String[] args) throws Exception {
-        var config = new ImapClientConfig("127.0.0.1", App.getFreePort());
+        var config = new ImapListenerConfig("127.0.0.1", App.getFreePort());
 
-        ImapClient client = new JamesImapClient(config);
+        ImapListener client = new JamesImapListener();
+        client.configure(config);
+
+        client.listen();
     }
 
     /**

@@ -6,11 +6,9 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Subject;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.EmlParser;
-import jakarta.mail.MessagingException;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
@@ -31,7 +29,8 @@ public class ParseEmlTest {
                 Subject: An RFC 822 formatted message
 
                 This is the plain text body of the message. Note the blank line
-                between the header information and the body of the message.""".getBytes(StandardCharsets.UTF_8));
+                between the header information and the body of the message."""
+                .getBytes(StandardCharsets.UTF_8));
 
         // Act
         EmailParser parser = new EmlParser();
@@ -42,13 +41,16 @@ public class ParseEmlTest {
 
         assertEquals(email.getEmailMetadata().sender(), new Address("someone", "example.com"));
 
-        assertEquals(email.getEmailMetadata().recipients().to(), List.of(new Address("someone_else", "example.com")));
+        assertEquals(email.getEmailMetadata().recipients().to(),
+                List.of(new Address("someone_else", "example.com")));
         assertEquals(email.getEmailMetadata().recipients().cc(), Collections.emptyList());
         assertEquals(email.getEmailMetadata().recipients().bcc(), Collections.emptyList());
 
-        assertEquals(email.getEmailMetadata().subject(), new Subject("An RFC 822 formatted message"));
-        assertEquals(email.getContent(), "This is the plain text body of the message. Note the blank line\n" + //
-                "between the header information and the body of the message.");
+        assertEquals(email.getEmailMetadata().subject(),
+                new Subject("An RFC 822 formatted message"));
+        assertEquals(email.getContent(),
+                "This is the plain text body of the message. Note the blank line\n" + //
+                        "between the header information and the body of the message.");
     }
 
     @Test
@@ -60,7 +62,8 @@ public class ParseEmlTest {
                 Subject: An RFC 822 formatted message
 
                 This is the plain text body of the message. Note the blank line
-                between the header information and the body of the message.""".getBytes(StandardCharsets.UTF_8));
+                between the header information and the body of the message."""
+                .getBytes(StandardCharsets.UTF_8));
 
         // Act
         EmailParser parser = new EmlParser();

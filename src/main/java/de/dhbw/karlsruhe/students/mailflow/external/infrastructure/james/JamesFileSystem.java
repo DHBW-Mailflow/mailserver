@@ -1,4 +1,4 @@
-package de.dhbw.karlsruhe.students.mailflow.core.application.imap.james;
+package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.james;
 
 import java.io.File;
 import java.io.FileNotFoundException;

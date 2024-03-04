@@ -12,8 +12,7 @@ import jakarta.mail.Session;
 import jakarta.mail.internet.MimeMessage;
 
 /**
- * Implements "RFC822: Standard for ARPA Internet Text Messages"
- * by parsing .eml-files
+ * Implements "RFC822: Standard for ARPA Internet Text Messages" by parsing .eml-files
  */
 public class EmlParser implements EmailParser {
     @Override
@@ -23,7 +22,8 @@ public class EmlParser implements EmailParser {
         return createEmailWithMessage(message);
     }
 
-    private Message getMessage(Session session, InputStream inputStream) throws EmailParsingException {
+    private Message getMessage(Session session, InputStream inputStream)
+            throws EmailParsingException {
         try {
             return new MimeMessage(session, inputStream);
         } catch (MessagingException e) {

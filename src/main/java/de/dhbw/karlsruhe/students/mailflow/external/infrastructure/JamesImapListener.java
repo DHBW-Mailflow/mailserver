@@ -1,4 +1,4 @@
-package de.dhbw.karlsruhe.students.mailflow.core.application.imap;
+package de.dhbw.karlsruhe.students.mailflow.external.infrastructure;
 
 import org.apache.commons.configuration2.BaseHierarchicalConfiguration;
 import org.apache.james.imap.api.display.HumanReadableText;
@@ -10,28 +10,30 @@ import org.apache.james.imapserver.netty.IMAPServerFactory;
 import org.apache.james.metrics.api.NoopGaugeRegistry;
 import org.apache.james.metrics.logger.DefaultMetricFactory;
 import org.apache.james.protocols.lib.netty.AbstractConfigurableAsyncServer;
+import de.dhbw.karlsruhe.students.mailflow.core.application.imap.ImapListener;
+import de.dhbw.karlsruhe.students.mailflow.core.application.imap.ImapListenerConfig;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.james.JamesFileSystem;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.james.JamesImapProcessor;
 
-import de.dhbw.karlsruhe.students.mailflow.core.application.imap.james.JamesFileSystem;
-import de.dhbw.karlsruhe.students.mailflow.core.application.imap.james.JamesImapProcessor;
-import jakarta.mail.Session;
-import reactor.util.annotation.NonNull;
-
-public class JamesImapClient implements ImapClient {
+public class JamesImapListener implements ImapListener {
 
     private AbstractConfigurableAsyncServer server;
+    private ImapListenerConfig config;
 
-    public JamesImapClient(@NonNull ImapClientConfig imapClientConfig) throws Exception {
-        var server = new IMAPServerFactory(new JamesFileSystem(), () -> DefaultImapDecoderFactory.createDecoder(),
+    public void listen() throws Exception {
+        var server = new IMAPServerFactory(new JamesFileSystem(),
+                () -> DefaultImapDecoderFactory.createDecoder(),
                 () -> DefaultImapEncoderFactory.createDefaultEncoder(new Localizer() {
                     @Override
                     public String localize(HumanReadableText text, Locales locales) {
                         return text.toString();
                     }
-                }, false), () -> new JamesImapProcessor(), new DefaultMetricFactory(), new NoopGaugeRegistry());
+                }, false), () -> new JamesImapProcessor(), new DefaultMetricFactory(),
+                new NoopGaugeRegistry());
 
         var config = new BaseHierarchicalConfiguration();
         config.setProperty("imapserver.[@enabled]", true);
-        config.setProperty("imapserver.bind", imapClientConfig.host() + ":" + imapClientConfig.port());
+        config.setProperty("imapserver.bind", this.config.host() + ":" + this.config.port());
 
         server.configure(config);
 
@@ -40,6 +42,15 @@ public class JamesImapClient implements ImapClient {
     }
 
     public void stop() {
+        if (this.server == null) {
+            throw new IllegalStateException("server must be started prior to terminating");
+        }
+
         this.server.stop();
+    }
+
+    @Override
+    public void configure(ImapListenerConfig config) {
+        this.config = config;
     }
 }

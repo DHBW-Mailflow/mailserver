@@ -1,4 +1,4 @@
-package de.dhbw.karlsruhe.students.mailflow.core.application.imap.james;
+package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.james;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -23,21 +23,17 @@ import org.apache.james.imap.message.request.CapabilityRequest;
 import org.apache.james.imap.message.response.AuthenticateResponse;
 import org.apache.james.imap.message.response.CapabilityResponse;
 import org.apache.james.imap.message.response.UnpooledStatusResponseFactory;
-import org.apache.james.mailbox.MailboxManager;
 import org.apache.james.mailbox.MailboxSession;
 import org.apache.james.mailbox.MailboxSession.SessionId;
 import org.apache.james.mailbox.MailboxSession.SessionType;
 import org.apache.james.mailbox.exception.MailboxException;
-import de.dhbw.karlsruhe.students.mailflow.core.util.RandomString;
 
 public class JamesImapProcessor implements ImapProcessor {
 
     private StatusResponseFactory statusResponseFactory;
-    private MailboxManager mailboxManager;
 
     public JamesImapProcessor() {
         this.statusResponseFactory = new UnpooledStatusResponseFactory();
-        this.mailboxManager = new JamesMailboxManager();
     }
 
     @Override
@@ -63,9 +59,11 @@ public class JamesImapProcessor implements ImapProcessor {
                 HumanReadableText.OK));
     }
 
+    /**
+     * @see 6.2.2. AUTHENTICATE Command (RFC 3501)
+     */
     private void processAuthenticateRequest(AuthenticateRequest message, Responder responder,
             ImapSession session) {
-        // TODO: See 6.2.2. AUTHENTICATE Command (RFC 3501)
 
         // TODO: Refactor to PLAIN-Authentication Strategy pattern
         System.out.println(message.toString());
@@ -105,6 +103,7 @@ public class JamesImapProcessor implements ImapProcessor {
         }
 
         var username = Username.of(tokens.get(0));
+        var password = tokens.get(1);
 
         // TODO: Check if username already exists, then check password or register otherwise
 
@@ -119,9 +118,5 @@ public class JamesImapProcessor implements ImapProcessor {
         // send completed
         responder.respond(statusResponseFactory.taggedOk(request.getTag(), request.getCommand(),
                 HumanReadableText.COMPLETED));
-    }
-
-    public MailboxManager getMailboxManager() {
-        return mailboxManager;
     }
 }
