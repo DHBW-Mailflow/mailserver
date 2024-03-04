@@ -12,7 +12,6 @@ import org.apache.james.metrics.logger.DefaultMetricFactory;
 import org.apache.james.protocols.lib.netty.AbstractConfigurableAsyncServer;
 import de.dhbw.karlsruhe.students.mailflow.core.application.imap.ImapListener;
 import de.dhbw.karlsruhe.students.mailflow.core.application.imap.ImapListenerConfig;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.james.JamesFileSystem;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.james.JamesImapProcessor;
 
 public class JamesImapListener implements ImapListener {
@@ -21,8 +20,7 @@ public class JamesImapListener implements ImapListener {
     private ImapListenerConfig config;
 
     public void listen() throws Exception {
-        var server = new IMAPServerFactory(new JamesFileSystem(),
-                () -> DefaultImapDecoderFactory.createDecoder(),
+        var server = new IMAPServerFactory(null, () -> DefaultImapDecoderFactory.createDecoder(),
                 () -> DefaultImapEncoderFactory.createDefaultEncoder(new Localizer() {
                     @Override
                     public String localize(HumanReadableText text, Locales locales) {
