@@ -1,12 +1,10 @@
 package de.dhbw.karlsruhe.students.mailflow.core.domain.email;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import de.dhbw.karlsruhe.students.mailflow.core.domain.common.models.AggregateRoot;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.mailbox.value_object.MailboxId;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.MailboxId;
 
 public class Mailbox extends AggregateRoot<MailboxId> {
 

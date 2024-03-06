@@ -20,7 +20,7 @@ public class EmlParser implements EmailParser {
     public Email parseToEmail(InputStream inputStream) throws EmailParsingException {
         Session session = Session.getInstance(System.getProperties(), null);
         Message message = getMessage(session, inputStream);
-        return createEmailWithMessage(message);
+        return CreateEmailHelper.createEmailWithMessage(message);
     }
 
     private Message getMessage(Session session, InputStream inputStream) throws EmailParsingException {
@@ -32,12 +32,4 @@ public class EmlParser implements EmailParser {
 
     }
 
-    private Email createEmailWithMessage(Message message) throws EmailParsingException {
-        try {
-            return Email.create(message.getContent().toString(),
-                    EmailMetadataFactory.withMessage(message).build(), null);
-        } catch (IOException | MessagingException e) {
-            throw new EmailParsingException("couldn't build final email", e);
-        }
-    }
 }
