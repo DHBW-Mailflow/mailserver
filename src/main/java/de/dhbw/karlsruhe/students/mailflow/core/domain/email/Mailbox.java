@@ -16,7 +16,7 @@ public class Mailbox extends AggregateRoot<MailboxId> {
 
   private List<Email> emails;
 
-  private Mailbox(MailboxId id, Address address, List<Email> emails) {
+  public Mailbox(MailboxId id, Address address, List<Email> emails) {
     super(id);
     this.emails = emails;
     this.address = address;

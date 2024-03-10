@@ -44,12 +44,28 @@ public class ParseMboxTest {
     // Service (use case)
     Mailbox mailbox = mailboxParsingService.getMailboxOfAddress(address);
 
+
     // Parser
 
 
     // Assert
     assertNotNull(mailbox);
 
+  }
+
+  @Test
+  public void getMailboxOfAddress() throws MailboxParsingServiceException {
+    // Arrange
+    Address address = new Address("test", "gmail.com");
+    MailboxRepository mailboxRepository = new LocalMailboxRepository();
+    MboxParser mboxParser = new MboxParser();
+    MailboxParsingService mailboxParsingService = new MailboxParsingService(mailboxRepository, mboxParser);
+
+    // Act
+    Mailbox mailbox = mailboxParsingService.getMailboxOfAddress(address);
+
+    // Assert
+    assertNotNull(mailbox);
   }
 
 }
