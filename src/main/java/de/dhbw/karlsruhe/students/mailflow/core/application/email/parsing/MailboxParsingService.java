@@ -17,10 +17,9 @@ public class MailboxParsingService {
 
   public Mailbox getMailboxOfAddress(Address address) throws MailboxParsingServiceException {
     var storedFile = mailboxRepository.provideStoredMailboxFileFor(address);
-    if (storedFile.isEmpty()){
+    if (storedFile.isEmpty()) {
       throw new MailboxParsingServiceException("File does not exist");
     }
-    return mailboxParser.parseMailbox(storedFile.get(),address);
-
+    return mailboxParser.parseMailbox(storedFile.get(), address);
   }
 }

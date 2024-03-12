@@ -21,7 +21,7 @@ public class CreateEmailHelper {
     try {
       return Email.create(message.getContent().toString(),
           EmailMetadataFactory.withMessage(message).build(), null);
-    } catch (IOException | javax.mail.MessagingException e) {
+    } catch (IOException | javax.mail.MessagingException | MessagingException e) {
       throw new EmailParsingException("couldn't build final email", e);
     }
   }

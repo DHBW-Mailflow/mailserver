@@ -22,19 +22,28 @@ public class MboxParser implements MailboxParser {
 
   private List<Email> emails = new ArrayList<>();
 
-
   @Override
   public Mailbox parseMailbox(File file, Address address) throws MailboxParsingException {
 
-    Message [] messages = null;
+    Message[] messages = null;
 
     try {
       var properties = new Properties();
       properties.setProperty("mail.store.protocol", "mstor");
+      properties.setProperty("mstor.mbox.metadataStrategy", "none");
+      properties.setProperty("mstor.mbox.cacheBuffers", "disabled");
+      properties.setProperty("mstor.cache.disabled", "true");
+      properties.setProperty("mstor.mbox.bufferStrategy", "mapped");
+      properties.setProperty("mstor.metadata", "disabled");
+
       Session session = Session.getDefaultInstance(properties);
       URLName mboxPath = new URLName("mstor:" + file.getPath());
+
       MStorStore store = new MStorStore(session, mboxPath);
-      Folder folder = session.getFolder(mboxPath);
+
+      store.connect();
+
+      Folder folder = store.getDefaultFolder();
       folder.open(Folder.READ_ONLY);
       messages = folder.getMessages();
 
