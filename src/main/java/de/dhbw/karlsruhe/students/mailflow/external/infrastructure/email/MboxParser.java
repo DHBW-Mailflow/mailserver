@@ -6,27 +6,22 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import jakarta.mail.Authenticator;
-import jakarta.mail.Folder;
-import jakarta.mail.Message;
+import javax.mail.Folder;
+import javax.mail.Message;
 import jakarta.mail.MessagingException;
-import jakarta.mail.Session;
-import jakarta.mail.URLName;
+import javax.mail.Session;
+import jakarta.mail.Store;
+import javax.mail.URLName;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import net.fortuna.mstor.model.MStorStore;
 
 public class MboxParser implements MailboxParser {
 
   private List<Email> emails = new ArrayList<>();
 
-  private SessionProvider sessionProvider;
-  private FolderProvider folderProvider;
-
-  public MboxParser(SessionProvider sessionProvider, FolderProvider folderProvider) {
-    this.sessionProvider = sessionProvider;
-    this.folderProvider = folderProvider;
-  }
 
   @Override
   public Mailbox parseMailbox(File file, Address address) throws MailboxParsingException {
@@ -34,8 +29,11 @@ public class MboxParser implements MailboxParser {
     Message [] messages = null;
 
     try {
-      Session session = Session.getInstance(System.getProperties(), null);
-      URLName mboxPath = new URLName("mbox:" + file.getPath());
+      var properties = new Properties();
+      properties.setProperty("mail.store.protocol", "mstor");
+      Session session = Session.getDefaultInstance(properties);
+      URLName mboxPath = new URLName("mstor:" + file.getPath());
+      MStorStore store = new MStorStore(session, mboxPath);
       Folder folder = session.getFolder(mboxPath);
       folder.open(Folder.READ_ONLY);
       messages = folder.getMessages();
@@ -51,15 +49,4 @@ public class MboxParser implements MailboxParser {
     return Mailbox.create(address, emails);
   }
 
-  public static interface SessionProvider {
-
-    Session getInstance(Properties properties, Authenticator authenticator);
-
-  }
-
-  public static interface FolderProvider {
-
-    Folder getFolder(URLName urlName) throws MessagingException;
-
-  }
 }

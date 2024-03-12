@@ -4,14 +4,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.MailboxRepository;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.parsing.MailboxParser;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.parsing.MailboxParsingService;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.parsing.MailboxParsingServiceException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.LocalMailboxRepository;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.MboxParser;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.MboxParser.FolderProvider;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.MboxParser.SessionProvider;
 import java.io.File;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
@@ -29,13 +28,11 @@ public class ParseMboxTest {
 
     // Arrange
 
-    SessionProvider mockSessionProvider = new MockSessionProvider();
-    FolderProvider mockFolderProvider = new MockFolderProvider();
-
-    MboxParser mboxParser = new MboxParser(mockSessionProvider, mockFolderProvider);
     File file = new File("Daily_Problem.mbox");
 
     Address address = new Address("test", "gmail.com");
+
+    MailboxParser mboxParser = new MboxParser();
 
     MailboxRepository mailboxRepository = new MailboxRepository() {
       @Override
