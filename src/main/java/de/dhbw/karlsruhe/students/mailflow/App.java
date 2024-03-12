@@ -32,6 +32,7 @@ public class App {
                 return port;
             }
         } catch (IOException e) {
+            // no-op
         }
 
         throw new IOException("unable to find free port");

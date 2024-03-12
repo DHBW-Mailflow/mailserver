@@ -31,27 +31,29 @@ import org.apache.james.mailbox.exception.MailboxException;
 public class JamesImapProcessor implements ImapProcessor {
 
     private StatusResponseFactory statusResponseFactory;
+    private Random random = new Random();
 
     public JamesImapProcessor() {
         this.statusResponseFactory = new UnpooledStatusResponseFactory();
     }
 
     @Override
-    public void configure(ImapConfiguration imapConfiguration) {}
+    public void configure(ImapConfiguration imapConfiguration) {
+        // no-op
+    }
 
+    @Override
     public void process(ImapMessage message, Responder responder, ImapSession session) {
-        if (message instanceof CapabilityRequest) {
-            this.processCapabilityRequest((CapabilityRequest) message, responder, session);
-        } else if (message instanceof AuthenticateRequest) {
-            this.processAuthenticateRequest((AuthenticateRequest) message, responder, session);
+        if (message instanceof CapabilityRequest capabilityRequest) {
+            this.processCapabilityRequest(capabilityRequest, responder);
+        } else if (message instanceof AuthenticateRequest authenticateRequest) {
+            this.processAuthenticateRequest(authenticateRequest, responder, session);
         } else {
-            System.out.println(message);
-            // this.processReactive(message, responder, session).block();
+            throw new RuntimeException("unsupported operation");
         }
     }
 
-    private void processCapabilityRequest(CapabilityRequest message, Responder responder,
-            ImapSession session) {
+    private void processCapabilityRequest(CapabilityRequest message, Responder responder) {
         // TODO: Refactor available auth methods away
         responder.respond(new CapabilityResponse(Set.of(Capability.of("IMAP4"),
                 Capability.of("IMAP4rev1"), Capability.of("AUTH=PLAIN"))));
@@ -66,7 +68,7 @@ public class JamesImapProcessor implements ImapProcessor {
             ImapSession session) {
 
         // TODO: Refactor to PLAIN-Authentication Strategy pattern
-        System.out.println(message.toString());
+
         responder.respond(new AuthenticateResponse());
         responder.flush();
         session.pushLineHandler((requestSession, data) -> {
@@ -95,8 +97,8 @@ public class JamesImapProcessor implements ImapProcessor {
             ImapRequest request, Responder responder) throws MailboxException {
 
         String userpass = new String(Base64.getDecoder().decode(initialClientResponse));
-        List<String> tokens = Arrays.stream(userpass.split("\0")).filter(token -> !token.isBlank())
-                .collect(Collectors.toList());
+        List<String> tokens =
+                Arrays.stream(userpass.split("\0")).filter(token -> !token.isBlank()).toList();
 
         if (tokens.size() != 2) {
             throw new MailboxException("invalid login attempt");
@@ -107,7 +109,7 @@ public class JamesImapProcessor implements ImapProcessor {
 
         // TODO: Check if username already exists, then check password or register otherwise
 
-        var sessionId = new Random().nextLong();
+        var sessionId = this.random.nextLong();
 
         session.setMailboxSession(new MailboxSession(SessionId.of(sessionId), username,
                 Optional.of(username), List.of(Locale.ENGLISH), '/', SessionType.User));

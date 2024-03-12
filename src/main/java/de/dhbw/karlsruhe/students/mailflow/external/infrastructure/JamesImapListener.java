@@ -12,6 +12,7 @@ import org.apache.james.metrics.logger.DefaultMetricFactory;
 import org.apache.james.protocols.lib.netty.AbstractConfigurableAsyncServer;
 import de.dhbw.karlsruhe.students.mailflow.core.application.imap.ImapListener;
 import de.dhbw.karlsruhe.students.mailflow.core.application.imap.ImapListenerConfig;
+import de.dhbw.karlsruhe.students.mailflow.core.application.imap.ImapListenerException;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.james.JamesImapProcessor;
 
 public class JamesImapListener implements ImapListener {
@@ -19,24 +20,30 @@ public class JamesImapListener implements ImapListener {
     private AbstractConfigurableAsyncServer server;
     private ImapListenerConfig config;
 
-    public void listen() throws Exception {
-        var server = new IMAPServerFactory(null, () -> DefaultImapDecoderFactory.createDecoder(),
-                () -> DefaultImapEncoderFactory.createDefaultEncoder(new Localizer() {
-                    @Override
-                    public String localize(HumanReadableText text, Locales locales) {
-                        return text.toString();
-                    }
-                }, false), () -> new JamesImapProcessor(), new DefaultMetricFactory(),
-                new NoopGaugeRegistry());
+    public void listen() throws ImapListenerException {
+        var jamesServer =
+                new IMAPServerFactory(null, () -> DefaultImapDecoderFactory.createDecoder(),
+                        () -> DefaultImapEncoderFactory.createDefaultEncoder(new Localizer() {
+                            @Override
+                            public String localize(HumanReadableText text, Locales locales) {
+                                return text.toString();
+                            }
+                        }, false), () -> new JamesImapProcessor(), new DefaultMetricFactory(),
+                        new NoopGaugeRegistry());
 
-        var config = new BaseHierarchicalConfiguration();
-        config.setProperty("imapserver.[@enabled]", true);
-        config.setProperty("imapserver.bind", this.config.host() + ":" + this.config.port());
+        var jamesConfig = new BaseHierarchicalConfiguration();
+        jamesConfig.setProperty("imapserver.[@enabled]", true);
+        jamesConfig.setProperty("imapserver.bind", this.config.host() + ":" + this.config.port());
 
-        server.configure(config);
+        jamesServer.configure(jamesConfig);
 
-        server.init();
-        this.server = server.getServers().get(0);
+        try {
+            jamesServer.init();
+        } catch (Exception e) {
+            throw new ImapListenerException("cannot initialize imap server", e);
+        }
+
+        this.server = jamesServer.getServers().get(0);
     }
 
     public void stop() {

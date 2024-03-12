@@ -1,5 +1,7 @@
 package de.dhbw.karlsruhe.students.mailflow;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import java.io.IOException;
 import java.util.Properties;
 
 import org.junit.jupiter.api.Test;
@@ -8,9 +10,9 @@ import de.dhbw.karlsruhe.students.mailflow.core.application.imap.ImapListenerCon
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.JamesImapListener;
 import jakarta.mail.Session;
 
-public class ImapHandshakeTest {
+class ImapHandshakeTest {
     @Test
-    public void testJamesImapSurvivesHandshake() throws Exception {
+    void testJamesImapSurvivesHandshake() throws IOException {
         // Arrange
         var config = new ImapListenerConfig("127.0.0.1", App.getFreePort());
         var server = new JamesImapListener();
@@ -25,10 +27,15 @@ public class ImapHandshakeTest {
 
         var session = Session.getDefaultInstance(clientConfig);
 
-        // Act
-        var store = session.getStore("imap");
-        store.connect(config.host(), config.port(), "admin", "admin");
+        // Assert
+        assertDoesNotThrow(() -> {
+            // Act
+            var store = session.getStore("imap");
 
+            store.connect(config.host(), config.port(), "admin", "admin");
+        });
+
+        // Arrange
         server.stop();
     }
 }
