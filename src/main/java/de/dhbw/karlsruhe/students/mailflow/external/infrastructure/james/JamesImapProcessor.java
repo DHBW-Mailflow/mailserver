@@ -1,14 +1,13 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.james;
 
 import java.nio.charset.StandardCharsets;
+import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.Random;
 import java.util.Set;
-import java.util.stream.Collectors;
 import org.apache.james.core.Username;
 import org.apache.james.imap.api.ImapConfiguration;
 import org.apache.james.imap.api.ImapMessage;
@@ -31,7 +30,7 @@ import org.apache.james.mailbox.exception.MailboxException;
 public class JamesImapProcessor implements ImapProcessor {
 
     private StatusResponseFactory statusResponseFactory;
-    private Random random = new Random();
+    private SecureRandom random = new SecureRandom();
 
     public JamesImapProcessor() {
         this.statusResponseFactory = new UnpooledStatusResponseFactory();
@@ -75,7 +74,7 @@ public class JamesImapProcessor implements ImapProcessor {
             try {
                 doPlainAuth(extractInitialClientResponse(data), requestSession, message, responder);
             } catch (MailboxException e) {
-                e.printStackTrace();
+                throw new RuntimeException("couldn't authenticate to mailbox", e);
             }
             // remove the handler now
             requestSession.popLineHandler();
