@@ -1,41 +1,53 @@
 package de.dhbw.karlsruhe.students.mailflow;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
+import de.dhbw.karlsruhe.students.mailflow.core.application.imap.ListenerService;
+import de.dhbw.karlsruhe.students.mailflow.core.application.imap.LocalListenerService;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.james.JamesImapListener;
+import jakarta.mail.Session;
 import java.io.IOException;
 import java.util.Properties;
-
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import de.dhbw.karlsruhe.students.mailflow.core.application.imap.ImapListenerConfig;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.JamesImapListener;
-import jakarta.mail.Session;
-
 class ImapHandshakeTest {
-    @Test
-    void testJamesImapSurvivesHandshake() throws IOException {
-        // Arrange
-        var config = new ImapListenerConfig("127.0.0.1", App.getFreePort());
-        var server = new JamesImapListener();
-        server.configure(config);
-        server.listen();
+  private ListenerService server;
 
-        var clientConfig = new Properties();
-        clientConfig.put("mail.host", config.host());
-        clientConfig.put("mail.port", String.valueOf(config.port()));
-        clientConfig.put("mail.debug", "true");
-        clientConfig.put("mail.imap.class", "com.sun.mail.imap.IMAPStore");
+  @BeforeEach
+  void setUp() throws IOException {
+    server = new LocalListenerService(new JamesImapListener());
+    server.listen();
+  }
 
-        var session = Session.getDefaultInstance(clientConfig);
+  @AfterEach
+  void tearDown() {
+    server.stop();
+  }
 
-        // Assert
-        assertDoesNotThrow(() -> {
-            // Act
-            var store = session.getStore("imap");
+  @Test
+  void testJamesImapSurvivesHandshake() throws IOException {
 
-            store.connect(config.host(), config.port(), "admin", "admin");
+    // Arrange
+    var clientConfig = new Properties();
+    clientConfig.put("mail.host", server.getHost());
+    clientConfig.put("mail.port", String.valueOf(server.getPort()));
+    clientConfig.put("mail.debug", "true");
+    clientConfig.put("mail.imap.class", "com.sun.mail.imap.IMAPStore");
+
+    var session = Session.getDefaultInstance(clientConfig);
+
+    // Assert
+    assertDoesNotThrow(
+        () -> {
+          // Act
+          var store = session.getStore("imap");
+
+          store.connect(server.getHost(), server.getPort(), "admin", "admin");
         });
 
-        // Arrange
-        server.stop();
-    }
+  }
+
+
 }
