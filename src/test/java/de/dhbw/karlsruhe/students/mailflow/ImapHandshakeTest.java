@@ -27,7 +27,7 @@ class ImapHandshakeTest {
   }
 
   @Test
-  void testJamesImapSurvivesHandshake() throws IOException {
+  void testJamesImapSurvivesHandshake() {
 
     // Arrange
     var clientConfig = new Properties();
@@ -46,8 +46,5 @@ class ImapHandshakeTest {
 
           store.connect(server.getHost(), server.getPort(), "admin", "admin");
         });
-
   }
-
-
 }

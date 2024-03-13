@@ -4,9 +4,9 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.imap.ImapListenerConfig;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.imap.ImapListenerException;
 
 public interface ImapListener {
-    public void configure(ImapListenerConfig config);
+    void configure(ImapListenerConfig config);
 
-    public void listen() throws ImapListenerException;
+    void listen() throws ImapListenerException;
 
-    public void stop();
+    void stop();
 }
