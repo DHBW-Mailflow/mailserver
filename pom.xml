@@ -47,6 +47,21 @@
             <artifactId>jakarta.mail</artifactId>
             <version>2.0.1</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.james</groupId>
+            <artifactId>james-server-protocols-imap4</artifactId>
+            <version>3.8.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.james</groupId>
+            <artifactId>metrics-logger</artifactId>
+            <version>3.8.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.23.0</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -100,6 +115,15 @@
                                 <mainClass>de.dhbw.karlsruhe.students.mailflow.App</mainClass>
                             </manifest>
                         </archive>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <version>3.2.0</version>
+                    <configuration>
+                        <mainClass>de.dhbw.karlsruhe.students.mailflow.App</mainClass>
+                        <arguments />
                     </configuration>
                 </plugin>
             </plugins>
