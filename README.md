@@ -1,6 +1,6 @@
 # mailserver
 
-This server is supposed to handle TCP connections to receive emails from clients.
+This server is supposed to handle TCP connections to receive emails from clients. A connection will be possible via IMAP as well as SMTP.
 The vision is a fully functional mailserver to manage your emails.
 
 
