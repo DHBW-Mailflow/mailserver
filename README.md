@@ -17,6 +17,9 @@ The vision is a fully functional mailserver to manage your emails.
   - [ ] provide a list of emails with according folders instead.
 - [ ] Filtering
   - [ ] Filter incoming messages Spam to a spam folder
+- [ ] Authorization / Authentication
+  - [x] implicit registration
+  - [ ] login to get access to own mailbox
 
 ## Domains
 
