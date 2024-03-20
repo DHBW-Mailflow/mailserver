@@ -1,4 +1,8 @@
-package de.dhbw.karlsruhe.students.mailflow;
+package de.dhbw.karlsruhe.students.mailflow.unit;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.parsing.EmailParser;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.parsing.EmailParsingException;
@@ -6,19 +10,12 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Subject;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.EmlParser;
-import jakarta.mail.MessagingException;
-import org.junit.jupiter.api.Test;
-
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.Test;
 
 public class ParseEmlTest {
 
