@@ -10,6 +10,10 @@ public class MboxParser implements MailboxParser {
   @Override
   public Mailbox parseMailbox(String content) throws MailboxParsingException {
     Gson gson = new Gson();
-    return gson.fromJson(content, Mailbox.class);
+    try {
+      return gson.fromJson(content, Mailbox.class);
+    } catch (Exception e) {
+      throw new MailboxParsingException("Could not parse the given content to a Mailbox object", e);
+    }
   }
 }
