@@ -12,14 +12,14 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Heade
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Recipients;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.SentDate;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Subject;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.MboxParser;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.JSONMailboxParser;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class ParseLocalMBoxTest {
+public class ParseLocalJSONMailboxTest {
   @Test
   public void successfullyParseJsonToMailbox() {
     Address owner = new Address("anotherUser", "anotherDomain.de");
@@ -102,7 +102,7 @@ public class ParseLocalMBoxTest {
             }""";
 
     // Act
-    MboxParser parser = new MboxParser();
+    JSONMailboxParser parser = new JSONMailboxParser();
     Mailbox mailbox = parser.parseMailbox(jsonString);
 
     // Assert
@@ -137,7 +137,7 @@ public class ParseLocalMBoxTest {
             }""";
 
     // Act
-    MboxParser parser = new MboxParser();
+    JSONMailboxParser parser = new JSONMailboxParser();
 
     // Assert
     Assertions.assertThrows(

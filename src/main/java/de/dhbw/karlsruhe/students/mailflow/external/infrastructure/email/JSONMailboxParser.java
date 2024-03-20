@@ -5,13 +5,13 @@ import de.dhbw.karlsruhe.students.mailflow.core.application.email.parsing.Mailbo
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.parsing.MailboxParsingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
 
-public class MboxParser implements MailboxParser {
+public class JSONMailboxParser implements MailboxParser {
 
   @Override
-  public Mailbox parseMailbox(String content) throws MailboxParsingException {
+  public Mailbox parseMailbox(String jsonString) throws MailboxParsingException {
     Gson gson = new Gson();
     try {
-      return gson.fromJson(content, Mailbox.class);
+      return gson.fromJson(jsonString, Mailbox.class);
     } catch (Exception e) {
       throw new MailboxParsingException("Could not parse the given content to a Mailbox object", e);
     }
