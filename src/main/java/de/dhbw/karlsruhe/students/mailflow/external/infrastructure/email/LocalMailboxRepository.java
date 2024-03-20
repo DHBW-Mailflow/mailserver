@@ -7,10 +7,11 @@ import java.io.File;
 import java.util.Optional;
 
 public class LocalMailboxRepository implements MailboxRepository {
+
   private static final String LOCAL_FILE_STORAGE_PATH =
       "src/main/java/de/dhbw/karlsruhe/students/mailflow/external/infrastructure/filestorage";
 
-  private File getFile(Address userAddress, MailboxType type) {
+  public static File getFile(Address userAddress, MailboxType type) {
     File directoryOfUser = new File(LOCAL_FILE_STORAGE_PATH + "/" + userAddress);
     return new File(directoryOfUser, type.getFileSuffix() + ".json");
   }

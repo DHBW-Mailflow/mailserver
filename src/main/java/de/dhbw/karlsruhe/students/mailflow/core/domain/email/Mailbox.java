@@ -54,4 +54,8 @@ public final class Mailbox extends AggregateRoot<MailboxId> {
   public MailboxType getType() {
     return type;
   }
+
+  public Address getOwner() {
+    return address;
+  }
 }
