@@ -19,7 +19,7 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class ParseLocalJSONMailboxTest {
+public class JSONParserTest {
   @Test
   public void successfullyParseJsonToMailbox() {
     Address owner = new Address("anotherUser", "anotherDomain.de");
