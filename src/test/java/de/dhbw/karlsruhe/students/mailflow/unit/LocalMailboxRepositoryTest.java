@@ -49,6 +49,6 @@ public class LocalMailboxRepositoryTest {
     Optional<File> mailboxFile = repository.provideStoredMailboxFileFor(mailboxOwner, mailboxType);
 
     // Assert
-    Assertions.assertThat(mailboxFile.isEmpty());
+    Assertions.assertThat(mailboxFile.isEmpty()).isTrue();
   }
 }

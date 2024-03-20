@@ -8,6 +8,8 @@ import java.io.IOException;
 
 public final class CreateEmailHelper {
 
+  private CreateEmailHelper() {}
+
   public static Email createEmailWithMessage(Message message) throws EmailParsingException {
     try {
       return Email.create(message.getContent().toString(),

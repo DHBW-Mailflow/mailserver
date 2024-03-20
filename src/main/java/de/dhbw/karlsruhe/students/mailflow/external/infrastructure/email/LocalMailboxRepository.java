@@ -12,7 +12,8 @@ public class LocalMailboxRepository implements MailboxRepository {
       "src/main/java/de/dhbw/karlsruhe/students/mailflow/external/infrastructure/filestorage";
 
   public static File getFile(Address userAddress, MailboxType type) {
-    File directoryOfUser = new File(LOCAL_FILE_STORAGE_PATH + "/" + userAddress);
+    File directoryOfAllUsers = new File(LOCAL_FILE_STORAGE_PATH);
+    File directoryOfUser = new File(directoryOfAllUsers, userAddress.toString());
     return new File(directoryOfUser, type.getFileSuffix() + ".json");
   }
 

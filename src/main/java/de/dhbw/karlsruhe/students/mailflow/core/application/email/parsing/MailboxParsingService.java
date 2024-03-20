@@ -35,7 +35,7 @@ public class MailboxParsingService {
     try (FileReader fileReader = new FileReader(file)) {
       content = fileReader.toString();
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new MailboxParsingServiceException("File could not be read");
     }
     if (content == null) {
       throw new MailboxParsingServiceException("File could not be read");

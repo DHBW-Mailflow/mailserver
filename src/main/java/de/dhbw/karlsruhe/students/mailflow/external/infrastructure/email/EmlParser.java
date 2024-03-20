@@ -1,15 +1,13 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email;
 
-import java.io.IOException;
-import java.io.InputStream;
-
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.parsing.EmailParser;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.parsing.EmailParsingException;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
 import jakarta.mail.Session;
 import jakarta.mail.internet.MimeMessage;
+import java.io.InputStream;
 
 /**
  * Implements "RFC822: Standard for ARPA Internet Text Messages"
