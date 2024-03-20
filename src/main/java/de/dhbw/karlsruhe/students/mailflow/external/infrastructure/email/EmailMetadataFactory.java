@@ -9,6 +9,9 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.Session;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -102,16 +105,21 @@ public final class EmailMetadataFactory {
         return headers;
     }
 
-    public EmailMetadata build() throws MessagingException {
-        return new EmailMetadata(
-                new Subject(message.getSubject()),
-                this.getAddress(message.getFrom()[0]),
-                this.getHeaders(),
-                new Recipients(this.getRecipientAddresses(RecipientType.TO),
-                        this.getRecipientAddresses(RecipientType.CC),
-                        this.getRecipientAddresses(RecipientType.BCC)),
-                new SentDate(message.getSentDate()));
-    }
+  public EmailMetadata build() throws MessagingException {
+    Instant instant = message.getSentDate().toInstant();
+    LocalDateTime sentDate =
+        LocalDateTime.ofInstant(instant, ZoneId.systemDefault()); // TODO clarify timezone
+
+    return new EmailMetadata(
+        new Subject(message.getSubject()),
+        this.getAddress(message.getFrom()[0]),
+        this.getHeaders(),
+        new Recipients(
+            this.getRecipientAddresses(RecipientType.TO),
+            this.getRecipientAddresses(RecipientType.CC),
+            this.getRecipientAddresses(RecipientType.BCC)),
+        new SentDate(sentDate));
+  }
 
     private static String getAddressString(jakarta.mail.Address[] addresses) {
         if (addresses == null) {
