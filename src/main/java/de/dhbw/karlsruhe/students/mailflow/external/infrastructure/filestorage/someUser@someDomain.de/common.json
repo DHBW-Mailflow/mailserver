@@ -1,0 +1,58 @@
+{
+  "address": {
+    "localPart": "someUser",
+    "domain": "someDomain.de"
+  },
+  "emails": [
+    {
+      "emailMetadata": {
+        "subject": {
+          "subject": "some Subject"
+        },
+        "sender": {
+          "localPart": "someUser",
+          "domain": "someDomain.de"
+        },
+        "headers": [
+          {
+            "name": "someHeader",
+            "value": "someValue"
+          }
+        ],
+        "recipients": {
+          "to": [
+            {
+              "localPart": "someTORecipient",
+              "domain": "someDomain.de"
+            }
+          ],
+          "cc": [
+            {
+              "localPart": "someCCRecipient",
+              "domain": "someDomain.de"
+            }
+          ],
+          "bcc": [
+            {
+              "localPart": "someBCCRecipient",
+              "domain": "someDomain.de"
+            }
+          ]
+        },
+        "sentDate": {
+          "date": "Mar 20, 2024, 10:59:06 AM"
+        }
+      },
+      "isRead": false,
+      "content": "someContent",
+      "attachments": [],
+      "id": {
+        "id": "1cb27f8e-155e-43ba-978d-0c97460adf01"
+      }
+    }
+  ],
+  "type": "COMMON",
+  "id": {
+    "id": "61eb6cfd-c230-41f6-864d-5f879c20e358"
+  }
+}
