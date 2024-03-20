@@ -1,5 +1,6 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email;
 
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.parsing.EmailParsingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.*;
 import jakarta.mail.Message;
 import jakarta.mail.Message.RecipientType;
@@ -13,10 +14,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-public class EmailMetadataFactory {
+public final class EmailMetadataFactory {
 
-    private Message message;
+    private final Message message;
 
     private EmailMetadataFactory(Message message) {
         if (message == null) {
@@ -26,10 +28,6 @@ public class EmailMetadataFactory {
     }
 
     public static EmailMetadataFactory withMessage(Message message) {
-        return new EmailMetadataFactory(message);
-    }
-
-    public static EmailMetadataFactory withMessage(javax.mail.Message message) {
         Session session = Session.getDefaultInstance(new Properties(), null);
         Message jakartaMessage = new MimeMessage(session);
         try {
@@ -38,7 +36,7 @@ public class EmailMetadataFactory {
             jakartaMessage.setContent(message.getContent(), message.getContentType());
             jakartaMessage.setFrom(new InternetAddress(message.getFrom()[0].toString()));
 
-            var toRecipients = message.getRecipients(javax.mail.Message.RecipientType.TO);
+            var toRecipients = message.getRecipients(Message.RecipientType.TO);
 
             if (toRecipients != null) {
                 jakartaMessage.setRecipients(RecipientType.TO,
@@ -46,7 +44,7 @@ public class EmailMetadataFactory {
                                 getAddressString(toRecipients)));
             }
 
-            var ccRecipients = message.getRecipients(javax.mail.Message.RecipientType.CC);
+            var ccRecipients = message.getRecipients(Message.RecipientType.CC);
 
             if (ccRecipients != null) {
                 jakartaMessage.setRecipients(RecipientType.CC,
@@ -54,7 +52,7 @@ public class EmailMetadataFactory {
                                 getAddressString(ccRecipients)));
             }
 
-            var bccRecipients = message.getRecipients(javax.mail.Message.RecipientType.BCC);
+            var bccRecipients = message.getRecipients(Message.RecipientType.BCC);
 
             if (bccRecipients != null) {
                 jakartaMessage.setRecipients(RecipientType.BCC,
@@ -62,11 +60,10 @@ public class EmailMetadataFactory {
                                 getAddressString(bccRecipients)));
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            throw new EmailParsingException("couldn't build final email", e);
         }
 
-        return EmailMetadataFactory.withMessage(jakartaMessage);
+        return new EmailMetadataFactory(jakartaMessage);
     }
 
     private List<Address> getRecipientAddresses(RecipientType recipientType)
@@ -100,9 +97,7 @@ public class EmailMetadataFactory {
         this.message
                 .getAllHeaders()
                 .asIterator()
-                .forEachRemaining(x -> {
-                    headers.add(new Header(x.getName(), x.getValue()));
-                });
+                .forEachRemaining(x -> headers.add(new Header(x.getName(), x.getValue())));
 
         return headers;
     }
@@ -118,12 +113,12 @@ public class EmailMetadataFactory {
                 new SentDate(message.getSentDate()));
     }
 
-    private static String getAddressString(javax.mail.Address[] addresses) {
+    private static String getAddressString(jakarta.mail.Address[] addresses) {
         if (addresses == null) {
             return "";
         }
 
-        return List.of(addresses).stream()
-                .map(x -> x.toString()).collect(Collectors.joining(","));
+        return Stream.of(addresses)
+                .map(jakarta.mail.Address::toString).collect(Collectors.joining(","));
     }
 }
