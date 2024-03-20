@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 
 public class GSONConfiguration {
+  private GSONConfiguration() {}
 
   public static Gson getConfiguredGson() {
     return new GsonBuilder()
