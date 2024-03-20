@@ -11,7 +11,7 @@ import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -107,8 +107,7 @@ public final class EmailMetadataFactory {
 
   public EmailMetadata build() throws MessagingException {
     Instant instant = message.getSentDate().toInstant();
-    LocalDateTime sentDate =
-        LocalDateTime.ofInstant(instant, ZoneId.systemDefault()); // TODO clarify timezone
+    LocalDateTime sentDate = LocalDateTime.ofInstant(instant, ZoneOffset.UTC);
 
     return new EmailMetadata(
         new Subject(message.getSubject()),
