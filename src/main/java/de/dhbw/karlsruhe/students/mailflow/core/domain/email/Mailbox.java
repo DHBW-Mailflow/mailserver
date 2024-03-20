@@ -1,29 +1,34 @@
 package de.dhbw.karlsruhe.students.mailflow.core.domain.email;
 
-import java.util.List;
-
 import de.dhbw.karlsruhe.students.mailflow.core.domain.common.models.AggregateRoot;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.MailboxId;
+import java.util.List;
 
-public class Mailbox extends AggregateRoot<MailboxId> {
+public final class Mailbox extends AggregateRoot<MailboxId> {
 
   /**
-   * The address of this mailbox, e.g. `manuel@mueller.de` in
-   * {@literal Manuel Müller <manuel@mueller.de>}
+   * The address of this mailbox, e.g. `manuel@mueller.de` in {@literal Manuel Müller
+   * <manuel@mueller.de>}
    */
-  private Address address;
+  private final Address address;
 
   private List<Email> emails;
+  private final MailboxType type;
 
-  public Mailbox(MailboxId id, Address address, List<Email> emails) {
+  private Mailbox(MailboxId id, Address address, List<Email> emails, MailboxType type) {
     super(id);
+    if (type == null) {
+      type = MailboxType.COMMON;
+    }
     this.emails = emails;
     this.address = address;
+    this.type = type;
   }
 
-  public static Mailbox create(Address address, List<Email> emails) {
-    return new Mailbox(MailboxId.createUnique(), address, emails);
+  public static Mailbox create(Address address, List<Email> emails, MailboxType type) {
+    return new Mailbox(MailboxId.createUnique(), address, emails, type);
   }
 
   public List<Email> getEmails() {
@@ -34,7 +39,6 @@ public class Mailbox extends AggregateRoot<MailboxId> {
   public String toString() {
 
     return this.address.toString();
-
   }
 
   @Override
@@ -45,5 +49,9 @@ public class Mailbox extends AggregateRoot<MailboxId> {
   @Override
   public int hashCode() {
     return super.hashCode();
+  }
+
+  public MailboxType getType() {
+    return type;
   }
 }

@@ -1,23 +1,28 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email;
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.MailboxRepository;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import java.io.File;
 import java.util.Optional;
 
 public class LocalMailboxRepository implements MailboxRepository {
+  private static final String LOCAL_FILE_STORAGE_PATH =
+      "src/main/java/de/dhbw/karlsruhe/students/mailflow/external/infrastructure/filestorage";
+
+  private File getFile(Address userAddress, MailboxType type) {
+    File directoryOfUser = new File(LOCAL_FILE_STORAGE_PATH + "/" + userAddress);
+    return new File(directoryOfUser, type.getFileSuffix() + ".json");
+  }
 
   @Override
-  public Optional<File> provideStoredMailboxFileFor(Address userAddress) {
+  public Optional<File> provideStoredMailboxFileFor(Address userAddress, MailboxType type) {
+    File mboxFile = getFile(userAddress, type);
 
-    String localMBoxPath = userAddress.toString()+".mbox";
-    File mboxFile = new File(localMBoxPath);
-
-    if(!mboxFile.exists()){
+    if (!mboxFile.exists()) {
       return Optional.empty();
     }
-    //ggf. noch mehr logik
-    return Optional.of(mboxFile);
 
+    return Optional.of(mboxFile);
   }
 }
