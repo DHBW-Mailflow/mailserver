@@ -15,10 +15,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-public class MailboxParsingServiceTest {
+class MailboxParsingServiceTest {
 
   @Test
-  public void testNonExistentMailboxThrows() {
+  void testNonExistentMailboxThrows() {
     // Arrange
     Address mailboxOwner = new Address("someUser", "someDomain.de");
     MailboxRepository mockedRepository = (userAddress, type) -> Optional.empty();
@@ -33,7 +33,7 @@ public class MailboxParsingServiceTest {
   }
 
   @Test
-  public void existentMailboxCorrectlyProvided(@TempDir File tempDir)
+  void existentMailboxCorrectlyProvided(@TempDir File tempDir)
       throws MailboxParsingServiceException, IOException {
     // Arrange
     Address mailboxOwner = new Address("someUser", "someDomain.de");
@@ -50,10 +50,8 @@ public class MailboxParsingServiceTest {
 
     // Assert
     Assertions.assertEquals(mailbox.getEmails(), List.of());
-    Assertions.assertEquals(
-        mailbox.getType(),
-        MailboxType
-            .COMMON); // only MailboxType.COMMON is currently supported in the application layer
     Assertions.assertEquals(mailbox.getOwner(), mailboxOwner);
+    // only MailboxType.COMMON is currently supported in the application layer
+    Assertions.assertEquals(MailboxType.COMMON, mailbox.getType());
   }
 }

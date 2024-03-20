@@ -10,11 +10,11 @@ import org.fest.assertions.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
-public class LocalMailboxRepositoryTest {
+class LocalMailboxRepositoryTest {
 
   @ParameterizedTest(name = "Retrieve from correct path for type {0}")
   @EnumSource(MailboxType.class)
-  public void retrieveFromCorrectPath(MailboxType mailboxType) {
+  void retrieveFromCorrectPath(MailboxType mailboxType) {
     // Arrange
     Address mailboxOwner = new Address("someOwner", "someDomain.de");
 
@@ -38,7 +38,7 @@ public class LocalMailboxRepositoryTest {
 
   @ParameterizedTest(name = "Return empty optional with non-existing file for type {0}")
   @EnumSource(MailboxType.class)
-  public void returnEmptyOptionalWithNonExistingFile(MailboxType mailboxType) {
+  void returnEmptyOptionalWithNonExistingFile(MailboxType mailboxType) {
     // Arrange
     Address mailboxOwner = new Address("someOwner", "someDomain.de");
 

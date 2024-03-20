@@ -19,9 +19,9 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class JSONParserTest {
+class JSONParserTest {
   @Test
-  public void successfullyParseJsonToMailbox() {
+  void successfullyParseJsonToMailbox() {
     Address owner = new Address("anotherUser", "anotherDomain.de");
     Address toRecipient = new Address("someTORecipient", "someDomain.de");
     Address ccRecipient = new Address("anotherCCRecipient", "someDomain.de");
@@ -119,7 +119,7 @@ public class JSONParserTest {
   }
 
   @Test
-  public void parsingMalformedJsonShouldThrow() {
+  void parsingMalformedJsonShouldThrow() {
     // Arrange
     String invalidJsonString =
         """
