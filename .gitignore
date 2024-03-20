@@ -22,3 +22,7 @@ buildNumber.properties
 
 # macOS bla bla
 .DS_Store
+
+#intelliJ
+.idea/
+mailflow.iml
