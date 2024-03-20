@@ -27,6 +27,7 @@ class ParseEmlTest {
                                 From: someone@example.com
                                 To: someone_else@example.com
                                 Subject: An RFC 822 formatted message
+                                Date: Mon, 20 Mar 2024 11:02:50 +0000
 
                                 This is the plain text body of the message. Note the blank line
                                 between the header information and the body of the message."""
