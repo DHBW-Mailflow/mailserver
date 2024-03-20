@@ -28,7 +28,7 @@
           ],
           "cc": [
             {
-              "localPart": "someCCRecipient",
+              "localPart": "anotherCCRecipient",
               "domain": "someDomain.de"
             }
           ],
@@ -40,19 +40,19 @@
           ]
         },
         "sentDate": {
-          "date": "Mar 20, 2024, 10:59:06 AM"
+          "date": "2024-03-20T23:59:08.669Z"
         }
       },
       "isRead": false,
       "content": "someContent",
       "attachments": [],
       "id": {
-        "id": "1cb27f8e-155e-43ba-978d-0c97460adf01"
+        "id": "793c4045-35f5-4070-9c2f-456c4deb0515"
       }
     }
   ],
   "type": "COMMON",
   "id": {
-    "id": "61eb6cfd-c230-41f6-864d-5f879c20e358"
+    "id": "3602ba99-a74a-43de-872b-bd47644b2ab4"
   }
 }

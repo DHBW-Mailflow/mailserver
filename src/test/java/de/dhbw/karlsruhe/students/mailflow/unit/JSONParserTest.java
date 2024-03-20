@@ -37,7 +37,7 @@ class JSONParserTest {
             new SentDate(
                 Date.from(
                     Instant.parse(
-                        "2024-03-20T10:02:50.00Z")))); // TODO fix use of hour 10 instead of 11
+                        "2024-03-20T22:59:08.669Z")))); // TODO fix use of hour 22 instead of 23
 
     String emailContent = "someContent";
 
@@ -89,7 +89,7 @@ class JSONParserTest {
                       ]
                     },
                     "sentDate": {
-                      "date": "Mar 20, 2024, 11:02:50 AM"
+                      "date": "2024-03-20T23:59:08.669Z"
                     }
                   },
                   "isRead": false,
