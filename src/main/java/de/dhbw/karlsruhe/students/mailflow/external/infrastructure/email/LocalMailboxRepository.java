@@ -8,8 +8,7 @@ import java.util.Optional;
 
 public class LocalMailboxRepository implements MailboxRepository {
 
-  private static final String LOCAL_FILE_STORAGE_PATH =
-      "src/main/java/de/dhbw/karlsruhe/students/mailflow/external/infrastructure/filestorage";
+  private static final String LOCAL_FILE_STORAGE_PATH = "storage/filestorage/mailboxes";
 
   public static File getFile(Address userAddress, MailboxType type) {
     File directoryOfAllUsers = new File(LOCAL_FILE_STORAGE_PATH);

@@ -26,3 +26,6 @@ buildNumber.properties
 #intelliJ
 .idea/
 mailflow.iml
+
+#storage
+storage/
