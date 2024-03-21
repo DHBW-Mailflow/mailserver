@@ -13,7 +13,6 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Recip
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.SentDate;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Subject;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.JSONMailboxParser;
-import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -33,7 +32,7 @@ class JSONParserTest {
             owner,
             List.of(new Header("someHeader", "someValue")),
             new Recipients(List.of(toRecipient), List.of(ccRecipient), List.of(bccRecipient)),
-            new SentDate(LocalDateTime.of(2024, 3, 21, 0, 30, 38, 809547400)));
+            SentDate.ofFormattedString("2024-03-21T00:30:38.8095474Z"));
     String emailContent = "someContent";
 
     Mailbox expectedMailbox = Mailbox.create(owner, List.of(), MailboxType.COMMON);

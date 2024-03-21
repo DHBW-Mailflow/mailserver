@@ -11,16 +11,12 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Addre
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.SentDate;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Subject;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.EmlParser;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import org.junit.jupiter.api.Test;
-
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
+import org.junit.jupiter.api.Test;
 
 class ParseEmlTest {
 
@@ -54,9 +50,8 @@ class ParseEmlTest {
 
                 assertEquals(new Subject("An RFC 822 formatted message"),
                                 email.getEmailMetadata().subject());
-                LocalDateTime expectedDate = LocalDateTime.ofInstant(
-                    Instant.parse("2024-03-20T11:02:50.00Z"), ZoneOffset.UTC);
-                assertEquals(new SentDate(expectedDate),
+
+                assertEquals(SentDate.ofFormattedString("2024-03-20T11:02:50.00Z"),
                                 email.getEmailMetadata().sentDate());
                 assertEquals("This is the plain text body of the message. Note the blank line\n"
                                 + "between the header information and the body of the message.",
