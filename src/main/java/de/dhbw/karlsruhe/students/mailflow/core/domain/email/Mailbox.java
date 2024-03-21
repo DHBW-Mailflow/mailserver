@@ -20,7 +20,7 @@ public final class Mailbox extends AggregateRoot<MailboxId> {
   private Mailbox(MailboxId id, Address address, List<Email> emails, MailboxType type) {
     super(id);
     if (type == null) {
-      type = MailboxType.COMMON;
+      type = MailboxType.READ;
     }
     this.emails = emails;
     this.address = address;

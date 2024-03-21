@@ -21,7 +21,7 @@ public class MailboxParsingService {
   }
 
   public Mailbox getMailboxOfAddress(Address address) throws MailboxParsingServiceException {
-    Optional<File> storedFile = mailboxRepository.provideStoredMailboxFileFor(address, MailboxType.COMMON);
+    Optional<File> storedFile = mailboxRepository.provideStoredMailboxFileFor(address, MailboxType.READ);
     if (storedFile.isEmpty()) {
       throw new MailboxParsingServiceException("File does not exist");
     }

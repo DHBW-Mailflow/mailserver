@@ -42,7 +42,7 @@ class MailboxParsingServiceTest {
 
     MailboxRepository mockedRepository = (userAddress, type) -> Optional.of(justAnExistingFile);
     MailboxParser mockedParser =
-        content -> Mailbox.create(mailboxOwner, List.of(), MailboxType.COMMON);
+        content -> Mailbox.create(mailboxOwner, List.of(), MailboxType.READ);
     MailboxParsingService service = new MailboxParsingService(mockedRepository, mockedParser);
 
     // Act
@@ -51,7 +51,7 @@ class MailboxParsingServiceTest {
     // Assert
     Assertions.assertEquals(mailbox.getEmails(), List.of());
     Assertions.assertEquals(mailbox.getOwner(), mailboxOwner);
-    // only MailboxType.COMMON is currently supported in the application layer
-    Assertions.assertEquals(MailboxType.COMMON, mailbox.getType());
+    // only MailboxType.READ is currently supported in the application layer
+    Assertions.assertEquals(MailboxType.READ, mailbox.getType());
   }
 }
