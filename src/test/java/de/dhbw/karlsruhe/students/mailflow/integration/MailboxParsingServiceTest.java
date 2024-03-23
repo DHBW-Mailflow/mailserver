@@ -1,14 +1,12 @@
 package de.dhbw.karlsruhe.students.mailflow.integration;
 
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.MailboxRepository;
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.parsing.MailboxParser;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.parsing.mailbox.MailboxRepository;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.parsing.mailbox.reader.MailboxParser;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.parsing.MailboxParsingService;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.parsing.MailboxParsingServiceException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.parsing.FileCreationException;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.parsing.FileWritingException;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;

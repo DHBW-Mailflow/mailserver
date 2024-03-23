@@ -1,4 +1,4 @@
-package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email;
+package de.dhbw.karlsruhe.students.mailflow.unit;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -12,6 +12,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Heade
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Recipients;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.SentDate;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Subject;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.JSONMailboxGenerator;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 

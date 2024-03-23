@@ -1,9 +1,10 @@
 package de.dhbw.karlsruhe.students.mailflow.core.application.email.parsing;
 
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.MailboxRepository;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.parsing.mailbox.MailboxRepository;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.parsing.mailbox.reader.MailboxParser;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;

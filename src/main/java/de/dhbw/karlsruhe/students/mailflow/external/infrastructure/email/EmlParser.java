@@ -1,7 +1,7 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email;
 
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.parsing.EmailParser;
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.parsing.EmailParsingException;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.parsing.email.EmailParser;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.parsing.email.EmailParsingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;

@@ -1,4 +1,4 @@
-package de.dhbw.karlsruhe.students.mailflow.core.application.email.parsing;
+package de.dhbw.karlsruhe.students.mailflow.core.domain.parsing.email;
 
 import java.io.InputStream;
 

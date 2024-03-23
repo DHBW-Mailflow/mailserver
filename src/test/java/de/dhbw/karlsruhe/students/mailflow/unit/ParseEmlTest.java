@@ -4,8 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.parsing.EmailParser;
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.parsing.EmailParsingException;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.parsing.email.EmailParser;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.parsing.email.EmailParsingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.SentDate;

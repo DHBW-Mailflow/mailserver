@@ -2,7 +2,7 @@ package de.dhbw.karlsruhe.students.mailflow.unit;
 
 import static org.fest.assertions.api.Assertions.*;
 
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.parsing.MailboxParsingException;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.parsing.mailbox.reader.MailboxParsingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
