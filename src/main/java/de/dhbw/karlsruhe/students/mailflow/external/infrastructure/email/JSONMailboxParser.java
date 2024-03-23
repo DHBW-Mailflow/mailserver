@@ -3,7 +3,7 @@ package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email;
 import static de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.GSONConfiguration.getConfiguredGson;
 
 import de.dhbw.karlsruhe.students.mailflow.core.domain.parsing.mailbox.reader.MailboxParser;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.parsing.mailbox.reader.MailboxParsingException;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.parsing.mailbox.MailboxParsingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
 
 public class JSONMailboxParser implements MailboxParser {
