@@ -11,17 +11,27 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.parsing.mailbox.MailboxWr
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 public class LocalMailboxRepository implements MailboxRepository {
 
+  private Logger logger;
   private final File directoryOfAllUsers;
 
+  private Logger getLogger(){
+    if (logger == null){
+      logger = LogManager.getLogger(LocalMailboxRepository.class);
+    }
+    return logger;
+  }
   public LocalMailboxRepository() {
     this.directoryOfAllUsers = new File("storage/filestorage/mailboxes");
   }
 
   @VisibleForTesting
   public LocalMailboxRepository(File directoryOfAllUsers) {
-    System.err.println("VisibleForTesting constructor should only be called in tests");
+    getLogger().warn("VisibleForTesting constructor should only be called in tests");
     this.directoryOfAllUsers = directoryOfAllUsers;
   }
   @Override
@@ -65,11 +75,9 @@ public class LocalMailboxRepository implements MailboxRepository {
   private File getOrCreateMailboxFile(Mailbox mailbox) throws MailboxCreationException {
     File directoryOfUser = new File(directoryOfAllUsers, mailbox.getOwner().toString());
     File mailboxFile = new File(directoryOfUser, mailbox.getType().getFileSuffix() + ".json");
-    if (!directoryOfUser.exists()) {
-      if (!directoryOfUser.mkdirs()) {
+    if (!directoryOfUser.exists()&&!directoryOfUser.mkdirs()) {
         throw new MailboxCreationException(
             "Could not create directory" + directoryOfUser.getPath());
-      }
     }
     try {
       mailboxFile.createNewFile(); // only if it does not exist
