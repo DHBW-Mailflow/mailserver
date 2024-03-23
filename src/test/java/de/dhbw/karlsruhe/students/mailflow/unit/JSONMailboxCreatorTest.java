@@ -12,11 +12,11 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Heade
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Recipients;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.SentDate;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Subject;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.JSONMailboxGenerator;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.JSONMailboxCreator;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-class JSONMailboxGeneratorTest {
+class JSONMailboxCreatorTest {
 
 
   @Test
@@ -25,7 +25,7 @@ class JSONMailboxGeneratorTest {
     Mailbox mbox = createBasicMailboxObject();
 
     // Act
-    String result = new JSONMailboxGenerator().generateMailboxContent(mbox);
+    String result = new JSONMailboxCreator().generateMailboxContent(mbox);
 
     System.out.println(result);
 

@@ -4,8 +4,8 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.parsing.mailbox.MailboxRe
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.parsing.mailbox.generator.FileCreationException;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.parsing.mailbox.generator.FileWritingException;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.parsing.mailbox.creator.FileCreationException;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.parsing.mailbox.creator.FileWritingException;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -33,8 +33,8 @@ public class LocalMailboxRepository implements MailboxRepository {
   }
   @Override
   public File saveMailbox(Mailbox mailbox) throws FileCreationException, FileWritingException {
-    JSONMailboxGenerator generator = new JSONMailboxGenerator();
-    String mailboxContent = generator.generateMailboxContent(mailbox);
+    JSONMailboxCreator creator = new JSONMailboxCreator();
+    String mailboxContent = creator.generateMailboxContent(mailbox);
     File createdMailboxFile = getOrCreateMailboxFile(mailbox);
     return writeContentToFile(createdMailboxFile, mailboxContent);
 }

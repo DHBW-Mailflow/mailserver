@@ -1,4 +1,4 @@
-package de.dhbw.karlsruhe.students.mailflow.core.domain.parsing.mailbox.generator;
+package de.dhbw.karlsruhe.students.mailflow.core.domain.parsing.mailbox.creator;
 
 public class FileCreationException extends Exception {
 
