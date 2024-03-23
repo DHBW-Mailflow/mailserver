@@ -27,8 +27,6 @@ class JSONMailboxCreatorTest {
     // Act
     String result = new JSONMailboxCreator().generateMailboxContent(mbox);
 
-    System.out.println(result);
-
     // Assert
     assertNotNull(result);
     assertThat(result)
