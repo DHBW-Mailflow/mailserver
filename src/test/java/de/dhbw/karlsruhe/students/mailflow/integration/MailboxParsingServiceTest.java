@@ -7,6 +7,8 @@ import de.dhbw.karlsruhe.students.mailflow.core.application.email.parsing.Mailbo
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.parsing.FileCreationException;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.parsing.FileWritingException;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -21,7 +23,18 @@ class MailboxParsingServiceTest {
   void testNonExistentMailboxThrows() {
     // Arrange
     Address mailboxOwner = new Address("someUser", "someDomain.de");
-    MailboxRepository mockedRepository = (userAddress, type) -> Optional.empty();
+    MailboxRepository mockedRepository = new MailboxRepository() {
+      @Override
+      public Optional<File> provideStoredMailboxFileFor(Address userAddress, MailboxType type) {
+        return Optional.empty();
+      }
+
+      @Override
+      public File saveMailbox(Mailbox mailbox)  {
+       // not tested here
+        return null;
+      }
+    };
     MailboxParser mockedParser = content -> null;
     MailboxParsingService service = new MailboxParsingService(mockedRepository, mockedParser);
 
@@ -40,7 +53,19 @@ class MailboxParsingServiceTest {
     File justAnExistingFile = new File(tempDir, "mailboxFile.json");
     boolean successFullyCreated = justAnExistingFile.createNewFile();
 
-    MailboxRepository mockedRepository = (userAddress, type) -> Optional.of(justAnExistingFile);
+    MailboxRepository mockedRepository = new MailboxRepository() {
+      @Override
+      public Optional<File> provideStoredMailboxFileFor(Address userAddress, MailboxType type) {
+        return Optional.of(justAnExistingFile);
+      }
+
+      @Override
+      public File saveMailbox(Mailbox mailbox) {
+        //Not tested here
+        return null;
+      }
+    };
+
     MailboxParser mockedParser =
         content -> Mailbox.create(mailboxOwner, List.of(), MailboxType.READ);
     MailboxParsingService service = new MailboxParsingService(mockedRepository, mockedParser);
