@@ -1,5 +1,6 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email;
 
+import com.google.common.annotations.VisibleForTesting;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
@@ -10,8 +11,6 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.parsing.mailbox.MailboxWr
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import org.fest.util.VisibleForTesting;
-
 public class LocalMailboxRepository implements MailboxRepository {
 
   private final File directoryOfAllUsers;
@@ -22,6 +21,7 @@ public class LocalMailboxRepository implements MailboxRepository {
 
   @VisibleForTesting
   public LocalMailboxRepository(File directoryOfAllUsers) {
+    System.err.println("VisibleForTesting constructor should only be called in tests");
     this.directoryOfAllUsers = directoryOfAllUsers;
   }
   @Override
