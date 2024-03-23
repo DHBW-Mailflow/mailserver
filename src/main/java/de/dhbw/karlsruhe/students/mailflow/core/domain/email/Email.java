@@ -12,10 +12,9 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Email
  * Representation of an e-mail as AggregateRoot
  */
 public final class Email extends AggregateRoot<EmailId> {
-    private EmailMetadata emailMetadata;
-    private boolean isRead;
-    private String content;
-    private Set<Attachment> attachments;
+    private final EmailMetadata emailMetadata;
+    private final String content;
+    private final Set<Attachment> attachments;
 
     private Email(EmailId id, String content, EmailMetadata emailMetadata,
             Set<Attachment> attachments) {
@@ -36,14 +35,6 @@ public final class Email extends AggregateRoot<EmailId> {
 
     public String getContent() {
         return content;
-    }
-
-    public void setRead(boolean read) {
-        this.isRead = read;
-    }
-
-    public boolean getRead() {
-        return isRead;
     }
 
     public Set<Attachment> getAttachments() {
