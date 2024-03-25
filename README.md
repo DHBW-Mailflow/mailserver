@@ -6,7 +6,7 @@ The vision is a fully functional mailserver to manage your emails.
 
 ## Functionality
 - [ ] Receive Emails
-  - [x] Parse incoming Emails .
+  - [x] Parse incoming Emails.
   - [ ] Store Emails in a Mailbox.
     - [ ] Create a Mailbox with multiple Emails.
   - [ ] Store Emails in a Folder.
