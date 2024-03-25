@@ -10,7 +10,7 @@ The vision is a fully functional mailserver to manage your emails.
   - [ ] Store Emails in a Mailbox.
     - [ ] Create a Mailbox with multiple Emails.
   - [ ] Store Emails in a Folder.
-  - [ ] Send Emails to the cc,bcc, to-Addresses.
+  - [ ] Send Emails to the cc, bcc, to-Addresses.
 - [ ] Synchronization
   - [ ] provide a list of emails when a client connects.
   - [ ] provide a list of emails when a client requests a refresh.
