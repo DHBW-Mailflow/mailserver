@@ -11,6 +11,14 @@ public record User(String email, String password) {
     }
   }
 
+  public String getEmail() {
+    return email;
+  }
+
+  public String getPassword() {
+    return password;
+  }
+
   public boolean checkPassword(String password) {
     return this.password.equals(password);
   }
