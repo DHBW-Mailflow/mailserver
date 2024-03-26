@@ -1,29 +1,89 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email;
 
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.MailboxRepository;
+import com.google.common.annotations.VisibleForTesting;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.parsing.mailbox.MailboxCreationException;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.parsing.mailbox.MailboxDoesNotExistException;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.parsing.mailbox.MailboxRepository;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.parsing.mailbox.MailboxWritingException;
 import java.io.File;
-import java.util.Optional;
+import java.io.FileWriter;
+import java.io.IOException;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 public class LocalMailboxRepository implements MailboxRepository {
 
-  private static final String LOCAL_FILE_STORAGE_PATH = "storage/filestorage/mailboxes";
+  private Logger logger;
+  private final File directoryOfAllUsers;
 
-  public static File getFile(Address userAddress, MailboxType type) {
-    File directoryOfAllUsers = new File(LOCAL_FILE_STORAGE_PATH);
+  private Logger getLogger(){
+    if (logger == null){
+      logger = LogManager.getLogger(LocalMailboxRepository.class);
+    }
+    return logger;
+  }
+  public LocalMailboxRepository() {
+    this.directoryOfAllUsers = new File("storage/filestorage/mailboxes");
+  }
+
+  @VisibleForTesting
+  public LocalMailboxRepository(File directoryOfAllUsers) {
+    getLogger().warn("VisibleForTesting constructor should only be called in tests");
+    this.directoryOfAllUsers = directoryOfAllUsers;
+  }
+  @Override
+  public File provideStoredMailboxFileFor(Address userAddress, MailboxType type) throws MailboxDoesNotExistException {
+    if (!directoryOfAllUsers.exists()) {
+      throw new MailboxDoesNotExistException("Directory of all users does not exist");
+    }
     File directoryOfUser = new File(directoryOfAllUsers, userAddress.toString());
-    return new File(directoryOfUser, type.getFileSuffix() + ".json");
+    if (!directoryOfUser.exists()) {
+      throw new MailboxDoesNotExistException(
+          String.format("Directory of user %s does not exist", userAddress));
+    }
+    File mailbox = new File(directoryOfUser, type.getFileSuffix() + ".json");
+    if (!directoryOfUser.exists()) {
+      throw new MailboxDoesNotExistException(
+          String.format(
+              "Mailbox of type %s does not exist for user %s", type.getFileSuffix(), userAddress));
+    }
+    return mailbox;
   }
 
   @Override
-  public Optional<File> provideStoredMailboxFileFor(Address userAddress, MailboxType type) {
-    File mboxFile = getFile(userAddress, type);
+  public File saveMailbox(Mailbox mailbox)
+      throws MailboxCreationException, MailboxWritingException {
+    JSONMailboxCreator creator = new JSONMailboxCreator();
+    String mailboxContent = creator.generateMailboxContent(mailbox);
+    File createdMailboxFile = getOrCreateMailboxFile(mailbox);
+    return writeContentToFile(createdMailboxFile, mailboxContent);
+  }
 
-    if (!mboxFile.exists()) {
-      return Optional.empty();
+  private File writeContentToFile(File createdMailboxFile, String mailboxContent)
+      throws MailboxWritingException {
+    try (FileWriter writer = new FileWriter(createdMailboxFile)) {
+      writer.write(mailboxContent); // override existing content
+      return createdMailboxFile;
+    } catch (IOException e) {
+      throw new MailboxWritingException("Could not save mailbox to file: " + mailboxContent, e);
     }
+  }
 
-    return Optional.of(mboxFile);
+  private File getOrCreateMailboxFile(Mailbox mailbox) throws MailboxCreationException {
+    File directoryOfUser = new File(directoryOfAllUsers, mailbox.getOwner().toString());
+    File mailboxFile = new File(directoryOfUser, mailbox.getType().getFileSuffix() + ".json");
+    if (!directoryOfUser.exists()&&!directoryOfUser.mkdirs()) {
+        throw new MailboxCreationException(
+            "Could not create directory" + directoryOfUser.getPath());
+    }
+    try {
+      mailboxFile.createNewFile(); // only if it does not exist
+      return mailboxFile;
+    } catch (IOException e) {
+      throw new MailboxCreationException("Could not create new File" + mailboxFile.getPath());
+    }
   }
 }
