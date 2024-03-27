@@ -1,6 +1,10 @@
 package de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums;
 
-/** The type a mailbox can have. This is used to categorize emails. */
+/**
+ * The type a mailbox can have. This is used to categorize emails.
+ * 
+ * @author Jonas-Karl
+ */
 public enum MailboxType {
 
   /** The SENT mailbox type for emails which the user has already sent. */

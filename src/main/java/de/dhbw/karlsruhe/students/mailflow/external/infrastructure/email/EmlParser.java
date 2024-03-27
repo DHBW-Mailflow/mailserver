@@ -11,6 +11,8 @@ import java.io.InputStream;
 
 /**
  * Implements "RFC822: Standard for ARPA Internet Text Messages" by parsing .eml-files
+ *
+ * @author jens1o
  */
 public class EmlParser implements EmailParser {
     @Override

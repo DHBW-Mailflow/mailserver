@@ -4,8 +4,9 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * Representation of an e-mail attachment, consisting of the data bytes,
- * contenttype and filename
+ * Representation of an e-mail attachment, consisting of the data bytes, content-type and filename
+ *
+ * @author jens1o
  */
 public record Attachment(String filename, byte[] content, String contentType) {
     @Override
@@ -28,10 +29,7 @@ public record Attachment(String filename, byte[] content, String contentType) {
 
     @Override
     public String toString() {
-        return "Attachment{" +
-                "filename='" + filename + '\'' +
-                ", content=" + Arrays.toString(content) +
-                ", contentType='" + contentType + '\'' +
-                '}';
+        return "Attachment{" + "filename='" + filename + '\'' + ", content="
+                + Arrays.toString(content) + ", contentType='" + contentType + '\'' + '}';
     }
 }

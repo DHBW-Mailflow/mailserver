@@ -2,11 +2,12 @@ package de.dhbw.karlsruhe.students.mailflow.core.domain.common.models;
 
 /**
  * An abstract class template for every Entity object that will be created
- * 
- * Entities are objects with distinct identities. Two objects are considered
- * equal if their identifier is equal.
- * 
+ *
+ * Entities are objects with distinct identities. Two objects are considered equal if their
+ * identifier is equal.
+ *
  * @param <T> The type of the identifier for the entity.
+ * @author Jonas-Karl
  */
 public abstract class Entity<T> {
     private T id;
@@ -44,8 +45,8 @@ public abstract class Entity<T> {
     }
 
     /**
-     * Compares this entity to another object for equality. Entities are considered
-     * equal if their IDs are equal.
+     * Compares this entity to another object for equality. Entities are considered equal if their
+     * IDs are equal.
      *
      * @param obj The object to compare with this entity.
      * @return {@code true} if the objects are equal, {@code false} otherwise.

@@ -10,6 +10,9 @@ import org.fest.assertions.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
+/**
+ * @author Jonas-Karl
+ */
 class LocalMailboxFileProviderTest {
 
   @ParameterizedTest(name = "Retrieve from correct path for type {0}")

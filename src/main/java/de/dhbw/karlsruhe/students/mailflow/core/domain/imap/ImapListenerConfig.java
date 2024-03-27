@@ -3,6 +3,9 @@ package de.dhbw.karlsruhe.students.mailflow.core.domain.imap;
 import java.io.IOException;
 import java.net.ServerSocket;
 
+/**
+ * @author jens1o, Jonas-Karl
+ */
 public record ImapListenerConfig(String host, int port) {
 
   public static ImapListenerConfig createLocalConfig() throws IOException {

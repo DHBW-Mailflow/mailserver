@@ -27,6 +27,9 @@ import org.apache.james.mailbox.MailboxSession.SessionId;
 import org.apache.james.mailbox.MailboxSession.SessionType;
 import org.apache.james.mailbox.exception.MailboxException;
 
+/**
+ * @author jens1o
+ */
 public class JamesImapProcessor implements ImapProcessor {
 
     private StatusResponseFactory statusResponseFactory;
