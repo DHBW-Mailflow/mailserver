@@ -6,6 +6,9 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Addre
 import java.io.File;
 import java.util.Optional;
 
+/**
+ * @author seiferla
+ */
 public class LocalMailboxFileProvider implements MailboxFileProvider {
 
   private static final String LOCAL_FILE_STORAGE_PATH = "storage/filestorage/mailboxes";

@@ -6,6 +6,9 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Addre
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.MailboxId;
 import java.util.List;
 
+/**
+ * @author jens1o, Jonas-Karl
+ */
 public final class Mailbox extends AggregateRoot<MailboxId> {
 
   /**

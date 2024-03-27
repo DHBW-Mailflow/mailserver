@@ -9,12 +9,14 @@ import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
+/**
+ * @author Jonas-Karl
+ */
 public class GSONConfiguration {
   private GSONConfiguration() {}
 
   public static Gson getConfiguredGson() {
-    return new GsonBuilder()
-        .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeFormatter())
+    return new GsonBuilder().registerTypeAdapter(LocalDateTime.class, new LocalDateTimeFormatter())
         .create();
   }
 

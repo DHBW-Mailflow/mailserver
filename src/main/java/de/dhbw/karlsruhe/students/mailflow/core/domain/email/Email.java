@@ -10,6 +10,8 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Email
 
 /**
  * Representation of an e-mail as AggregateRoot
+ *
+ * @author Jonas-Karl
  */
 public final class Email extends AggregateRoot<EmailId> {
     private final EmailMetadata emailMetadata;

@@ -3,6 +3,9 @@ package de.dhbw.karlsruhe.students.mailflow.core.application.imap;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.imap.ImapListenerConfig;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.imap.ImapListenerException;
 
+/**
+ * @author jens1o, Jonas-Karl
+ */
 public interface ImapListener {
     void configure(ImapListenerConfig config);
 

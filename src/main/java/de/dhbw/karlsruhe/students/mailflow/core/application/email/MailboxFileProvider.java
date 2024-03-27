@@ -5,6 +5,9 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Addre
 import java.io.File;
 import java.util.Optional;
 
+/**
+ * @author seiferla
+ */
 public interface MailboxFileProvider {
     Optional<File> provideStoredMailboxFileFor(Address userAddress, MailboxType type);
 

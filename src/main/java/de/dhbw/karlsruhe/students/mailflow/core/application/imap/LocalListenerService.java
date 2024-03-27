@@ -3,6 +3,9 @@ package de.dhbw.karlsruhe.students.mailflow.core.application.imap;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.imap.ImapListenerConfig;
 import java.io.IOException;
 
+/**
+ * @author Jonas-Karl
+ */
 public class LocalListenerService implements ListenerService {
   private final ImapListener imapListener;
   private final ImapListenerConfig config;

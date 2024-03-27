@@ -6,6 +6,9 @@ import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
 import java.io.IOException;
 
+/**
+ * @author seiferla, Jonas-Karl
+ */
 public final class CreateEmailHelper {
 
   private CreateEmailHelper() {}

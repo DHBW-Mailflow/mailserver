@@ -11,6 +11,9 @@ import org.apache.james.metrics.api.NoopGaugeRegistry;
 import org.apache.james.metrics.logger.DefaultMetricFactory;
 import org.apache.james.protocols.lib.netty.AbstractConfigurableAsyncServer;
 
+/**
+ * @author jens1o
+ */
 public class JamesImapListener implements ImapListener {
 
   private AbstractConfigurableAsyncServer server;
@@ -18,16 +21,10 @@ public class JamesImapListener implements ImapListener {
 
   @Override
   public void listen() throws ImapListenerException {
-    var jamesServer =
-        new IMAPServerFactory(
-            null,
-            DefaultImapDecoderFactory::createDecoder,
-            () ->
-                DefaultImapEncoderFactory.createDefaultEncoder(
-                    (text, locales) -> text.toString(), false),
-            JamesImapProcessor::new,
-            new DefaultMetricFactory(),
-            new NoopGaugeRegistry());
+    var jamesServer = new IMAPServerFactory(
+        null, DefaultImapDecoderFactory::createDecoder, () -> DefaultImapEncoderFactory
+            .createDefaultEncoder((text, locales) -> text.toString(), false),
+        JamesImapProcessor::new, new DefaultMetricFactory(), new NoopGaugeRegistry());
 
     var jamesConfig = new BaseHierarchicalConfiguration();
     jamesConfig.setProperty("imapserver.[@enabled]", true);

@@ -6,6 +6,7 @@ package de.dhbw.karlsruhe.students.mailflow.core.domain.common.models;
  * consistency rules and operations within the aggregate.
  *
  * @param <T> The type of the identifier for the aggregate root.
+ * @author Jonas-Karl, seiferla
  */
 public abstract class AggregateRoot<T> extends Entity<T> {
 

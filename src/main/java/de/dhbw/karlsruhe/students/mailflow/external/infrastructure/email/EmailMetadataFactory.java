@@ -16,6 +16,9 @@ import java.util.Properties;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * @author jens1o, seiferla, Jonas-Karl
+ */
 public final class EmailMetadataFactory {
 
     private final Message message;
@@ -40,24 +43,21 @@ public final class EmailMetadataFactory {
 
             if (toRecipients != null) {
                 jakartaMessage.setRecipients(RecipientType.TO,
-                        InternetAddress.parse(
-                                getAddressString(toRecipients)));
+                        InternetAddress.parse(getAddressString(toRecipients)));
             }
 
             var ccRecipients = message.getRecipients(Message.RecipientType.CC);
 
             if (ccRecipients != null) {
                 jakartaMessage.setRecipients(RecipientType.CC,
-                        InternetAddress.parse(
-                                getAddressString(ccRecipients)));
+                        InternetAddress.parse(getAddressString(ccRecipients)));
             }
 
             var bccRecipients = message.getRecipients(Message.RecipientType.BCC);
 
             if (bccRecipients != null) {
                 jakartaMessage.setRecipients(RecipientType.BCC,
-                        InternetAddress.parse(
-                                getAddressString(bccRecipients)));
+                        InternetAddress.parse(getAddressString(bccRecipients)));
             }
         } catch (Exception e) {
             throw new EmailParsingException("couldn't build final email", e);
@@ -94,34 +94,29 @@ public final class EmailMetadataFactory {
     private List<Header> getHeaders() throws MessagingException {
         List<Header> headers = new ArrayList<>();
 
-        this.message
-                .getAllHeaders()
-                .asIterator()
+        this.message.getAllHeaders().asIterator()
                 .forEachRemaining(x -> headers.add(new Header(x.getName(), x.getValue())));
 
         return headers;
     }
 
-  public EmailMetadata build() throws MessagingException {
+    public EmailMetadata build() throws MessagingException {
 
 
-    return new EmailMetadata(
-        new Subject(message.getSubject()),
-        this.getAddress(message.getFrom()[0]),
-        this.getHeaders(),
-        new Recipients(
-            this.getRecipientAddresses(RecipientType.TO),
-            this.getRecipientAddresses(RecipientType.CC),
-            this.getRecipientAddresses(RecipientType.BCC)),
-        SentDate.ofDate(message.getSentDate()));
-  }
+        return new EmailMetadata(new Subject(message.getSubject()),
+                this.getAddress(message.getFrom()[0]), this.getHeaders(),
+                new Recipients(this.getRecipientAddresses(RecipientType.TO),
+                        this.getRecipientAddresses(RecipientType.CC),
+                        this.getRecipientAddresses(RecipientType.BCC)),
+                SentDate.ofDate(message.getSentDate()));
+    }
 
     private static String getAddressString(jakarta.mail.Address[] addresses) {
         if (addresses == null) {
             return "";
         }
 
-        return Stream.of(addresses)
-                .map(jakarta.mail.Address::toString).collect(Collectors.joining(","));
+        return Stream.of(addresses).map(jakarta.mail.Address::toString)
+                .collect(Collectors.joining(","));
     }
 }
