@@ -29,7 +29,7 @@ public class MailboxParsingService {
 
   public Mailbox getMailboxOfAddress(User user) throws MailboxParsingServiceException {
 
-    if (!authorizationService.authorize(user.getEmail(), user.getPassword())) {
+    if (!authorizationService.authorize(user.email().domain(), user.password())) {
       throw new MailboxParsingServiceException("User not authorized");
     }
 
