@@ -9,6 +9,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Optional;
 
+/**
+ * @author seiferla, Jonas-Karl
+ */
 public class MailboxParsingService {
 
     private final MailboxFileProvider mailboxFileProvider;

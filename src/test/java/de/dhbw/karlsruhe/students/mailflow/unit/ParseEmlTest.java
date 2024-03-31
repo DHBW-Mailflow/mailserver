@@ -18,6 +18,9 @@ import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
+/**
+ * @author jens1o
+ */
 class ParseEmlTest {
 
         @Test
