@@ -45,6 +45,9 @@ public class FileUserRepository implements UserRepository{
    * Registers a user
    */
   public void registerUser(User user) throws SaveUserException {
+
+    // ToDo: hash password
+
     users.add(user);
     saveUsers();
   }
