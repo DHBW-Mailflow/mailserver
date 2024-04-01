@@ -21,7 +21,7 @@ import java.util.Set;
  */
 public class FileUserRepository implements UserRepository{
 
-  private final String filePath;
+  private static String filePath;
   private final Gson gson;
 
   private static final SecureRandom secureRandom = new SecureRandom();
@@ -45,12 +45,26 @@ public class FileUserRepository implements UserRepository{
   @Override
   public Optional<User> findByEmailAndPassword(Address email, String password) {
     return users.stream()
-        .filter(user -> user.email().equals(email) && user.password().equals(password))
+        .filter(user -> {
+          try {
+            return
+                user.email().equals(email) && user.password().equals(hashPassword(password, user.salt()));
+          } catch (HashingFailedException e) {
+            throw new RuntimeException(e);
+          }
+        })
         .findFirst();
   }
 
   /** Registers a user */
   public void registerUser(User user) throws SaveUserException, HashingFailedException {
+
+    for (User exisitngUser : users) {
+      if (exisitngUser.email().equals(user.email())) {
+        throw new SaveUserException("User is already registered");
+      }
+    }
+
     String salt = generateSalt();
     String hashedPassword = hashPassword(user.password(), salt);
     User userWithHashedPassword = new User(user.email(), hashedPassword, salt);
@@ -104,38 +118,16 @@ public class FileUserRepository implements UserRepository{
    * Saves the users to the file
    */
 
-
-public class GenerateTestUsers {
-
-    public static void main(String[] args) throws SaveUserException, HashingFailedException {
-        FileUserRepository fileUserRepository = new FileUserRepository("save_users.json");
-
-        Address email1 = new Address("test1", "example.com");
-        String password1 = "password1";
-        String salt1 = "salt1";
-        User user1 = new User(email1, password1, salt1);
-
-        Address email2 = new Address("test2", "example.com");
-        String password2 = "password2";
-        String salt2 = "salt2";
-        User user2 = new User(email2, password2, salt2);
-
-        Address email3 = new Address("test3", "example.com");
-        String password3 = "password3";
-        String salt3 = "salt3";
-        User user3 = new User(email3, password3, salt3);
-
-        fileUserRepository.registerUser(user1);
-        fileUserRepository.registerUser(user2);
-        fileUserRepository.registerUser(user3);
-    }
-}
   private void saveUsers() throws SaveUserException {
     try (FileWriter writer = new FileWriter(filePath)) {
       gson.toJson(users, writer);
     } catch (IOException e) {
       throw new SaveUserException("Could not save users", e);
     }
+  }
+
+  public void clearUsers() {
+    users.clear();
   }
 
 }
