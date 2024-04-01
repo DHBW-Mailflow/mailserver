@@ -10,6 +10,7 @@ import java.lang.reflect.Type;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -22,6 +23,10 @@ public class FileUserRepository implements UserRepository{
 
   private final String filePath;
   private final Gson gson;
+
+  private static final SecureRandom secureRandom = new SecureRandom();
+
+  private static final int SALT_LENGTH = 16;
 
   private final Set<User> users;
 
@@ -55,10 +60,15 @@ public class FileUserRepository implements UserRepository{
   }
 
   private String hashPassword(String password) {
+    String salt = generateSalt();
+    return generateHash(password + salt);
+  }
+
+  private String generateHash(String input) {
 
     try{
       MessageDigest md = MessageDigest.getInstance("SHA-256");
-      byte[] hash = md.digest(password.getBytes());
+      byte[] hash = md.digest(input.getBytes());
       BigInteger number = new BigInteger(1, hash);
       StringBuilder hexString = new StringBuilder(number.toString(16));
       while (hexString.length() < 32) {
@@ -69,6 +79,15 @@ public class FileUserRepository implements UserRepository{
       throw new RuntimeException("Could not hash password", e);
     }
 
+  }
+  /**
+   * Generates a random salt
+   * Tries to prevent rainbow table attacks
+   */
+  private String generateSalt() {
+    byte[] salt = new byte[SALT_LENGTH];
+    secureRandom.nextBytes(salt);
+    return new String(salt);
   }
 
   /**
