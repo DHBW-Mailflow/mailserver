@@ -1,5 +1,6 @@
 package de.dhbw.karlsruhe.students.mailflow.core.application.auth;
 
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserRepository;
 
 public class Authorization implements AuthorizationService{
@@ -11,7 +12,7 @@ public class Authorization implements AuthorizationService{
   }
 
   @Override
-  public boolean authorize(String email, String password) {
-    return false;
+  public boolean authorize(Address email, String password) {
+    return userRepository.findByEmailAndPassword(email, password).isPresent();
   }
 }

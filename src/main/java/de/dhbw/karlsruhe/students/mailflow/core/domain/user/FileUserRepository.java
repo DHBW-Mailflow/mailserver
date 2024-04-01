@@ -17,8 +17,12 @@ import java.util.Set;
 
 /**
  * A repository for users that stores them in a file
+ * @author seiferla
  */
-
+/**
+ *
+ *
+ */
 public class FileUserRepository implements UserRepository{
 
   private final String filePath;
