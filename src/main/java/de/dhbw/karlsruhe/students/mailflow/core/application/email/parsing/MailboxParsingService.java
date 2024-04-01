@@ -2,6 +2,7 @@ package de.dhbw.karlsruhe.students.mailflow.core.application.email.parsing;
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthorizationService;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.MailboxRepository;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.MailboxFileProvider;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.User;
@@ -10,16 +11,19 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Optional;
 
+/**
+ * @author seiferla, Jonas-Karl
+ */
 public class MailboxParsingService {
 
-  private final MailboxRepository mailboxRepository;
+    private final MailboxFileProvider mailboxFileProvider;
 
-  private final MailboxParser mailboxParser;
+    private final MailboxParser mailboxParser;
 
   private final AuthorizationService authorizationService;
 
 
-  public MailboxParsingService(MailboxRepository mailboxRepository, MailboxParser mailboxParser,
+  public MailboxParsingService(MailboxFileProvider mailboxRepository, MailboxParser mailboxParser,
       AuthorizationService authorizationService) {
     this.mailboxRepository = mailboxRepository;
     this.mailboxParser = mailboxParser;
@@ -32,7 +36,7 @@ public class MailboxParsingService {
       throw new MailboxParsingServiceException("User not authorized");
     }
 
-    Optional<File> storedFile = mailboxRepository.provideStoredMailboxFileFor(user, MailboxType.READ);
+    Optional<File> storedFile = mailboxFileProvider.provideStoredMailboxFileFor(user, MailboxType.READ);
     if (storedFile.isEmpty()) {
       throw new MailboxParsingServiceException("File does not exist");
     }
@@ -40,17 +44,17 @@ public class MailboxParsingService {
     return mailboxParser.parseMailbox(content);
   }
 
-  private String getContent(File file) throws MailboxParsingServiceException {
-    String content;
+    private String getContent(File file) throws MailboxParsingServiceException {
+        String content;
 
-    try (FileReader fileReader = new FileReader(file)) {
-      content = fileReader.toString();
-    } catch (IOException e) {
-      throw new MailboxParsingServiceException("File could not be read");
+        try (FileReader fileReader = new FileReader(file)) {
+            content = fileReader.toString();
+        } catch (IOException e) {
+            throw new MailboxParsingServiceException("File could not be read");
+        }
+        if (content == null) {
+            throw new MailboxParsingServiceException("File could not be read");
+        }
+        return content;
     }
-    if (content == null) {
-      throw new MailboxParsingServiceException("File could not be read");
-    }
-    return content;
-  }
 }

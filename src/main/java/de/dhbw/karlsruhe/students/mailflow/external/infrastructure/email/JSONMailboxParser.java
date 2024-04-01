@@ -6,6 +6,9 @@ import de.dhbw.karlsruhe.students.mailflow.core.application.email.parsing.Mailbo
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.parsing.MailboxParsingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
 
+/**
+ * @author Jonas-Karl, seiferla
+ */
 public class JSONMailboxParser implements MailboxParser {
 
   @Override

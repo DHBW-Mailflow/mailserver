@@ -5,7 +5,10 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.user.User;
 import java.io.File;
 import java.util.Optional;
 
-public interface MailboxRepository {
-  Optional<File> provideStoredMailboxFileFor(User user, MailboxType type);
+/**
+ * @author seiferla
+ */
+public interface MailboxFileProvider {
+    Optional<File> provideStoredMailboxFileFor(User user, MailboxType type);
 
 }

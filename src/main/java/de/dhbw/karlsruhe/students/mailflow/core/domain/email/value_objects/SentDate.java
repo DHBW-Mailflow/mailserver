@@ -7,6 +7,8 @@ import java.util.Date;
 
 /**
  * Representation of the e-mail date
+ *
+ * @author Jonas-Karl
  */
 public record SentDate(LocalDateTime date) {
   /**
@@ -14,10 +16,11 @@ public record SentDate(LocalDateTime date) {
    * @return a new instance of SentDate with the parsed date
    */
   public static SentDate ofFormattedString(String date) {
-   return new SentDate(LocalDateTime.ofInstant(Instant.parse(date), ZoneOffset.UTC));
+    return new SentDate(LocalDateTime.ofInstant(Instant.parse(date), ZoneOffset.UTC));
   }
+
   public static SentDate ofNow() {
-   return new SentDate(LocalDateTime.now());
+    return new SentDate(LocalDateTime.now());
   }
 
   public static SentDate ofDate(Date sentDate) {

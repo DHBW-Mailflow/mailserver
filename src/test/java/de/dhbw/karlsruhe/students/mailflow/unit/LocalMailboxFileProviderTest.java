@@ -1,17 +1,19 @@
 package de.dhbw.karlsruhe.students.mailflow.unit;
 
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.MailboxRepository;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.MailboxFileProvider;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.user.User;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.LocalMailboxRepository;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.LocalMailboxFileProvider;
 import java.io.File;
 import java.util.Optional;
 import org.fest.assertions.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
-class LocalMailboxRepositoryTest {
+/**
+ * @author Jonas-Karl
+ */
+class LocalMailboxFileProviderTest {
 
   @ParameterizedTest(name = "Retrieve from correct path for type {0}")
   @EnumSource(MailboxType.class)
@@ -21,9 +23,8 @@ class LocalMailboxRepositoryTest {
     User user = new User(mailboxOwner, "someDomain.de", "somePassword");
 
     // Needed to test the path of a non-existing file in test environment
-    MailboxRepository ownMailboxRepository =
-        (userAddress, type) ->
-            Optional.of(LocalMailboxRepository.getFile(userAddress, type));
+    MailboxFileProvider ownMailboxFileProvider =
+        (userAddress, type) -> Optional.of(LocalMailboxFileProvider.getFile(userAddress, type));
 
     Optional<File> mailboxFile =
         ownMailboxRepository.provideStoredMailboxFileFor(user, mailboxType);
@@ -32,9 +33,7 @@ class LocalMailboxRepositoryTest {
     String path = mailboxFile.get().getPath();
 
     // Assert
-    Assertions.assertThat(path)
-        .contains("filestorage")
-        .contains(mailboxOwner.toString())
+    Assertions.assertThat(path).contains("filestorage").contains(mailboxOwner.toString())
         .endsWith(mailboxType.getFileSuffix() + ".json");
   }
 
@@ -46,7 +45,7 @@ class LocalMailboxRepositoryTest {
     User user = new User(mailboxOwner, "someDomain.de", "somePassword");
 
     // Needed to test the path of a non-existing file
-    MailboxRepository repository = new LocalMailboxRepository();
+    MailboxFileProvider fileProvider = new LocalMailboxFileProvider();
 
     // Act
     Optional<File> mailboxFile = repository.provideStoredMailboxFileFor(user, mailboxType);

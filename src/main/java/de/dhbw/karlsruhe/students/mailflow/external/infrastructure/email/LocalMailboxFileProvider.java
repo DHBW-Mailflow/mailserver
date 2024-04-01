@@ -1,13 +1,16 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email;
 
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.MailboxRepository;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.MailboxFileProvider;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.User;
 import java.io.File;
 import java.util.Optional;
 
-public class LocalMailboxRepository implements MailboxRepository {
+/**
+ * @author seiferla
+ */
+public class LocalMailboxFileProvider implements MailboxFileProvider {
 
   private static final String LOCAL_FILE_STORAGE_PATH = "storage/filestorage/mailboxes";
 

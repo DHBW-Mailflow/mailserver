@@ -12,6 +12,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+/**
+ * @author jens1o
+ */
 class ImapHandshakeTest {
   private ListenerService server;
 
@@ -39,12 +42,11 @@ class ImapHandshakeTest {
     var session = Session.getDefaultInstance(clientConfig);
 
     // Assert
-    assertDoesNotThrow(
-        () -> {
-          // Act
-          var store = session.getStore("imap");
+    assertDoesNotThrow(() -> {
+      // Act
+      var store = session.getStore("imap");
 
-          store.connect(server.getHost(), server.getPort(), "admin", "admin");
-        });
+      store.connect(server.getHost(), server.getPort(), "admin", "admin");
+    });
   }
 }
