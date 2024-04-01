@@ -1,5 +1,7 @@
 package de.dhbw.karlsruhe.students.mailflow.integration;
 
+import de.dhbw.karlsruhe.students.mailflow.core.application.auth.Authorization;
+import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthorizationService;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.MailboxRepository;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.parsing.MailboxParser;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.parsing.MailboxParsingService;
@@ -7,6 +9,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.application.email.parsing.Mailbo
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.user.User;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -20,33 +23,37 @@ class MailboxParsingServiceTest {
   @Test
   void testNonExistentMailboxThrows() {
     // Arrange
-    Address mailboxOwner = new Address("someUser", "someDomain.de");
+    Address mailboxOwner = new Address("someOwner", "someDomain.de");
+    User user = new User(mailboxOwner, "someDomain.de", "somePassword");
+    AuthorizationService mockedAuthorization = (userAddress, password) -> false;
     MailboxRepository mockedRepository = (userAddress, type) -> Optional.empty();
     MailboxParser mockedParser = content -> null;
-    MailboxParsingService service = new MailboxParsingService(mockedRepository, mockedParser);
+    MailboxParsingService service = new MailboxParsingService(mockedRepository, mockedParser, mockedAuthorization);
 
     // Assert
     Assertions.assertThrows(
 
         // Act
-        MailboxParsingServiceException.class, () -> service.getMailboxOfAddress(mailboxOwner));
+        MailboxParsingServiceException.class, () -> service.getMailboxOfAddress(user));
   }
 
   @Test
   void existentMailboxCorrectlyProvided(@TempDir File tempDir)
       throws MailboxParsingServiceException, IOException {
     // Arrange
-    Address mailboxOwner = new Address("someUser", "someDomain.de");
+    Address mailboxOwner = new Address("someOwner", "someDomain.de");
+    User user = new User(mailboxOwner, "someDomain.de", "somePassword");
     File justAnExistingFile = new File(tempDir, "mailboxFile.json");
     boolean successFullyCreated = justAnExistingFile.createNewFile();
 
     MailboxRepository mockedRepository = (userAddress, type) -> Optional.of(justAnExistingFile);
     MailboxParser mockedParser =
         content -> Mailbox.create(mailboxOwner, List.of(), MailboxType.READ);
-    MailboxParsingService service = new MailboxParsingService(mockedRepository, mockedParser);
+    AuthorizationService mockedAuthorization = (userAddress, password) -> true;
+    MailboxParsingService service = new MailboxParsingService(mockedRepository, mockedParser, mockedAuthorization);
 
     // Act
-    Mailbox mailbox = service.getMailboxOfAddress(mailboxOwner);
+    Mailbox mailbox = service.getMailboxOfAddress(user);
 
     // Assert
     Assertions.assertEquals(mailbox.getEmails(), List.of());
