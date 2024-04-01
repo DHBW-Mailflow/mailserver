@@ -16,10 +16,6 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * A repository for users that stores them in a file
- * @author seiferla
- */
-/**
  *
  *
  */
