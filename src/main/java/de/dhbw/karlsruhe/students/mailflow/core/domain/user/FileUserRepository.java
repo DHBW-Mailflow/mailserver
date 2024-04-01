@@ -104,6 +104,32 @@ public class FileUserRepository implements UserRepository{
    * Saves the users to the file
    */
 
+
+public class GenerateTestUsers {
+
+    public static void main(String[] args) throws SaveUserException, HashingFailedException {
+        FileUserRepository fileUserRepository = new FileUserRepository("save_users.json");
+
+        Address email1 = new Address("test1", "example.com");
+        String password1 = "password1";
+        String salt1 = "salt1";
+        User user1 = new User(email1, password1, salt1);
+
+        Address email2 = new Address("test2", "example.com");
+        String password2 = "password2";
+        String salt2 = "salt2";
+        User user2 = new User(email2, password2, salt2);
+
+        Address email3 = new Address("test3", "example.com");
+        String password3 = "password3";
+        String salt3 = "salt3";
+        User user3 = new User(email3, password3, salt3);
+
+        fileUserRepository.registerUser(user1);
+        fileUserRepository.registerUser(user2);
+        fileUserRepository.registerUser(user3);
+    }
+}
   private void saveUsers() throws SaveUserException {
     try (FileWriter writer = new FileWriter(filePath)) {
       gson.toJson(users, writer);
