@@ -49,10 +49,8 @@ public class FileUserRepository implements UserRepository{
         .findFirst();
   }
 
-  /**
-   * Registers a user
-   */
-  public void registerUser(User user) throws SaveUserException {
+  /** Registers a user */
+  public void registerUser(User user) throws SaveUserException, HashingFailedException {
     String salt = generateSalt();
     String hashedPassword = hashPassword(user.password(), salt);
     User userWithHashedPassword = new User(user.email(), hashedPassword, salt);
@@ -60,11 +58,11 @@ public class FileUserRepository implements UserRepository{
     saveUsers();
   }
 
-  private String hashPassword(String password, String salt) {
+  private String hashPassword(String password, String salt) throws HashingFailedException {
     return generateHash(password + salt);
   }
 
-  private String generateHash(String input) {
+  private String generateHash(String input) throws HashingFailedException {
 
     try{
       MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -76,7 +74,7 @@ public class FileUserRepository implements UserRepository{
       }
       return hexString.toString();
     }catch (NoSuchAlgorithmException e){
-      throw new RuntimeException("Could not hash password", e);
+      throw new HashingFailedException("Could not hash password", e);
     }
 
   }
