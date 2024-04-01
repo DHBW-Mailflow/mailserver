@@ -4,7 +4,6 @@ import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthorizationSe
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.MailboxRepository;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.User;
 import java.io.File;
 import java.io.FileReader;

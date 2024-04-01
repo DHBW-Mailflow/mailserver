@@ -57,14 +57,14 @@ public class FileUserRepository implements UserRepository{
    * Registers a user
    */
   public void registerUser(User user) throws SaveUserException {
-    String hashedPassword = hashPassword(user.password());
-    User userWithHashedPassword = new User(user.email(), hashedPassword);
+    String salt = generateSalt();
+    String hashedPassword = hashPassword(user.password(), salt);
+    User userWithHashedPassword = new User(user.email(), hashedPassword, salt);
     users.add(userWithHashedPassword);
     saveUsers();
   }
 
-  private String hashPassword(String password) {
-    String salt = generateSalt();
+  private String hashPassword(String password, String salt) {
     return generateHash(password + salt);
   }
 

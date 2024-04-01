@@ -3,7 +3,7 @@ package de.dhbw.karlsruhe.students.mailflow.core.domain.user;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 
 
-public record User(Address email, String password) {
+public record User(Address email, String password, String salt) {
 
 
   public User {
@@ -12,6 +12,9 @@ public record User(Address email, String password) {
     }
     if (password == null || password.isBlank()) {
       throw new InvalidPasswordException("Password must not be null or empty");
+    }
+    if (salt == null || salt.isBlank()) {
+      throw new InvalidSaltException("Salt must not be null or empty");
     }
   }
 
