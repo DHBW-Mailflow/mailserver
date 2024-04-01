@@ -7,6 +7,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -45,11 +48,27 @@ public class FileUserRepository implements UserRepository{
    * Registers a user
    */
   public void registerUser(User user) throws SaveUserException {
-
-    // ToDo: hash password
-
-    users.add(user);
+    String hashedPassword = hashPassword(user.password());
+    User userWithHashedPassword = new User(user.email(), hashedPassword);
+    users.add(userWithHashedPassword);
     saveUsers();
+  }
+
+  private String hashPassword(String password) {
+
+    try{
+      MessageDigest md = MessageDigest.getInstance("SHA-256");
+      byte[] hash = md.digest(password.getBytes());
+      BigInteger number = new BigInteger(1, hash);
+      StringBuilder hexString = new StringBuilder(number.toString(16));
+      while (hexString.length() < 32) {
+        hexString.insert(0, '0');
+      }
+      return hexString.toString();
+    }catch (NoSuchAlgorithmException e){
+      throw new RuntimeException("Could not hash password", e);
+    }
+
   }
 
   /**
