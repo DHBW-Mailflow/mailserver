@@ -3,6 +3,7 @@ package de.dhbw.karlsruhe.students.mailflow.unit;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.MailboxFileProvider;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.user.User;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.LocalMailboxFileProvider;
 import java.io.File;
 import java.util.Optional;
@@ -27,7 +28,7 @@ class LocalMailboxFileProviderTest {
         (userAddress, type) -> Optional.of(LocalMailboxFileProvider.getFile(userAddress, type));
 
     Optional<File> mailboxFile =
-        ownMailboxRepository.provideStoredMailboxFileFor(user, mailboxType);
+        ownMailboxFileProvider.provideStoredMailboxFileFor(user, mailboxType);
 
     // Act
     String path = mailboxFile.get().getPath();
@@ -48,7 +49,7 @@ class LocalMailboxFileProviderTest {
     MailboxFileProvider fileProvider = new LocalMailboxFileProvider();
 
     // Act
-    Optional<File> mailboxFile = repository.provideStoredMailboxFileFor(user, mailboxType);
+    Optional<File> mailboxFile = fileProvider.provideStoredMailboxFileFor(user, mailboxType);
 
     // Assert
     Assertions.assertThat(mailboxFile.isEmpty()).isTrue();

@@ -1,8 +1,6 @@
 package de.dhbw.karlsruhe.students.mailflow.integration;
 
-import de.dhbw.karlsruhe.students.mailflow.core.application.auth.Authorization;
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthorizationService;
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.MailboxRepository;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.MailboxFileProvider;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.parsing.MailboxParser;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.parsing.MailboxParsingService;

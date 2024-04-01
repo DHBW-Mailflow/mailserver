@@ -1,7 +1,6 @@
 package de.dhbw.karlsruhe.students.mailflow.core.application.email.parsing;
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthorizationService;
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.MailboxRepository;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.MailboxFileProvider;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
@@ -20,12 +19,12 @@ public class MailboxParsingService {
 
     private final MailboxParser mailboxParser;
 
-  private final AuthorizationService authorizationService;
+    private final AuthorizationService authorizationService;
 
 
   public MailboxParsingService(MailboxFileProvider mailboxRepository, MailboxParser mailboxParser,
       AuthorizationService authorizationService) {
-    this.mailboxRepository = mailboxRepository;
+    this.mailboxFileProvider = mailboxRepository;
     this.mailboxParser = mailboxParser;
     this.authorizationService = authorizationService;
   }
