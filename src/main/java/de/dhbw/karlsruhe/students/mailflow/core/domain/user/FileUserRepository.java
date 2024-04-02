@@ -21,7 +21,7 @@ import java.util.Set;
  */
 public class FileUserRepository implements UserRepository{
 
-  private static String filePath;
+
   private final Gson gson;
 
   private static final SecureRandom secureRandom = new SecureRandom();
@@ -30,12 +30,9 @@ public class FileUserRepository implements UserRepository{
 
   private final Set<User> users;
 
-  /**
-   * @param filePath the path to the file where the users are store
-   */
+  private static final String FILE_PATH = "users.json";
 
-  public FileUserRepository(String filePath) {
-    this.filePath = filePath;
+  public FileUserRepository() {
     this.gson = new Gson();
     this.users = loadUsers();
   }
@@ -43,31 +40,28 @@ public class FileUserRepository implements UserRepository{
    * Finds a user by email and password
    */
   @Override
-  public Optional<User> findByEmailAndPassword(Address email, String password) {
+  public Optional<User> findByEmailAndPassword(Address email, String password){
     return users.stream()
         .filter(user -> {
           try {
-            return
-                user.email().equals(email) && user.password().equals(hashPassword(password, user.salt()));
+            return user.email().equals(email) && user.password().equals(hashPassword(password, user.salt()));
           } catch (HashingFailedException e) {
-            throw new RuntimeException(e);
+            throw new UserAuthenticationException("Error while hashing password", e);
           }
         })
         .findFirst();
   }
 
   /** Registers a user */
-  public void registerUser(User user) throws SaveUserException, HashingFailedException {
+  public void registerUser(Address email, String password) throws SaveUserException, HashingFailedException {
 
-    for (User exisitngUser : users) {
-      if (exisitngUser.email().equals(user.email())) {
-        throw new SaveUserException("User is already registered");
-      }
+    if (users.stream().anyMatch(user -> user.email().equals(email))) {
+      throw new SaveUserException("User is already registered");
     }
 
     String salt = generateSalt();
-    String hashedPassword = hashPassword(user.password(), salt);
-    User userWithHashedPassword = new User(user.email(), hashedPassword, salt);
+    String hashedPassword = hashPassword(password, salt);
+    User userWithHashedPassword = new User(email, hashedPassword, salt);
     users.add(userWithHashedPassword);
     saveUsers();
   }
@@ -106,7 +100,7 @@ public class FileUserRepository implements UserRepository{
    * Loads the users from the file
    */
   private Set<User> loadUsers() {
-    try (FileReader reader = new FileReader(filePath)) {
+    try (FileReader reader = new FileReader(FILE_PATH)) {
       Type setType = new TypeToken<HashSet<User>>(){}.getType();
       return gson.fromJson(reader, setType);
     } catch (IOException e) {
@@ -119,7 +113,7 @@ public class FileUserRepository implements UserRepository{
    */
 
   private void saveUsers() throws SaveUserException {
-    try (FileWriter writer = new FileWriter(filePath)) {
+    try (FileWriter writer = new FileWriter(FILE_PATH)) {
       gson.toJson(users, writer);
     } catch (IOException e) {
       throw new SaveUserException("Could not save users", e);

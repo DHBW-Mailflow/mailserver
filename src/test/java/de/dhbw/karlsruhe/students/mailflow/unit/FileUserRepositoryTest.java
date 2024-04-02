@@ -17,35 +17,52 @@ import org.junit.jupiter.api.Test;
 
 class FileUserRepositoryTest {
 
-  private FileUserRepository fileUserRepository;
-
-  @BeforeEach
-  public void setUp() {
-    String testFilePath = "save_users.json";
-    fileUserRepository = new FileUserRepository(testFilePath);
-  }
+  private final FileUserRepository fileUserRepository = new FileUserRepository();
 
   @Test
-  public void testUserIsAlreadyRegistered() throws SaveUserException, HashingFailedException {
+  void testUserIsAlreadyRegistered() throws SaveUserException, HashingFailedException {
     // Arrange
     fileUserRepository.clearUsers();
     Address email = new Address("test", "example.com");
     String password = "password";
-    String salt = "salt";
-    User user = new User(email, password, salt);
-
 
     // Act
-    fileUserRepository.registerUser(user);
+    fileUserRepository.registerUser(email, password);
 
     // Assert
-    SaveUserException thrown = assertThrows(
-        SaveUserException.class,
-        () -> fileUserRepository.registerUser(user),
-        "Expected registerUser() to throw, but it didn't"
-    );
+    SaveUserException thrown =
+        assertThrows(
+            SaveUserException.class,
+            () -> fileUserRepository.registerUser(email, password),
+            "Expected registerUser() to throw, but it didn't");
 
     assertEquals("User is already registered", thrown.getMessage());
+  }
+
+  @Test
+  void testFindByEmailAndPassword() throws SaveUserException, HashingFailedException {
+    // Arrange
+    fileUserRepository.clearUsers();
+    Address email = new Address("test", "example.com");
+    String password = "password";
+    fileUserRepository.registerUser(email, password);
+
+    // Act
+    Optional<User> retrievedUser = fileUserRepository.findByEmailAndPassword(email, password);
+
+    // Assert
+    assertTrue(retrievedUser.isPresent(), "Expected a user to be present");
+    assertEquals(email, retrievedUser.get().email(), "Expected the emails to match");
+
+    // Arrange
+    Address wrongEmail = new Address("wrong", "example.com");
+
+    // Act
+    Optional<User> nonExistentUser =
+        fileUserRepository.findByEmailAndPassword(wrongEmail, password);
+
+    // Assert
+    assertFalse(nonExistentUser.isPresent(), "Expected no user to be present");
   }
 
 }

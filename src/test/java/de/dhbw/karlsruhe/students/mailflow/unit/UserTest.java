@@ -66,5 +66,4 @@ class UserTest {
     // Assert
     assertThrows(InvalidSaltException.class, () -> new User(email, password, salt));
   }
-
 }
