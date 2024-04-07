@@ -10,13 +10,16 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserRepository;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.LoadingUsersException;
 import java.util.Optional;
 
+/**
+ * @author seiferla
+ */
 public class RegisterService implements RegisterUseCase {
 
   private final UserRepository userRepository;
 
   private final UserAuthenticator userAuthenticator;
 
-  public RegisterService(UserRepository userRepository, UserAuthenticator userAuthenticator){
+  public RegisterService(UserRepository userRepository, UserAuthenticator userAuthenticator) {
     this.userRepository = userRepository;
     this.userAuthenticator = userAuthenticator;
   }

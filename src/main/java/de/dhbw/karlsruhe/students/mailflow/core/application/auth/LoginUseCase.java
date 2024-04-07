@@ -5,8 +5,10 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Addre
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.User;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.LoadingUsersException;
 
+/**
+ * @author seiferla
+ */
 public interface LoginUseCase {
 
   User login(Address email, String password) throws AuthorizationException, LoadingUsersException;
-
 }

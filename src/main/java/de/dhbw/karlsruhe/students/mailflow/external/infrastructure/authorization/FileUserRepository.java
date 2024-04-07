@@ -25,6 +25,9 @@ public class FileUserRepository implements UserRepository {
 
   private final File filePath;
 
+  /**
+   * @author seiferla
+   */
   public FileUserRepository() {
     this.gson = new Gson();
     this.users = new HashSet<>();
@@ -44,8 +47,7 @@ public class FileUserRepository implements UserRepository {
     try (FileReader reader = new FileReader(filePath)) {
       Type setType = new TypeToken<HashSet<User>>() {}.getType();
       HashSet<User> parsedUsers = gson.fromJson(reader, setType);
-      if(parsedUsers != null)
-        users.addAll(parsedUsers);
+      if (parsedUsers != null) users.addAll(parsedUsers);
     } catch (IOException e) {
       throw new LoadingUsersException("Could not load users", e);
     }
@@ -68,5 +70,4 @@ public class FileUserRepository implements UserRepository {
       throw new SaveUserException("Could not save user", e);
     }
   }
-
 }

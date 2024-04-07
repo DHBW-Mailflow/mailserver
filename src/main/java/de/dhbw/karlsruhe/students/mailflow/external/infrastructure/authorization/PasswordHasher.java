@@ -6,6 +6,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
+/**
+ * @author seiferla
+ */
 public class PasswordHasher {
 
   private static final int SALT_LENGTH = 16;

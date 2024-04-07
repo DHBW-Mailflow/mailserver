@@ -21,6 +21,9 @@ import org.junit.jupiter.api.io.TempDir;
 
 class FileUserRepositoryTest {
 
+  /**
+   * @author seiferla
+   */
   @Test
   void testSaveUser(@TempDir File tempDir)
       throws SaveUserException, LoadingUsersException, IOException {

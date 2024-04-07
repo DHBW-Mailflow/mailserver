@@ -9,6 +9,9 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.user.User;
 
 public class LocalUserAuthenticator implements UserAuthenticator {
 
+  /**
+   * @author seiferla
+   */
   @Override
   public User createUser(Address email, String password) throws HashingFailedException {
     String salt = PasswordHasher.generateSalt();

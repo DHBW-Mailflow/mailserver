@@ -5,7 +5,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.SaveUserE
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.LoadingUsersException;
 import java.util.Optional;
 /**
- * Repository interface for User entities.
+ * @author seiferla
  */
 public interface UserRepository {
   Optional<User> findByEmail(Address email) throws LoadingUsersException;

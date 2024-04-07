@@ -8,20 +8,23 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserRepository;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.LoadingUsersException;
 import java.util.Optional;
 
+/**
+ * @author seiferla
+ */
 public class LoginService implements LoginUseCase {
 
   private final UserRepository userRepository;
 
   private final PasswordAuthenticator passwordAuthenticator;
 
-  public LoginService(UserRepository userRepository,
-      PasswordAuthenticator passwordAuthenticator) {
+  public LoginService(UserRepository userRepository, PasswordAuthenticator passwordAuthenticator) {
     this.userRepository = userRepository;
     this.passwordAuthenticator = passwordAuthenticator;
   }
 
   @Override
-  public User login(Address email, String password) throws AuthorizationException, LoadingUsersException {
+  public User login(Address email, String password)
+      throws AuthorizationException, LoadingUsersException {
 
     Optional<User> user = userRepository.findByEmail(email);
 

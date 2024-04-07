@@ -5,9 +5,10 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.InvalidEm
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.InvalidPasswordException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.InvalidSaltException;
 
-
+/**
+ * @author seiferla
+ */
 public record User(Address email, String password, String salt) {
-
 
   public User {
     if (email == null || email.toString().isBlank()) {
@@ -20,5 +21,4 @@ public record User(Address email, String password, String salt) {
       throw new InvalidSaltException("Salt must not be null or empty");
     }
   }
-
 }

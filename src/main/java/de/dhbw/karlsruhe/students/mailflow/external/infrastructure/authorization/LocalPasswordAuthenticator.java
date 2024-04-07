@@ -9,6 +9,9 @@ import java.util.logging.Logger;
 
 public class LocalPasswordAuthenticator implements PasswordAuthenticator {
 
+  /**
+   * @author seiferla
+   */
   @Override
   public boolean checkPassword(String password, User user) {
     try {

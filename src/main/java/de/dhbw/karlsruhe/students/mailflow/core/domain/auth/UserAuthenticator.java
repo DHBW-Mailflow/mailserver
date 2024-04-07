@@ -4,6 +4,9 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Addre
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.HashingFailedException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.User;
 
+/**
+ * @author seiferla
+ */
 public interface UserAuthenticator {
 
   User createUser(Address email, String password) throws HashingFailedException;
