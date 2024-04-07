@@ -61,7 +61,7 @@ public class FileUserRepository implements UserRepository {
   }
 
   private void createFileIfNotExists() throws LoadingUsersException {
-    if(filePath.exists()){
+    if (filePath.exists()) {
       return;
     }
     try {
