@@ -62,8 +62,11 @@ public class FileUserRepository implements UserRepository {
 
   private void createFileIfNotExists() throws LoadingUsersException {
     try {
-      filePath.createNewFile(); // only if file does not exist
-    } catch (IOException e) {
+      // creates the file if it does not already exist
+      if (!filePath.createNewFile()) {
+        throw new LoadingUsersException("Could not create user file");
+      }
+    } catch (IOException | SecurityException e) {
       throw new LoadingUsersException("Could not create user file", e);
     }
   }
