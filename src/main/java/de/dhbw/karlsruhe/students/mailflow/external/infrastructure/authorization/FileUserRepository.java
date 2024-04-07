@@ -1,0 +1,72 @@
+package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.SaveUserException;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.user.User;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserRepository;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+import org.fest.util.VisibleForTesting;
+
+/** */
+public class FileUserRepository implements UserRepository {
+
+  private final Gson gson;
+
+  private final Set<User> users;
+
+  private final File filePath;
+
+  public FileUserRepository() {
+    this.gson = new Gson();
+    this.users = new HashSet<>();
+    this.filePath = new File("users.json");
+  }
+
+  @VisibleForTesting
+  public FileUserRepository(File file) {
+    this.filePath = file;
+    this.gson = new Gson();
+    this.users = new HashSet<>();
+  }
+
+  /** Loads the users from the file */
+  private void loadUsers() throws LoadingUsersException {
+    users.clear();
+    try (FileReader reader = new FileReader(filePath)) {
+      Type setType = new TypeToken<HashSet<User>>() {}.getType();
+      HashSet<User> parsedUsers = gson.fromJson(reader, setType);
+      if(parsedUsers != null)
+        users.addAll(parsedUsers);
+    } catch (IOException e) {
+      throw new LoadingUsersException("Could not load users", e);
+    }
+  }
+
+  @Override
+  public Optional<User> findByEmail(Address email) throws LoadingUsersException {
+    loadUsers();
+    return users.stream().filter(user -> user.email().equals(email)).findFirst();
+  }
+
+  @Override
+  public boolean save(User user) throws SaveUserException, LoadingUsersException {
+    loadUsers();
+    users.add(user);
+    try (FileWriter writer = new FileWriter(filePath)) {
+      gson.toJson(users, writer);
+      return true;
+    } catch (IOException e) {
+      throw new SaveUserException("Could not save user", e);
+    }
+  }
+
+}

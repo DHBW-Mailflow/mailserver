@@ -1,6 +1,5 @@
 package de.dhbw.karlsruhe.students.mailflow.core.application.email.parsing;
 
-import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthorizationService;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.MailboxFileProvider;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
@@ -19,21 +18,13 @@ public class MailboxParsingService {
 
     private final MailboxParser mailboxParser;
 
-    private final AuthorizationService authorizationService;
 
-
-  public MailboxParsingService(MailboxFileProvider mailboxRepository, MailboxParser mailboxParser,
-      AuthorizationService authorizationService) {
+  public MailboxParsingService(MailboxFileProvider mailboxRepository, MailboxParser mailboxParser) {
     this.mailboxFileProvider = mailboxRepository;
     this.mailboxParser = mailboxParser;
-    this.authorizationService = authorizationService;
   }
 
   public Mailbox getMailboxOfAddress(User user) throws MailboxParsingServiceException {
-
-    if (!authorizationService.authorize(user.email(), user.password())) {
-      throw new MailboxParsingServiceException("User not authorized");
-    }
 
     Optional<File> storedFile = mailboxFileProvider.provideStoredMailboxFileFor(user, MailboxType.READ);
     if (storedFile.isEmpty()) {

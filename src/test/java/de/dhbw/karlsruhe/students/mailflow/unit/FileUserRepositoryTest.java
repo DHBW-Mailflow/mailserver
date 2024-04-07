@@ -6,63 +6,57 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.user.FileUserRepository;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.user.HashingFailedException;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.user.SaveUserException;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.FileUserRepository;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.HashingFailedException;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.SaveUserException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.User;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.LoadingUsersException;
 import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.Optional;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 class FileUserRepositoryTest {
 
-  private final FileUserRepository fileUserRepository = new FileUserRepository();
-
   @Test
-  void testUserIsAlreadyRegistered() throws SaveUserException, HashingFailedException {
+  void testSaveUser(@TempDir File tempDir)
+      throws SaveUserException, LoadingUsersException, IOException {
+
     // Arrange
-    fileUserRepository.clearUsers();
-    Address email = new Address("test", "example.com");
-    String password = "password";
+
+    User user = new User(new Address("test", "test.de"), "password", "salt");
+
+    final File file = new File(tempDir, "registered-users.json");
+    FileUserRepository fileUserRepository = new FileUserRepository(file);
+    file.createNewFile();
 
     // Act
-    fileUserRepository.registerUser(email, password);
-
+    fileUserRepository.save(user);
+    String fileContent = Files.readString(file.toPath(), StandardCharsets.UTF_8);
+    String exceptedContent =
+        "[{\"email\":{\"localPart\":\"test\",\"domain\":\"test.de\"},\"password\":\"password\",\"salt\":\"salt\"}]";
     // Assert
-    SaveUserException thrown =
-        assertThrows(
-            SaveUserException.class,
-            () -> fileUserRepository.registerUser(email, password),
-            "Expected registerUser() to throw, but it didn't");
-
-    assertEquals("User is already registered", thrown.getMessage());
+    assertEquals(exceptedContent, fileContent);
   }
 
   @Test
-  void testFindByEmailAndPassword() throws SaveUserException, HashingFailedException {
+  void testFindByEmail(@TempDir File tempDir)
+      throws HashingFailedException, SaveUserException, IOException, LoadingUsersException {
     // Arrange
-    fileUserRepository.clearUsers();
-    Address email = new Address("test", "example.com");
-    String password = "password";
-    fileUserRepository.registerUser(email, password);
+    User user = new User(new Address("test", "test.de"), "password", "salt");
+
+    final File file = new File(tempDir, "registered-users.json");
+    file.createNewFile();
+    Files.writeString(file.toPath(), "... content ");
 
     // Act
-    Optional<User> retrievedUser = fileUserRepository.findByEmailAndPassword(email, password);
+    FileUserRepository fileUserRepository = new FileUserRepository(file);
+    Optional<User> foundUser = fileUserRepository.findByEmail(user.email());
 
     // Assert
-    assertTrue(retrievedUser.isPresent(), "Expected a user to be present");
-    assertEquals(email, retrievedUser.get().email(), "Expected the emails to match");
-
-    // Arrange
-    Address wrongEmail = new Address("wrong", "example.com");
-
-    // Act
-    Optional<User> nonExistentUser =
-        fileUserRepository.findByEmailAndPassword(wrongEmail, password);
-
-    // Assert
-    assertFalse(nonExistentUser.isPresent(), "Expected no user to be present");
+    assertTrue(foundUser.isPresent());
   }
-
 }

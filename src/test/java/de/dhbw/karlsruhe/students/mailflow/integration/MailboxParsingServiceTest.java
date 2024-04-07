@@ -1,6 +1,5 @@
 package de.dhbw.karlsruhe.students.mailflow.integration;
 
-import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthorizationService;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.MailboxFileProvider;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.parsing.MailboxParser;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.parsing.MailboxParsingService;
@@ -27,10 +26,9 @@ class MailboxParsingServiceTest {
     // Arrange
     Address mailboxOwner = new Address("someOwner", "someDomain.de");
     User user = new User(mailboxOwner, "someDomain.de", "somePassword");
-    AuthorizationService mockedAuthorization = (userAddress, password) -> false;
     MailboxFileProvider mockedRepository = (userAddress, type) -> Optional.empty();
     MailboxParser mockedParser = content -> null;
-    MailboxParsingService service = new MailboxParsingService(mockedRepository, mockedParser, mockedAuthorization);
+    MailboxParsingService service = new MailboxParsingService(mockedRepository, mockedParser);
 
     // Assert
     Assertions.assertThrows(
@@ -51,8 +49,7 @@ class MailboxParsingServiceTest {
     MailboxFileProvider mockedRepository = (userAddress, type) -> Optional.of(justAnExistingFile);
     MailboxParser mockedParser =
         content -> Mailbox.create(mailboxOwner, List.of(), MailboxType.READ);
-    AuthorizationService mockedAuthorization = (userAddress, password) -> true;
-    MailboxParsingService service = new MailboxParsingService(mockedRepository, mockedParser, mockedAuthorization);
+    MailboxParsingService service = new MailboxParsingService(mockedRepository, mockedParser);
 
     // Act
     Mailbox mailbox = service.getMailboxOfAddress(user);

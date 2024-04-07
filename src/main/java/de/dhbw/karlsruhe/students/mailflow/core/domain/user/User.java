@@ -1,6 +1,9 @@
 package de.dhbw.karlsruhe.students.mailflow.core.domain.user;
 
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.InvalidEmailException;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.InvalidPasswordException;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.InvalidSaltException;
 
 
 public record User(Address email, String password, String salt) {
