@@ -9,10 +9,10 @@ import org.junit.jupiter.api.Test;
 /**
  * @author Jonas-Karl
  */
-public class LocalPasswordCheckerTest {
+class LocalPasswordCheckerTest {
 
   @Test
-  public void nullValuesShouldNotThrow() {
+  void nullValuesShouldNotThrow() {
     // Arrange
     var localPasswordAuthenticator = new LocalPasswordChecker();
     User user = new User(new Address("test", "example.de"), "password", "salt");
@@ -28,7 +28,7 @@ public class LocalPasswordCheckerTest {
   }
 
   @Test
-  public void testNullValuesShouldReturnFalse() {
+  void testNullValuesShouldReturnFalse() {
     // Arrange
     var localPasswordAuthenticator = new LocalPasswordChecker();
     User user = new User(new Address("test", "example.de"), "hashedPassword", "salt");
@@ -45,7 +45,7 @@ public class LocalPasswordCheckerTest {
   }
 
   @Test
-  public void testShouldCheckCorrectlyWithSHA256() {
+  void testShouldCheckCorrectlyWithSHA256() {
     // Arrange
     var localPasswordAuthenticator = new LocalPasswordChecker();
     User user =
