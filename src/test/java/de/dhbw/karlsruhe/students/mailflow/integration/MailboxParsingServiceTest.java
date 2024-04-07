@@ -7,6 +7,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.application.email.parsing.Mailbo
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.user.User;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -23,7 +24,8 @@ class MailboxParsingServiceTest {
   @Test
   void testNonExistentMailboxThrows() {
     // Arrange
-    Address mailboxOwner = new Address("someUser", "someDomain.de");
+    Address mailboxOwner = new Address("someOwner", "someDomain.de");
+    User user = new User(mailboxOwner, "somePassword", "someSalt");
     MailboxFileProvider mockedRepository = (userAddress, type) -> Optional.empty();
     MailboxParser mockedParser = content -> null;
     MailboxParsingService service = new MailboxParsingService(mockedRepository, mockedParser);
@@ -32,16 +34,17 @@ class MailboxParsingServiceTest {
     Assertions.assertThrows(
 
         // Act
-        MailboxParsingServiceException.class, () -> service.getMailboxOfAddress(mailboxOwner));
+        MailboxParsingServiceException.class, () -> service.getMailboxOfAddress(user));
   }
 
   @Test
   void existentMailboxCorrectlyProvided(@TempDir File tempDir)
       throws MailboxParsingServiceException, IOException {
     // Arrange
-    Address mailboxOwner = new Address("someUser", "someDomain.de");
+    Address mailboxOwner = new Address("someOwner", "someDomain.de");
+    User user = new User(mailboxOwner, "somePassword", "someSalt");
     File justAnExistingFile = new File(tempDir, "mailboxFile.json");
-    boolean successFullyCreated = justAnExistingFile.createNewFile();
+    justAnExistingFile.createNewFile();
 
     MailboxFileProvider mockedRepository = (userAddress, type) -> Optional.of(justAnExistingFile);
     MailboxParser mockedParser =
@@ -49,7 +52,7 @@ class MailboxParsingServiceTest {
     MailboxParsingService service = new MailboxParsingService(mockedRepository, mockedParser);
 
     // Act
-    Mailbox mailbox = service.getMailboxOfAddress(mailboxOwner);
+    Mailbox mailbox = service.getMailboxOfAddress(user);
 
     // Assert
     Assertions.assertEquals(mailbox.getEmails(), List.of());
