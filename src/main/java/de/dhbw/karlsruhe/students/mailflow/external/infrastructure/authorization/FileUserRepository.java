@@ -1,11 +1,13 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.SaveUserException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.User;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserRepository;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.SaveUserException;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -44,12 +46,24 @@ public class FileUserRepository implements UserRepository {
   /** Loads the users from the file */
   private void loadUsers() throws LoadingUsersException {
     users.clear();
+    createFileIfNotExists();
     try (FileReader reader = new FileReader(filePath)) {
       Type setType = new TypeToken<HashSet<User>>() {}.getType();
       HashSet<User> parsedUsers = gson.fromJson(reader, setType);
-      if (parsedUsers != null) users.addAll(parsedUsers);
-    } catch (IOException e) {
+      if (parsedUsers == null) {
+        return;
+      }
+      users.addAll(parsedUsers);
+    } catch (IOException | JsonIOException | JsonSyntaxException e) {
       throw new LoadingUsersException("Could not load users", e);
+    }
+  }
+
+  private void createFileIfNotExists() throws LoadingUsersException {
+    try {
+      filePath.createNewFile(); // only if file does not exist
+    } catch (IOException e) {
+      throw new LoadingUsersException("Could not create user file", e);
     }
   }
 
