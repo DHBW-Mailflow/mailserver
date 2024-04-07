@@ -7,11 +7,11 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.UserCreator;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.User;
 
+/**
+ * @author seiferla
+ */
 public class LocalUserCreator implements UserCreator {
 
-  /**
-   * @author seiferla
-   */
   @Override
   public User createUser(Address email, String password) throws HashingFailedException {
     String salt = PasswordHasher.generateSalt();

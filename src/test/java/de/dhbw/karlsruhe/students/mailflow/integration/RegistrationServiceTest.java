@@ -10,6 +10,9 @@ import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+/**
+ * @author Jonas-Karl
+ */
 class RegistrationServiceTest {
 
   @Test

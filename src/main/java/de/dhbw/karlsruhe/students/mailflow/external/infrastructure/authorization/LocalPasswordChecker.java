@@ -7,11 +7,10 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.PasswordChecker;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.User;
 import java.util.logging.Logger;
 
+/**
+ * @author seiferla
+ */
 public class LocalPasswordChecker implements PasswordChecker {
-
-  /**
-   * @author seiferla
-   */
   @Override
   public boolean checkPassword(String password, User user) {
     if (user == null) return false;

@@ -6,6 +6,9 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.HashingFailedExcepti
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.PasswordHasher;
 import org.junit.jupiter.api.Test;
 
+/**
+ * @author Jonas-Karl
+ */
 class PasswordHasherTest {
 
   @Test

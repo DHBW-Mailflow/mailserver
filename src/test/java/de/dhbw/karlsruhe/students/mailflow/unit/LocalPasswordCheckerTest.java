@@ -6,6 +6,9 @@ import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+/**
+ * @author Jonas-Karl
+ */
 public class LocalPasswordCheckerTest {
 
   @Test

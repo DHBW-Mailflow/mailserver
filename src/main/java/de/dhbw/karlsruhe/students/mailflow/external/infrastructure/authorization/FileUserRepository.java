@@ -19,7 +19,9 @@ import java.util.Set;
 import java.util.logging.Logger;
 import org.fest.util.VisibleForTesting;
 
-/** */
+/**
+ * @author seiferla
+ */
 public class FileUserRepository implements UserRepository {
 
   private final Gson gson;
@@ -28,9 +30,6 @@ public class FileUserRepository implements UserRepository {
 
   private final File filePath;
 
-  /**
-   * @author seiferla
-   */
   public FileUserRepository() {
     this.gson = new Gson();
     this.users = new HashSet<>();
