@@ -1,27 +1,27 @@
 package de.dhbw.karlsruhe.students.mailflow.core.application.auth;
 
 import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.AuthorizationException;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.UserAuthenticator;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.HashingFailedException;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.UserCreator;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.HashingFailedException;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.SaveUserException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.User;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserRepository;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.SaveUserException;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.LoadingUsersException;
 import java.util.Optional;
 
 /**
  * @author seiferla
  */
-public class RegisterService implements RegisterUseCase {
+public class RegistrationService implements RegisterUseCase {
 
   private final UserRepository userRepository;
 
-  private final UserAuthenticator userAuthenticator;
+  private final UserCreator userCreator;
 
-  public RegisterService(UserRepository userRepository, UserAuthenticator userAuthenticator) {
+  public RegistrationService(UserRepository userRepository, UserCreator userCreator) {
     this.userRepository = userRepository;
-    this.userAuthenticator = userAuthenticator;
+    this.userCreator = userCreator;
   }
 
   @Override
@@ -34,7 +34,7 @@ public class RegisterService implements RegisterUseCase {
     }
 
     try {
-      User toRegister = userAuthenticator.createUser(email, password);
+      User toRegister = userCreator.createUser(email, password);
       return userRepository.save(toRegister);
     } catch (SaveUserException | HashingFailedException e) {
       throw new AuthorizationException("Could not save user");

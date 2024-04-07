@@ -1,7 +1,7 @@
 package de.dhbw.karlsruhe.students.mailflow.core.application.auth;
 
 import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.AuthorizationException;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.PasswordAuthenticator;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.PasswordChecker;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.User;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserRepository;
@@ -15,27 +15,29 @@ public class LoginService implements LoginUseCase {
 
   private final UserRepository userRepository;
 
-  private final PasswordAuthenticator passwordAuthenticator;
+  private final PasswordChecker passwordChecker;
 
-  public LoginService(UserRepository userRepository, PasswordAuthenticator passwordAuthenticator) {
+  public LoginService(UserRepository userRepository, PasswordChecker passwordChecker) {
     this.userRepository = userRepository;
-    this.passwordAuthenticator = passwordAuthenticator;
+    this.passwordChecker = passwordChecker;
   }
 
   @Override
   public User login(Address email, String password)
       throws AuthorizationException, LoadingUsersException {
 
-    Optional<User> user = userRepository.findByEmail(email);
+    Optional<User> foundUser = userRepository.findByEmail(email);
 
-    if (user.isEmpty()) {
+    if (foundUser.isEmpty()) {
       throw new AuthorizationException("Credentials are incorrect");
     }
 
-    if (!passwordAuthenticator.checkPassword(password, user.get())) {
+    var user = foundUser.get();
+
+    if (!passwordChecker.checkPassword(password, user)) {
       throw new AuthorizationException("Credentials are incorrect");
     }
 
-    return user.get();
+    return user;
   }
 }

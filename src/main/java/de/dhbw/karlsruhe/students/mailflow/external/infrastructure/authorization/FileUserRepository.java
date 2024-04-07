@@ -16,6 +16,7 @@ import java.lang.reflect.Type;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.logging.Logger;
 import org.fest.util.VisibleForTesting;
 
 /** */
@@ -38,6 +39,7 @@ public class FileUserRepository implements UserRepository {
 
   @VisibleForTesting
   public FileUserRepository(File file) {
+    Logger.getLogger(FileUserRepository.class.getName()).warning("VisibleForTesting method called");
     this.filePath = file;
     this.gson = new Gson();
     this.users = new HashSet<>();

@@ -25,7 +25,7 @@ class MailboxParsingServiceTest {
   void testNonExistentMailboxThrows() {
     // Arrange
     Address mailboxOwner = new Address("someOwner", "someDomain.de");
-    User user = new User(mailboxOwner, "someDomain.de", "somePassword");
+    User user = new User(mailboxOwner, "somePassword", "someSalt");
     MailboxFileProvider mockedRepository = (userAddress, type) -> Optional.empty();
     MailboxParser mockedParser = content -> null;
     MailboxParsingService service = new MailboxParsingService(mockedRepository, mockedParser);
@@ -42,9 +42,9 @@ class MailboxParsingServiceTest {
       throws MailboxParsingServiceException, IOException {
     // Arrange
     Address mailboxOwner = new Address("someOwner", "someDomain.de");
-    User user = new User(mailboxOwner, "someDomain.de", "somePassword");
+    User user = new User(mailboxOwner, "somePassword", "someSalt");
     File justAnExistingFile = new File(tempDir, "mailboxFile.json");
-    boolean successFullyCreated = justAnExistingFile.createNewFile();
+    justAnExistingFile.createNewFile();
 
     MailboxFileProvider mockedRepository = (userAddress, type) -> Optional.of(justAnExistingFile);
     MailboxParser mockedParser =

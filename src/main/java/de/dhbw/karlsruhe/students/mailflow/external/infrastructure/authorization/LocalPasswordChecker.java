@@ -2,18 +2,20 @@ package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorizatio
 
 import static de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.PasswordHasher.hashPassword;
 
-import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.PasswordAuthenticator;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.HashingFailedException;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.HashingFailedException;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.PasswordChecker;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.User;
 import java.util.logging.Logger;
 
-public class LocalPasswordAuthenticator implements PasswordAuthenticator {
+public class LocalPasswordChecker implements PasswordChecker {
 
   /**
    * @author seiferla
    */
   @Override
   public boolean checkPassword(String password, User user) {
+    if (user == null) return false;
+    if (password == null) return false;
     try {
       return user.password().equals(hashPassword(password, user.salt()));
     } catch (HashingFailedException e) {

@@ -5,7 +5,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.user.User;
 /**
  * @author seiferla
  */
-public interface PasswordAuthenticator {
+public interface PasswordChecker {
 
   boolean checkPassword(String password, User user);
 }

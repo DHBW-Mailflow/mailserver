@@ -1,6 +1,6 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization;
 
-import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.HashingFailedException;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.HashingFailedException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

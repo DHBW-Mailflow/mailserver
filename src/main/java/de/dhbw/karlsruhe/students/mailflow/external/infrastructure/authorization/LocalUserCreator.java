@@ -2,12 +2,12 @@ package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorizatio
 
 import static de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.PasswordHasher.hashPassword;
 
-import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.UserAuthenticator;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.HashingFailedException;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.UserCreator;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.HashingFailedException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.User;
 
-public class LocalUserAuthenticator implements UserAuthenticator {
+public class LocalUserCreator implements UserCreator {
 
   /**
    * @author seiferla
