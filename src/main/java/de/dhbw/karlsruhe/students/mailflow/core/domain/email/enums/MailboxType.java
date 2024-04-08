@@ -2,7 +2,7 @@ package de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums;
 
 /**
  * The type a mailbox can have. This is used to categorize emails.
- * 
+ *
  * @author Jonas-Karl
  */
 public enum MailboxType {
@@ -40,12 +40,12 @@ public enum MailboxType {
    * @param fileSuffix defined by an enum value.
    */
   MailboxType(String fileSuffix) {
-    this.fileSuffix = fileSuffix.toLowerCase();
+    this.fileSuffix = fileSuffix;
   }
 
   private final String fileSuffix;
 
-  public String getFileSuffix() {
-    return fileSuffix;
+  public String getStoringName() {
+    return fileSuffix.toLowerCase();
   }
 }
