@@ -15,6 +15,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
+/**
+ * @author Jonas-Karl, seiferla
+ */
 public class JSONMailboxConverter implements MailboxConverter {
   private final Gson gson = getMailboxGson();
 
