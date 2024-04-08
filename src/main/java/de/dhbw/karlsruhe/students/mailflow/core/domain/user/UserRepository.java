@@ -5,9 +5,6 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Addre
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.SaveUserException;
 import java.util.Optional;
 
-/**
- * @author seiferla
- */
 public interface UserRepository {
   Optional<User> findByEmail(Address email) throws LoadingUsersException;
   boolean save(User user) throws SaveUserException, LoadingUsersException;

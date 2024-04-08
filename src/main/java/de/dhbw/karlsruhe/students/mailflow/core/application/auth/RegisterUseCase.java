@@ -4,9 +4,6 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.AuthorizationExcepti
 import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.LoadingUsersException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 
-/**
- * @author seiferla
- */
 public interface RegisterUseCase {
 
   boolean register(Address email, String password)
