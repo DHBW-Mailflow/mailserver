@@ -1,8 +1,6 @@
 package de.dhbw.karlsruhe.students.mailflow.core.application.imap;
 
-/**
- * @author Jonas-Karl
- */
+
 public interface ListenerService {
 
   void listen();

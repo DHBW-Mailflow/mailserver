@@ -48,6 +48,9 @@ public class JSONMailboxConverter implements MailboxConverter {
         .create();
   }
 
+  /**
+   * @author Jonas-Karl, seiferla
+   */
   private static class LocalDateTimeFormatter extends TypeAdapter<LocalDateTime> {
     @Override
     public void write(JsonWriter out, LocalDateTime dateTime) throws IOException {
