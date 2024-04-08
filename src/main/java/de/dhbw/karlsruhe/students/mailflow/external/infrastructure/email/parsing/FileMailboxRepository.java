@@ -13,6 +13,9 @@ import java.io.IOException;
 import java.util.logging.Logger;
 import org.fest.util.VisibleForTesting;
 
+/**
+ * @author Jonas-Karl
+ */
 public class FileMailboxRepository implements MailboxRepository {
   private final File allMailboxesDirectory;
   private final MailboxConverter mailboxSerializer;

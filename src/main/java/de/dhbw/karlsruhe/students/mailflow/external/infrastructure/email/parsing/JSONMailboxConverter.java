@@ -28,7 +28,6 @@ public class JSONMailboxConverter implements MailboxConverter {
 
   @Override
   public Mailbox deserializeMailboxFile(File mailboxFile) throws MailboxLoadingException {
-
     try (FileReader reader = new FileReader(mailboxFile)) {
       Mailbox mailbox = gson.fromJson(reader, Mailbox.class);
       if (mailbox == null) {

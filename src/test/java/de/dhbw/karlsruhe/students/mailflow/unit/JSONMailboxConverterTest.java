@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -186,7 +187,7 @@ class JSONMailboxConverterTest {
 
     Label label = Label.UNREAD;
     Mailbox expectedMailbox =
-        Mailbox.create(owner, Map.of(expectedEmail, List.of(label)), MailboxType.INBOX);
+        Mailbox.create(owner, Map.of(expectedEmail, Set.of(label)), MailboxType.INBOX);
     JSONMailboxConverter parser = new JSONMailboxConverter();
     // Act
     String serializedJSON = parser.serializeMailbox(expectedMailbox);

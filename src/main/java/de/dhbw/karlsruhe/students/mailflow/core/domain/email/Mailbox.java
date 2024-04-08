@@ -7,6 +7,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Addre
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.MailboxId;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author jens1o, Jonas-Karl
@@ -19,10 +20,10 @@ public final class Mailbox extends AggregateRoot<MailboxId> {
    */
   private final Address address;
 
-  private final Map<Email, List<Label>> emails;
+  private final Map<Email, Set<Label>> emails;
   private final MailboxType type;
 
-  private Mailbox(MailboxId id, Address address, Map<Email, List<Label>> emails, MailboxType type) {
+  private Mailbox(MailboxId id, Address address, Map<Email, Set<Label>> emails, MailboxType type) {
     super(id);
     if (type == null) {
       type = MailboxType.INBOX;
@@ -32,16 +33,12 @@ public final class Mailbox extends AggregateRoot<MailboxId> {
     this.type = type;
   }
 
-  public static Mailbox create(Address address, Map<Email, List<Label>> emails, MailboxType type) {
+  public static Mailbox create(Address address, Map<Email, Set<Label>> emails, MailboxType type) {
     return new Mailbox(MailboxId.createUnique(), address, emails, type);
   }
 
   public List<Email> getEmailList() {
     return emails.keySet().stream().toList();
-  }
-
-  public Map<Email, List<Label>> getEmailsWithLabels() {
-    return emails;
   }
 
   @Override

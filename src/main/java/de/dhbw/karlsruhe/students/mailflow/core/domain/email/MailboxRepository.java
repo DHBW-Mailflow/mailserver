@@ -6,6 +6,9 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxDoesNotExistException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 
+/**
+ * @author Jonas-Karl
+ */
 public interface MailboxRepository {
   Mailbox findByAddressAndType(Address address, MailboxType type)
       throws MailboxDoesNotExistException, MailboxLoadingException;

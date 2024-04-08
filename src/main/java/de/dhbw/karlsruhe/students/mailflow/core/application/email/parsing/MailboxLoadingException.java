@@ -1,5 +1,8 @@
 package de.dhbw.karlsruhe.students.mailflow.core.application.email.parsing;
 
+/**
+ * @author Jonas-Karl
+ */
 public class MailboxLoadingException extends Exception {
 
   public MailboxLoadingException(String s) {
