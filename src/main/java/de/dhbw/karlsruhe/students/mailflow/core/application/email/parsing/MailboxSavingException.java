@@ -3,8 +3,8 @@ package de.dhbw.karlsruhe.students.mailflow.core.application.email.parsing;
 import java.io.IOException;
 
 /**
-* @author Jonas-Karl
-*/
+ * @author Jonas-Karl
+ */
 public class MailboxSavingException extends Exception {
 
   public MailboxSavingException(String s) {
