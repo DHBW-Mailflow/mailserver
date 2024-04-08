@@ -39,7 +39,7 @@ public class FileMailboxRepositoryTest {
     Address mailboxOwner = new Address("someOwner", "someDomain.de");
     Mailbox searchingMailbox = Mailbox.create(mailboxOwner, Map.of(), mailboxType);
     File userDirectory = new File(allMailboxesDirectory, mailboxOwner.toString());
-    File mailboxFile = new File(userDirectory, mailboxType + ".json");
+    File mailboxFile = new File(userDirectory, mailboxType.getStoringName() + ".json");
     boolean successfullyCreatedDirectories = mailboxFile.mkdirs();
 
     MailboxConverter mockedMailboxConverter =
@@ -124,7 +124,7 @@ public class FileMailboxRepositoryTest {
 
     // Assert
     File userDirectory = new File(allMailboxesDirectory, mailboxOwner.toString());
-    File mailboxFile = new File(userDirectory, mailboxType + ".json");
+    File mailboxFile = new File(userDirectory, mailboxType.getStoringName() + ".json");
     Assertions.assertTrue(mailboxFile.exists());
 
     String writtenContent = Files.readString(mailboxFile.toPath());
