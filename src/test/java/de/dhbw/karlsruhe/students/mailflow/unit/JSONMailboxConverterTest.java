@@ -2,11 +2,11 @@ package de.dhbw.karlsruhe.students.mailflow.unit;
 
 import static org.fest.assertions.api.Assertions.*;
 
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.parsing.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.Label;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.EmailMetadata;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Header;

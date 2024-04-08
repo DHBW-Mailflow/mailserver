@@ -1,11 +1,10 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.parsing;
 
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.parsing.MailboxLoadingException;
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.parsing.MailboxSavingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.MailboxRepository;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxDoesNotExistException;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import java.io.File;
 import java.io.FileWriter;
@@ -22,9 +21,9 @@ public class FileMailboxRepository implements MailboxRepository {
 
   @VisibleForTesting
   public FileMailboxRepository(MailboxConverter mailboxSerializer, File allMailboxesDirectory) {
-    this.mailboxSerializer = mailboxSerializer;
     Logger.getLogger(FileMailboxRepository.class.getName())
         .warning("VisibleForTesting method called");
+    this.mailboxSerializer = mailboxSerializer;
     this.allMailboxesDirectory = allMailboxesDirectory;
   }
 
@@ -35,70 +34,65 @@ public class FileMailboxRepository implements MailboxRepository {
 
   @Override
   public Mailbox findByAddressAndType(Address address, MailboxType type)
-      throws MailboxDoesNotExistException, MailboxLoadingException {
-    File mailboxFile = loadMailboxFile(address, type);
-    if (!mailboxFile.exists()) {
-      throw new MailboxDoesNotExistException("Mailbox file does not exist");
-    }
+      throws MailboxLoadingException, MailboxSavingException {
+    File mailboxFile = getOrCreateFile(address, type);
     return mailboxSerializer.deserializeMailboxFile(mailboxFile);
   }
 
   @Override
   public void save(Mailbox mailbox) throws MailboxSavingException {
     String mailboxContent = mailboxSerializer.serializeMailbox(mailbox);
-    File createdMailboxFile = getOrCreateMailboxFile(mailbox);
+    File createdMailboxFile = getOrCreateFile(mailbox.getOwner(), mailbox.getType());
     writeContentToFile(createdMailboxFile, mailboxContent);
   }
 
+  /**
+   * overrides existing content of provided file
+   *
+   * @param createdMailboxFile the file to write the content to
+   * @param mailboxContent the content to write
+   * @throws MailboxSavingException when a error occurred during the writing process
+   */
   private void writeContentToFile(File createdMailboxFile, String mailboxContent)
       throws MailboxSavingException {
     try (FileWriter writer = new FileWriter(createdMailboxFile)) {
       writer.write(mailboxContent); // override existing content
     } catch (IOException e) {
-      throw new MailboxSavingException("Could not save mailbox to file: " + mailboxContent, e);
+      throw new MailboxSavingException(
+          "Could not save mailbox content to file: " + mailboxContent, e);
     }
   }
 
-  private File getOrCreateMailboxFile(Mailbox mailbox) throws MailboxSavingException {
-    File directoryOfUser = new File(allMailboxesDirectory, mailbox.getOwner().toString());
-    File mailboxFile = new File(directoryOfUser, mailbox.getType().getStoringName() + ".json");
-    if (!directoryOfUser.exists() && !directoryOfUser.mkdirs()) {
-      throw new MailboxSavingException("Could not create directory" + directoryOfUser.getPath());
-    }
+  /**
+   * @param address the address of the mailbox owner
+   * @param type the type of the mailbox like INBOX, SENT, etc.
+   * @return the file where the mailbox is stored
+   * @throws MailboxSavingException when a error occurred during the creation process
+   */
+  private File getOrCreateFile(Address address, MailboxType type) throws MailboxSavingException {
+    File directoryOfUser = new File(allMailboxesDirectory, address.toString());
+    File mailboxFile = new File(directoryOfUser, type.getStoringName() + ".json");
     if (mailboxFile.exists()) {
       return mailboxFile;
     }
+    return createMailboxFile(mailboxFile);
+  }
+
+  /**
+   * Creates needed directories and the file itself
+   *
+   * @param mailboxFile The file to create
+   * @return the created file
+   * @throws MailboxSavingException if the file could not be created
+   */
+  private File createMailboxFile(File mailboxFile) throws MailboxSavingException {
     try {
-      if (!mailboxFile.createNewFile()) {
-        throw new MailboxSavingException("Could not create mailbox file" + mailboxFile.getPath());
+      if (!mailboxFile.getParentFile().mkdirs() || !mailboxFile.createNewFile()) {
+        throw new MailboxSavingException(mailboxFile.getPath());
       }
       return mailboxFile;
     } catch (IOException e) {
-      throw new MailboxSavingException("Could not create new mailbox File" + mailboxFile.getPath());
+      throw new MailboxSavingException(mailboxFile.getPath(), e);
     }
-  }
-
-  private File loadMailboxFile(Address address, MailboxType type)
-      throws MailboxDoesNotExistException {
-
-    if (!allMailboxesDirectory.exists()) {
-      throw new MailboxDoesNotExistException("Directory of all users does not exist");
-    }
-
-    File directoryOfUser = new File(allMailboxesDirectory, address.toString());
-
-    if (!directoryOfUser.exists()) {
-      throw new MailboxDoesNotExistException(
-          String.format("Directory of user %s does not exist", address));
-    }
-
-    File mailbox = new File(directoryOfUser, type.getStoringName() + ".json");
-
-    if (!directoryOfUser.exists()) {
-      throw new MailboxDoesNotExistException(
-          String.format(
-              "Mailbox of type %s does not exist for user %s", type.getStoringName(), address));
-    }
-    return mailbox;
   }
 }

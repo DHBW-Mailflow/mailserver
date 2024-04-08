@@ -1,11 +1,10 @@
 package de.dhbw.karlsruhe.students.mailflow.unit;
 
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.parsing.MailboxLoadingException;
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.parsing.MailboxSavingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.MailboxRepository;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxDoesNotExistException;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.parsing.FileMailboxRepository;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.parsing.MailboxConverter;
@@ -34,7 +33,7 @@ public class FileMailboxRepositoryTest {
   @ParameterizedTest(name = "should retrieve correct mailboxType {0}")
   @EnumSource(MailboxType.class)
   public void retrieveCorrectMailbox(MailboxType mailboxType)
-      throws MailboxLoadingException, MailboxDoesNotExistException {
+      throws MailboxLoadingException, MailboxSavingException {
     // Arrange
     Address mailboxOwner = new Address("someOwner", "someDomain.de");
     Mailbox searchingMailbox = Mailbox.create(mailboxOwner, Map.of(), mailboxType);
@@ -64,12 +63,15 @@ public class FileMailboxRepositoryTest {
     Assertions.assertEquals(searchingMailbox, foundMailbox);
   }
 
-  @ParameterizedTest(name = "should throw exception for mailboxType {0}")
+  @ParameterizedTest(name = "should create directories and files for mailboxType {0}")
   @EnumSource(MailboxType.class)
-  public void searchingNonExistentMailboxShouldThrow(MailboxType mailboxType) {
+  public void searchingNonExistentMailboxShouldCreate(MailboxType mailboxType)
+      throws MailboxSavingException, MailboxLoadingException {
     // Arrange
     Address mailboxOwner = new Address("someOwner", "someDomain.de");
     Mailbox searchingMailbox = Mailbox.create(mailboxOwner, Map.of(), mailboxType);
+    File directoryOfUser = new File(allMailboxesDirectory, mailboxOwner.toString());
+    File mailboxFile = new File(directoryOfUser, mailboxType.getStoringName() + ".json");
 
     MailboxConverter mockedMailboxConverter =
         new MailboxConverter() {
@@ -87,11 +89,12 @@ public class FileMailboxRepositoryTest {
     this.fileMailboxRepository =
         new FileMailboxRepository(mockedMailboxConverter, allMailboxesDirectory);
 
+    // Act
+    Mailbox foundMailbox = fileMailboxRepository.findByAddressAndType(mailboxOwner, mailboxType);
+
     // Assert
-    Assertions.assertThrows(
-        MailboxDoesNotExistException.class,
-        // Act
-        () -> fileMailboxRepository.findByAddressAndType(mailboxOwner, mailboxType));
+    Assertions.assertEquals(searchingMailbox, foundMailbox);
+    Assertions.assertTrue(mailboxFile.exists());
   }
 
   @ParameterizedTest(name = "should create file for mailboxType {0}")

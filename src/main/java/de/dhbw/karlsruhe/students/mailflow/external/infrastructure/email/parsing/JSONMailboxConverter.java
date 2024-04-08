@@ -8,8 +8,8 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.parsing.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -31,7 +31,9 @@ public class JSONMailboxConverter implements MailboxConverter {
     try (FileReader reader = new FileReader(mailboxFile)) {
       Mailbox mailbox = gson.fromJson(reader, Mailbox.class);
       if (mailbox == null) {
-        throw new MailboxLoadingException("Mailbox could not be loaded");
+        String errorMessage =
+            String.format("Mailbox could not be parsed from file %s", mailboxFile.getPath());
+        throw new MailboxLoadingException(errorMessage);
       }
       return mailbox;
     } catch (JsonSyntaxException | JsonIOException | IOException e) {
