@@ -64,6 +64,12 @@
         </dependency>
         <dependency>
             <groupId>org.apache.james</groupId>
+            <artifactId>james-server-protocols-smtp</artifactId>
+            <version>3.8.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.james</groupId>
             <artifactId>metrics-logger</artifactId>
             <version>3.8.1</version>
         </dependency>
