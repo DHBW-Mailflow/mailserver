@@ -33,13 +33,14 @@ public class JSONMailboxConverter implements MailboxConverter {
       }
       return mailbox;
     } catch (JsonSyntaxException | JsonIOException | IOException e) {
-      throw new MailboxLoadingException("Mailbox could not deserialize mailbox", e);
+      throw new MailboxLoadingException("Could not deserialize mailbox", e);
     }
   }
 
   private Gson getMailboxGson() {
     return new GsonBuilder()
         .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeFormatter())
+        .enableComplexMapKeySerialization()
         .create();
   }
 

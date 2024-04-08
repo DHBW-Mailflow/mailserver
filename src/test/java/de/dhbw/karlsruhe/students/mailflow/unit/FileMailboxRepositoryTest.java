@@ -12,11 +12,12 @@ import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.parsing
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 public class FileMailboxRepositoryTest {
   private MailboxRepository fileMailboxRepository;
@@ -27,13 +28,13 @@ public class FileMailboxRepositoryTest {
     allMailboxesDirectory = tempDir;
   }
 
-  @Test
-  public void retrieveCorrectMailbox()
+  @ParameterizedTest(name = "should retrieve correct mailboxType {0}")
+  @EnumSource(MailboxType.class)
+  public void retrieveCorrectMailbox(MailboxType mailboxType)
       throws MailboxLoadingException, MailboxDoesNotExistException {
     // Arrange
     Address mailboxOwner = new Address("someOwner", "someDomain.de");
-    MailboxType mailboxType = MailboxType.READ;
-    Mailbox searchingMailbox = Mailbox.create(mailboxOwner, List.of(), mailboxType);
+    Mailbox searchingMailbox = Mailbox.create(mailboxOwner, Map.of(), mailboxType);
     File userDirectory = new File(allMailboxesDirectory, mailboxOwner.toString());
     File mailboxFile = new File(userDirectory, mailboxType + ".json");
     boolean successfullyCreatedDirectories = mailboxFile.mkdirs();
@@ -60,12 +61,12 @@ public class FileMailboxRepositoryTest {
     Assertions.assertEquals(searchingMailbox, foundMailbox);
   }
 
-  @Test
-  public void searchingNonExistentMailboxShouldThrow() {
+  @ParameterizedTest(name = "should throw exception for mailboxType {0}")
+  @EnumSource(MailboxType.class)
+  public void searchingNonExistentMailboxShouldThrow(MailboxType mailboxType) {
     // Arrange
     Address mailboxOwner = new Address("someOwner", "someDomain.de");
-    MailboxType mailboxType = MailboxType.READ;
-    Mailbox searchingMailbox = Mailbox.create(mailboxOwner, List.of(), mailboxType);
+    Mailbox searchingMailbox = Mailbox.create(mailboxOwner, Map.of(), mailboxType);
 
     MailboxConverter mockedMailboxConverter =
         new MailboxConverter() {
@@ -90,12 +91,13 @@ public class FileMailboxRepositoryTest {
         () -> fileMailboxRepository.findByAddressAndType(mailboxOwner, mailboxType));
   }
 
-  @Test
-  public void saveMailboxShouldCreateFile() throws MailboxSavingException, IOException {
+  @ParameterizedTest(name = "should create file for mailboxType {0}")
+  @EnumSource(MailboxType.class)
+  public void saveMailboxShouldCreateFile(MailboxType mailboxType)
+      throws MailboxSavingException, IOException {
     // Arrange
     Address mailboxOwner = new Address("someOwner", "someDomain.de");
-    MailboxType mailboxType = MailboxType.READ;
-    Mailbox mailboxToSave = Mailbox.create(mailboxOwner, List.of(), mailboxType);
+    Mailbox mailboxToSave = Mailbox.create(mailboxOwner, Map.of(), mailboxType);
 
     String expectedSerializedMailboxJson = "someSerializedMailboxJson";
     MailboxConverter mockedMailboxConverter =

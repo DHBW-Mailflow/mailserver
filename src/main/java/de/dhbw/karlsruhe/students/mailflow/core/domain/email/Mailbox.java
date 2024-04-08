@@ -1,10 +1,12 @@
 package de.dhbw.karlsruhe.students.mailflow.core.domain.email;
 
 import de.dhbw.karlsruhe.students.mailflow.core.domain.common.models.AggregateRoot;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.Label;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.MailboxId;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author jens1o, Jonas-Karl
@@ -17,24 +19,28 @@ public final class Mailbox extends AggregateRoot<MailboxId> {
    */
   private final Address address;
 
-  private List<Email> emails;
+  private final Map<Email, List<Label>> emails;
   private final MailboxType type;
 
-  private Mailbox(MailboxId id, Address address, List<Email> emails, MailboxType type) {
+  private Mailbox(MailboxId id, Address address, Map<Email, List<Label>> emails, MailboxType type) {
     super(id);
     if (type == null) {
-      type = MailboxType.READ;
+      type = MailboxType.INBOX;
     }
     this.emails = emails;
     this.address = address;
     this.type = type;
   }
 
-  public static Mailbox create(Address address, List<Email> emails, MailboxType type) {
+  public static Mailbox create(Address address, Map<Email, List<Label>> emails, MailboxType type) {
     return new Mailbox(MailboxId.createUnique(), address, emails, type);
   }
 
-  public List<Email> getEmails() {
+  public List<Email> getEmailList() {
+    return emails.keySet().stream().toList();
+  }
+
+  public Map<Email, List<Label>> getEmailsWithLabels() {
     return emails;
   }
 
