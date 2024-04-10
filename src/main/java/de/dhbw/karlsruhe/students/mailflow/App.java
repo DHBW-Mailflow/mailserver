@@ -27,7 +27,6 @@ public class App {
 
     logger.info("Starting SMTP...");
 
-
     int smtpPort = 50200;
     String smtpHost = "localhost";
     SMTPConfiguration smtpConfiguration = new SMTPConfigurationImpl();
@@ -38,7 +37,8 @@ public class App {
         new NettyServer.Factory().protocol(new SMTPProtocol(chain, smtpConfiguration)).build();
     server.setListenAddresses(new InetSocketAddress(smtpHost, smtpPort));
     server.bind();
-    logger.info("SMTP Server started with addresses: %s".formatted(server.getListenAddresses().toString()));
+    logger.info(
+        "SMTP Server started with addresses: %s".formatted(server.getListenAddresses().toString()));
 
     ListenerService listenerService = new LocalListenerService(new JamesImapListener());
     listenerService.listen();
