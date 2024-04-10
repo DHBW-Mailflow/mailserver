@@ -36,12 +36,13 @@ public class SMTPListener {
 
   private final NettyServer server;
 
-  public SMTPListener( String host,int port) {
+  public SMTPListener(String host, int port) {
     MetricFactory metricFactory = new DefaultMetricFactory();
     ProtocolHandlerChain chain = new SMTPProtocolHandlerChain(metricFactory);
-    CommandDispatcher<ExtendedSMTPSession> commandDispatcher = chain.getHandlers(CommandDispatcher.class).get(0);
+    CommandDispatcher<ExtendedSMTPSession> commandDispatcher =
+        chain.getHandlers(CommandDispatcher.class).get(0);
     List<ProtocolHandler> commandHandlers = new ArrayList<>();
- //   defaultHandlers.add(new CommandDispatcher<SMTPSession>());
+    //   defaultHandlers.add(new CommandDispatcher<SMTPSession>());
     commandHandlers.add(new ExpnCmdHandler());
     commandHandlers.add(new EhloCmdHandler(metricFactory));
     commandHandlers.add(new HeloCmdHandler(metricFactory));
@@ -58,46 +59,43 @@ public class SMTPListener {
     commandHandlers.add(new UnknownCmdHandler(metricFactory));
 
     /*          List.of(
-              new HeloCmdHandler(metricFactory),
-              new MailCmdHandler(metricFactory),
-              new RcptCmdHandler(metricFactory),
-              new DataCmdHandler(metricFactory))*/
+    new HeloCmdHandler(metricFactory),
+    new MailCmdHandler(metricFactory),
+    new RcptCmdHandler(metricFactory),
+    new DataCmdHandler(metricFactory))*/
 
-/*    List<ProtocolHandler> defaultHandlers = new ArrayList<>();
+    /*    List<ProtocolHandler> defaultHandlers = new ArrayList<>();
     defaultHandlers.add(new MailSizeEsmtpExtension());
      defaultHandlers.add(new WelcomeMessageHandler());
      defaultHandlers.add(new PostmasterAbuseRcptHook()); //RcptHook
     defaultHandlers.add(new ReceivedDataLineFilter());
      defaultHandlers.add(new DataLineMessageHookHandler());
       defaultHandlers.add(new CommandHandlerResultLogger());*/
-   // DataLineMessageHookHandler
+    // DataLineMessageHookHandler
 
     try {
       commandDispatcher.wireExtensions(CommandHandler.class, commandHandlers);
-      dataCmdHandler.wireExtensions(DataLineFilter.class, List.of(new DataLineJamesMessageHookHandler()));
+      dataCmdHandler.wireExtensions(
+          DataLineFilter.class, List.of(new DataLineJamesMessageHookHandler()));
 
       /*for (ProtocolHandler handler : defaultHandlers) {
-        commandDispatcher.wireExtensions(
-            handler.getClass().getSuperclass(),
-            List.of(handler)
-        );*/
+      commandDispatcher.wireExtensions(
+          handler.getClass().getSuperclass(),
+          List.of(handler)
+      );*/
 
     } catch (WiringException e) {
       throw new RuntimeException(e);
     }
     SMTPConfiguration smtpConfiguration = new SMTPConfigurationImpl();
 
-
-    server = new NettyServer.Factory()
-        .protocol(new SMTPProtocol(chain, smtpConfiguration))
-        .build();
+    server = new NettyServer.Factory().protocol(new SMTPProtocol(chain, smtpConfiguration)).build();
     server.setListenAddresses(new InetSocketAddress(host, port));
   }
 
   public void listen() throws Exception {
     this.server.bind();
   }
-
 
   public List<InetSocketAddress> getListenAddresses() {
     return server.getListenAddresses();
