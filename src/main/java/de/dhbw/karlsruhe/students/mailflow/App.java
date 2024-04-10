@@ -22,7 +22,6 @@ public class App {
   public static void main(String[] args) throws Exception {
     int smtpPort = 50200;
     String smtpHost = "localhost";
-
     SMTPConfiguration smtpConfiguration = new SMTPConfigurationImpl();
     MetricFactory metricFactory = new DefaultMetricFactory();
     ProtocolHandlerChain chain = new SMTPProtocolHandlerChain(metricFactory);
