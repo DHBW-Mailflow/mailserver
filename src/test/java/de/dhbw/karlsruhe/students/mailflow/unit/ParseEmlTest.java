@@ -44,18 +44,18 @@ class ParseEmlTest {
                 assertNotNull(email);
 
                 assertEquals(new Address("someone", "example.com"),
-                                email.getEmailMetadata().sender());
+                                email.getSender());
 
                 assertEquals(List.of(new Address("someone_else", "example.com")),
-                                email.getEmailMetadata().recipients().to());
-                assertEquals(Collections.emptyList(), email.getEmailMetadata().recipients().cc());
-                assertEquals(Collections.emptyList(), email.getEmailMetadata().recipients().bcc());
+                                email.getRecipientTo());
+                assertEquals(Collections.emptyList(), email.getRecipientCC());
+                assertEquals(Collections.emptyList(), email.getRecipientBCC());
 
                 assertEquals(new Subject("An RFC 822 formatted message"),
-                                email.getEmailMetadata().subject());
+                                email.getSubject());
 
                 assertEquals(SentDate.ofFormattedString("2024-03-20T11:02:50.00Z"),
-                                email.getEmailMetadata().sentDate());
+                                email.getSendDate());
                 assertEquals("This is the plain text body of the message. Note the blank line\n"
                                 + "between the header information and the body of the message.",
                                 email.getContent());

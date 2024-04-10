@@ -1,7 +1,8 @@
 package de.dhbw.karlsruhe.students.mailflow.core.domain.email;
 
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
-import java.util.ArrayList;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.SentDate;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Subject;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -20,7 +21,6 @@ public final class Email extends AggregateRoot<EmailId> {
     private final EmailMetadata emailMetadata;
     private final String content;
     private final Set<Attachment> attachments;
-    private final List<Address> recipientCC;
 
     private Email(EmailId id, String content, EmailMetadata emailMetadata,
             Set<Attachment> attachments) {
@@ -28,7 +28,6 @@ public final class Email extends AggregateRoot<EmailId> {
         this.emailMetadata = emailMetadata;
         this.content = content;
         this.attachments = attachments;
-        this.recipientCC = new ArrayList<>();
     }
 
     public static Email create(String content, EmailMetadata emailMetadata,
@@ -63,6 +62,26 @@ public final class Email extends AggregateRoot<EmailId> {
     }
 
     public List<Address> getRecipientCC() {
-        return this.recipientCC;
+        return this.emailMetadata.recipients().cc();
+    }
+
+    public List<Address> getRecipientBCC() {
+        return this.emailMetadata.recipients().bcc();
+    }
+
+    public Subject getSubject() {
+        return this.emailMetadata.subject();
+    }
+
+    public SentDate getSendDate() {
+        return this.emailMetadata.sentDate();
+    }
+
+    public Address getSender() {
+        return this.emailMetadata.sender();
+    }
+
+    public List<Address> getRecipientTo() {
+        return this.emailMetadata.recipients().to();
     }
 }

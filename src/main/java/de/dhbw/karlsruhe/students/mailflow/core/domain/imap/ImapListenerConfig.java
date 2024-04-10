@@ -16,7 +16,7 @@ public record ImapListenerConfig(String host, int port) {
    * @throws IOException if there occurred an issue during the port allocation
    */
   private static int getFreePort() throws IOException {
-    try (ServerSocket socket = new ServerSocket(465)) {
+    try (ServerSocket socket = new ServerSocket(0)) {
       var port = socket.getLocalPort();
 
       if (port != -1) {
