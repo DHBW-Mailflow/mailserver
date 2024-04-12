@@ -57,9 +57,6 @@ public final class Email extends AggregateRoot<EmailId> {
         return super.hashCode();
     }
 
-    public EmailMetadata getEmailMetadata() {
-        return emailMetadata;
-    }
 
     public List<Address> getRecipientCC() {
         return this.emailMetadata.recipients().cc();
