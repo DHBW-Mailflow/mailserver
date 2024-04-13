@@ -21,7 +21,7 @@ import org.junit.jupiter.params.provider.EnumSource;
 /**
  * @author Jonas-Karl
  */
-public class FileMailboxRepositoryTest {
+class FileMailboxRepositoryTest {
   private MailboxRepository fileMailboxRepository;
   private File allMailboxesDirectory;
 
@@ -32,7 +32,7 @@ public class FileMailboxRepositoryTest {
 
   @ParameterizedTest(name = "should retrieve correct mailboxType {0}")
   @EnumSource(MailboxType.class)
-  public void retrieveCorrectMailbox(MailboxType mailboxType)
+  void retrieveCorrectMailbox(MailboxType mailboxType)
       throws MailboxLoadingException, MailboxSavingException {
     // Arrange
     Address mailboxOwner = new Address("someOwner", "someDomain.de");
@@ -65,7 +65,7 @@ public class FileMailboxRepositoryTest {
 
   @ParameterizedTest(name = "should create directories and files for mailboxType {0}")
   @EnumSource(MailboxType.class)
-  public void searchingNonExistentMailboxShouldCreate(MailboxType mailboxType)
+  void searchingNonExistentMailboxShouldCreate(MailboxType mailboxType)
       throws MailboxSavingException, MailboxLoadingException {
     // Arrange
     Address mailboxOwner = new Address("someOwner", "someDomain.de");
@@ -99,7 +99,7 @@ public class FileMailboxRepositoryTest {
 
   @ParameterizedTest(name = "should create file for mailboxType {0}")
   @EnumSource(MailboxType.class)
-  public void saveMailboxShouldCreateFile(MailboxType mailboxType)
+  void saveMailboxShouldCreateFile(MailboxType mailboxType)
       throws MailboxSavingException, IOException {
     // Arrange
     Address mailboxOwner = new Address("someOwner", "someDomain.de");

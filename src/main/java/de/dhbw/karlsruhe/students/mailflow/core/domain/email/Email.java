@@ -1,6 +1,10 @@
 package de.dhbw.karlsruhe.students.mailflow.core.domain.email;
 
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.SentDate;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Subject;
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 import de.dhbw.karlsruhe.students.mailflow.core.domain.common.models.AggregateRoot;
@@ -53,7 +57,28 @@ public final class Email extends AggregateRoot<EmailId> {
         return super.hashCode();
     }
 
-    public EmailMetadata getEmailMetadata() {
-        return emailMetadata;
+
+    public List<Address> getRecipientCC() {
+        return this.emailMetadata.recipients().cc();
+    }
+
+    public List<Address> getRecipientBCC() {
+        return this.emailMetadata.recipients().bcc();
+    }
+
+    public Subject getSubject() {
+        return this.emailMetadata.subject();
+    }
+
+    public SentDate getSendDate() {
+        return this.emailMetadata.sentDate();
+    }
+
+    public Address getSender() {
+        return this.emailMetadata.sender();
+    }
+
+    public List<Address> getRecipientTo() {
+        return this.emailMetadata.recipients().to();
     }
 }

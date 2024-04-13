@@ -14,12 +14,13 @@ public final class CreateEmailHelper {
   private CreateEmailHelper() {}
 
   public static Email createEmailWithMessage(Message message) throws EmailParsingException {
+
     try {
-      return Email.create(message.getContent().toString(),
+      return Email.create(
+          message.getContent().toString(),
           EmailMetadataFactory.withMessage(message).build(), null);
     } catch (IOException | MessagingException e) {
       throw new EmailParsingException("couldn't build final email", e);
     }
   }
-
 }

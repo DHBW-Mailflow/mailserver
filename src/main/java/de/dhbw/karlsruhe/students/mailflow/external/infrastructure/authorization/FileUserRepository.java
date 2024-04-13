@@ -77,7 +77,7 @@ public class FileUserRepository implements UserRepository {
   @Override
   public Optional<User> findByEmail(Address email) throws LoadingUsersException {
     loadUsers();
-    return users.stream().filter(user -> user.email().equals(email)).findFirst();
+    return users.stream().filter(user -> user.hasEmail(email)).findFirst();
   }
 
   @Override
