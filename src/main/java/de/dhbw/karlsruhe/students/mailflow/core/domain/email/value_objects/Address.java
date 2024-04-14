@@ -11,4 +11,18 @@ public record Address(String localPart, String domain) {
     public String toString() {
         return localPart + "@" + domain;
     }
+
+    /**
+     * @param emailString email to parse
+     * @return the address object of the given email
+     * @throws IllegalArgumentException when no @-sign was provided
+     */
+    public static Address from(String emailString) {
+        int index = emailString.lastIndexOf("@");
+        if (index == -1) {
+            throw new IllegalArgumentException("No \"@\" was provided in %s".formatted(emailString));
+        }
+        return new Address(emailString.substring(0, index),
+                emailString.substring(index + 1));
+    }
 }

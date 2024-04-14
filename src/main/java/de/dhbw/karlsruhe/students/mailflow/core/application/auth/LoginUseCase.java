@@ -7,5 +7,11 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.user.User;
 
 public interface LoginUseCase {
 
-  User login(Address email, String password) throws AuthorizationException, LoadingUsersException;
+    User login(Address email, String password) throws AuthorizationException, LoadingUsersException;
+
+    User login(String email, String password) throws AuthorizationException, LoadingUsersException;
+
+    User getSessionUser();
+
+
 }
