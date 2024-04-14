@@ -9,6 +9,11 @@ import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * CLI-Entrypoint
+ *
+ * @author Jonas-Karl
+ */
 public class CLIPromptServer extends AbstractCLIPrompt implements Server {
   private final AuthUseCase authUseCase;
   private final RegisterUseCase registerUseCase;

@@ -5,6 +5,9 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.AuthorizationExcepti
 import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.LoadingUsersException;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.AbstractCLIPrompt;
 
+/**
+ * @author Jonas-Karl
+ */
 public class LoginCLIPrompt extends AbstractCLIPrompt {
   private final AuthUseCase authUseCase;
 

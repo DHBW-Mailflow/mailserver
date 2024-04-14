@@ -6,12 +6,15 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.LoadingUsersExceptio
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.AbstractCLIPrompt;
 
+/**
+ * @author Jonas-Karl
+ */
 public class RegisterCLIPrompt extends AbstractCLIPrompt {
-    private final RegisterUseCase registerUseCase;
+  private final RegisterUseCase registerUseCase;
 
-    public RegisterCLIPrompt(RegisterUseCase registerUseCase) {
-        this.registerUseCase = registerUseCase;
-    }
+  public RegisterCLIPrompt(RegisterUseCase registerUseCase) {
+    this.registerUseCase = registerUseCase;
+  }
 
   @Override
   public void start() {
