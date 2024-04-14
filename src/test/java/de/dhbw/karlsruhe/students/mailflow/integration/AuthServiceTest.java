@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 /**
  * @author Jonas-Karl
  */
-class LoginServiceTest {
+class AuthServiceTest {
 
   @Test
   void shouldLoginSuccessfully() throws AuthorizationException, LoadingUsersException {
