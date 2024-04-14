@@ -21,4 +21,8 @@ public record User(Address email, String password, String salt) {
       throw new InvalidSaltException("Salt must not be null or empty");
     }
   }
+
+  public boolean hasEmail(Address email) {
+    return this.email.equals(email);
+  }
 }
