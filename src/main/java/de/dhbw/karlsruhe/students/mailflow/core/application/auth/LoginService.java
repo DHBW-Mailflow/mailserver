@@ -6,7 +6,6 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.PasswordChecker;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.User;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserRepository;
-
 import java.util.Optional;
 
 /**
@@ -24,39 +23,32 @@ public class LoginService implements LoginUseCase {
         this.passwordChecker = passwordChecker;
     }
 
-    @Override
-    public User login(Address email, String password)
-            throws AuthorizationException, LoadingUsersException {
+  @Override
+  public void login(String email, String password)
+      throws AuthorizationException, LoadingUsersException {
+    try {
+      Address address = Address.from(email);
+      authorizeUser(address, password);
+    } catch (IllegalArgumentException e) {
+      throw new AuthorizationException("Credentials are incorrect. " + e.getMessage());
+    }
+  }
 
-        return authorizeUser(email, password);
+  private void authorizeUser(Address address, String password)
+      throws LoadingUsersException, AuthorizationException {
+    Optional<User> foundUser = userRepository.findByEmail(address);
+
+    if (foundUser.isEmpty()) {
+      throw new AuthorizationException("Credentials are incorrect");
     }
 
-    @Override
-    public User login(String email, String password)
-            throws AuthorizationException, LoadingUsersException {
-        try {
-            Address address = Address.from(email);
-            return authorizeUser(address, password);
-        } catch (IllegalArgumentException e) {
-            throw new AuthorizationException("Credentials are incorrect. " + e.getMessage());
-        }
-    }
+    var user = foundUser.get();
 
-    private User authorizeUser(Address address, String password) throws LoadingUsersException, AuthorizationException {
-        Optional<User> foundUser = userRepository.findByEmail(address);
-
-        if (foundUser.isEmpty()) {
-            throw new AuthorizationException("Credentials are incorrect");
-        }
-
-        var user = foundUser.get();
-
-        if (!passwordChecker.checkPassword(password, user)) {
-            throw new AuthorizationException("Credentials are incorrect");
+    if (!passwordChecker.checkPassword(password, user)) {
+      throw new AuthorizationException("Credentials are incorrect");
         }
 
         this.sessionUser = user;
-        return user;
     }
 
     @Override

@@ -6,10 +6,11 @@ import de.dhbw.karlsruhe.students.mailflow.core.application.auth.RegisterUseCase
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.RegistrationService;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.SendEmailService;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.SendEmailUseCase;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.server.Server;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.FileUserRepository;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.LocalPasswordChecker;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.LocalUserCreator;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.CLIPrompt;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.CLIPromptServer;
 
 /**
  * Hello world!
@@ -17,12 +18,14 @@ import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.CLIPrompt
  * @author jens1o, Jonas-Karl, seiferla
  */
 public class App {
-    public static void main(String[] args) {
+  public static void main(String[] args) {
 
-        LoginUseCase loginUseCase = new LoginService(new FileUserRepository(), new LocalPasswordChecker());
-        RegisterUseCase registerUseCase = new RegistrationService(new FileUserRepository(), new LocalUserCreator());
-        SendEmailUseCase sendEmailUseCase = new SendEmailService(); //add repositories
-        Server server = new CLIPrompt(loginUseCase, registerUseCase, sendEmailUseCase);
-        server.start();
-    }
+    LoginUseCase loginUseCase =
+        new LoginService(new FileUserRepository(), new LocalPasswordChecker());
+    RegisterUseCase registerUseCase =
+        new RegistrationService(new FileUserRepository(), new LocalUserCreator());
+    SendEmailUseCase sendEmailUseCase = new SendEmailService(); // add repositories
+    Server server = new CLIPromptServer(loginUseCase, registerUseCase, sendEmailUseCase);
+    server.start();
+  }
 }

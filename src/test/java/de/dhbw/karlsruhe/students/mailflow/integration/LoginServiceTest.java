@@ -38,9 +38,9 @@ class LoginServiceTest {
 
     var loginService = new LoginService(mockedUserRepository, (password, user) -> true);
 
-    User returningUser = loginService.login(userToLogin.email(), userToLogin.password());
+    loginService.login(userToLogin.email().toString(), userToLogin.password());
 
-    assertEquals(userToLogin, returningUser);
+    assertEquals(userToLogin, loginService.getSessionUser());
   }
 
   @Test
@@ -69,7 +69,7 @@ class LoginServiceTest {
         AuthorizationException.class,
         () -> {
           // Act
-          loginService.login(otherUser.email(), userToLogin.password());
+          loginService.login(otherUser.email().toString(), userToLogin.password());
         });
   }
 }
