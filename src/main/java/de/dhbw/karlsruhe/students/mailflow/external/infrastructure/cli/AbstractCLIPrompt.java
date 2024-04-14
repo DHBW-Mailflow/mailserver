@@ -16,9 +16,6 @@ public abstract class AbstractCLIPrompt implements Server {
   private static final int MAX_ATTEMPTS = 3;
   private int attemptCount;
 
-  @Override
-  public abstract void start();
-
   /** Stops the server */
   @Override
   public void stop() {
