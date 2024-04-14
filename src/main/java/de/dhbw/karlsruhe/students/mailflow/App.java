@@ -1,11 +1,9 @@
 package de.dhbw.karlsruhe.students.mailflow;
 
-import de.dhbw.karlsruhe.students.mailflow.core.application.auth.LoginService;
-import de.dhbw.karlsruhe.students.mailflow.core.application.auth.LoginUseCase;
+import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthService;
+import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.RegisterUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.RegistrationService;
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.SendEmailService;
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.SendEmailUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.server.Server;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.FileUserRepository;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.LocalPasswordChecker;
@@ -20,12 +18,10 @@ import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.CLIPrompt
 public class App {
   public static void main(String[] args) {
 
-    LoginUseCase loginUseCase =
-        new LoginService(new FileUserRepository(), new LocalPasswordChecker());
+    AuthUseCase authUseCase = new AuthService(new FileUserRepository(), new LocalPasswordChecker());
     RegisterUseCase registerUseCase =
         new RegistrationService(new FileUserRepository(), new LocalUserCreator());
-    SendEmailUseCase sendEmailUseCase = new SendEmailService(); // add repositories
-    Server server = new CLIPromptServer(loginUseCase, registerUseCase, sendEmailUseCase);
+    Server server = new CLIPromptServer(authUseCase, registerUseCase);
     server.start();
   }
 }

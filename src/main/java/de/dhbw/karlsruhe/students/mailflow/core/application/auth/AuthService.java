@@ -11,17 +11,17 @@ import java.util.Optional;
 /**
  * @author seiferla
  */
-public class LoginService implements LoginUseCase {
+public class AuthService implements AuthUseCase {
 
-    private final UserRepository userRepository;
+  private final UserRepository userRepository;
 
-    private final PasswordChecker passwordChecker;
-    private User sessionUser;
+  private final PasswordChecker passwordChecker;
+  private User sessionUser;
 
-    public LoginService(UserRepository userRepository, PasswordChecker passwordChecker) {
-        this.userRepository = userRepository;
-        this.passwordChecker = passwordChecker;
-    }
+  public AuthService(UserRepository userRepository, PasswordChecker passwordChecker) {
+    this.userRepository = userRepository;
+    this.passwordChecker = passwordChecker;
+  }
 
   @Override
   public void login(String email, String password)
@@ -46,13 +46,20 @@ public class LoginService implements LoginUseCase {
 
     if (!passwordChecker.checkPassword(password, user)) {
       throw new AuthorizationException("Credentials are incorrect");
-        }
-
-        this.sessionUser = user;
     }
 
-    @Override
-    public User getSessionUser() {
-        return sessionUser;
-    }
+    this.sessionUser = user;
+  }
+
+  @Override
+  public User getSessionUser() {
+    return sessionUser;
+  }
+
+  @Override
+  public User logout() {
+    var userCopy = sessionUser;
+    this.sessionUser = null;
+    return userCopy;
+  }
 }

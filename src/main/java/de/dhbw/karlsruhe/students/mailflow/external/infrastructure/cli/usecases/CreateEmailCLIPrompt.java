@@ -1,17 +1,17 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases;
 
-import de.dhbw.karlsruhe.students.mailflow.core.application.auth.LoginUseCase;
+import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.SendEmailUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.AbstractCLIPrompt;
 
 public class CreateEmailCLIPrompt extends AbstractCLIPrompt {
-  private final LoginUseCase loginUseCase;
+  private final AuthUseCase authUseCase;
   private final SendEmailUseCase sendEmailUseCase;
 
-  public CreateEmailCLIPrompt(LoginUseCase loginUseCase, SendEmailUseCase sendEmailUseCase) {
-    this.loginUseCase = loginUseCase;
+  public CreateEmailCLIPrompt(AuthUseCase authUseCase, SendEmailUseCase sendEmailUseCase) {
+    this.authUseCase = authUseCase;
     this.sendEmailUseCase = sendEmailUseCase;
   }
 
@@ -21,7 +21,7 @@ public class CreateEmailCLIPrompt extends AbstractCLIPrompt {
     String recipientsBCC = simplePrompt("Who are the recipients (bcc)? - comma seperated");
     String subject = simplePrompt("What is the email subject?");
     String content = simplePrompt("What is the email content?");
-    Address sender = loginUseCase.getSessionUser().email();
+    Address sender = authUseCase.getSessionUser().email();
 
     Email email = null;
     try {
