@@ -1,5 +1,6 @@
-package de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects;
+package de.dhbw.karlsruhe.students.mailflow.unit;
 
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -19,9 +20,9 @@ class AddressTest {
     void shouldThrow() {
         // Arrange
         String email = "some-mail.de";
-        // Act
         // Assert
         Assertions.assertThrows(IllegalArgumentException.class,
+                // Act
                 () -> Address.from(email)
         );
     }
