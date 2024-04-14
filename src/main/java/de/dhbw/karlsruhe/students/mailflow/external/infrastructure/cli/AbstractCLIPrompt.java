@@ -1,5 +1,6 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli;
 
+import de.dhbw.karlsruhe.students.mailflow.core.domain.server.Server;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -10,17 +11,34 @@ import java.util.Scanner;
  *
  * @author Jonas-Karl
  */
-public abstract class AbstractCLIPrompt {
+public abstract class AbstractCLIPrompt implements Server {
 
   private static final int MAX_ATTEMPTS = 3;
   private int attemptCount;
+
+  @Override
+  public abstract void start();
+
+  /** Stops the server */
+  @Override
+  public void stop() {
+    System.exit(0);
+  }
+
+  public void printDefault(String text) {
+    System.out.println(text);
+  }
+
+  public void printWarning(String text) {
+    System.err.println(text);
+  }
 
   /**
    * @param question the question to display
    * @return the client answer input
    */
   public String simplePrompt(String question) {
-    System.out.println(question);
+    printDefault(question);
     return readUserInput();
   }
 
@@ -62,10 +80,10 @@ public abstract class AbstractCLIPrompt {
 
   private AbstractCLIPrompt retry(Map<String, AbstractCLIPrompt> options) {
     if (attemptCount > MAX_ATTEMPTS) {
-      System.err.println("Too many tries");
+      printWarning("Too many attempts!");
       System.exit(0);
     }
-    System.err.println("Your input was not a number. Please try again");
+    printWarning("Your input was not a number. Please try again");
     return readUserInputWithOptions(options);
   }
 
@@ -78,10 +96,7 @@ public abstract class AbstractCLIPrompt {
     List<Map.Entry<String, AbstractCLIPrompt>> entries = options.entrySet().stream().toList();
 
     for (int i = 0; i < entries.size(); i++) {
-      System.out.printf("[%s]: %s", i, entries.get(i).getKey());
-      System.out.println();
+      printDefault("[%s]: %s".formatted(i, entries.get(i).getKey()));
     }
   }
-
-  public abstract void start();
 }

@@ -8,7 +8,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.server.Server;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.FileUserRepository;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.LocalPasswordChecker;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.LocalUserCreator;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.CLIPromptServer;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.MainCLIPrompt;
 
 /**
  * Hello world!
@@ -21,7 +21,7 @@ public class App {
     AuthUseCase authUseCase = new AuthService(new FileUserRepository(), new LocalPasswordChecker());
     RegisterUseCase registerUseCase =
         new RegistrationService(new FileUserRepository(), new LocalUserCreator());
-    Server server = new CLIPromptServer(authUseCase, registerUseCase);
+    Server server = new MainCLIPrompt(authUseCase, registerUseCase);
     server.start();
   }
 }

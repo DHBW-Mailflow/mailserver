@@ -23,7 +23,7 @@ public class RegisterCLIPrompt extends AbstractCLIPrompt {
     try {
       registerUseCase.register(Address.from(email), password);
     } catch (AuthorizationException | LoadingUsersException e) {
-      System.err.println(e.getMessage());
+      printWarning(e.getMessage());
     }
   }
 }

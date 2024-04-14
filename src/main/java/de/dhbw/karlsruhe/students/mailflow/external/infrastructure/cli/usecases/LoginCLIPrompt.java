@@ -22,7 +22,7 @@ public class LoginCLIPrompt extends AbstractCLIPrompt {
     try {
       authUseCase.login(loginEmailInput, loginPasswordInput);
     } catch (AuthorizationException | LoadingUsersException e) {
-      System.err.println(e.getMessage());
+      printWarning(e.getMessage());
     }
   }
 }
