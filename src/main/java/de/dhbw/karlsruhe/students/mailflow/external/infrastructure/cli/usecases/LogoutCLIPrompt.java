@@ -14,8 +14,6 @@ public class LogoutCLIPrompt extends AbstractCLIPrompt {
   public LogoutCLIPrompt(AuthUseCase authUseCase) {
     this.authUseCase = authUseCase;
   }
-
-  // TODO remove from LoginUseCase session
   @Override
   public void start() {
     User user = authUseCase.logout();
