@@ -19,6 +19,7 @@ buildNumber.properties
 # Ignore test data unless explicitly added by `git add`
 .eml
 **/*.mbox
+users.json
 
 # macOS bla bla
 .DS_Store

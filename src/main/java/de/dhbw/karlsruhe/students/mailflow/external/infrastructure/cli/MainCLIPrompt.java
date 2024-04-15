@@ -27,18 +27,20 @@ public class MainCLIPrompt extends AbstractCLIPrompt {
     Map<String, AbstractCLIPrompt> promptMap = new HashMap<>();
     promptMap.put("Register", new RegisterCLIPrompt(registerUseCase));
     promptMap.put("Login", new LoginCLIPrompt(authUseCase));
-    return readUserInputWithOptions(promptMap);
+    return resetAttemptCounterAndReadUserInputWithOptions(promptMap);
   }
 
   private AbstractCLIPrompt showActionMenuPrompt() {
     printDefault("What do you want to do?");
     Map<String, AbstractCLIPrompt> promptMap = new HashMap<>();
     promptMap.put("Logout", new LogoutCLIPrompt(authUseCase));
-    return readUserInputWithOptions(promptMap);
+    return resetAttemptCounterAndReadUserInputWithOptions(promptMap);
   }
 
   @Override
   public void start() {
+    super.start();
+
     while (authUseCase.getSessionUser() == null) {
       AbstractCLIPrompt registerOrEmailPrompt = showRegisterOrEmailPrompt();
       registerOrEmailPrompt.start();

@@ -18,6 +18,8 @@ public class RegisterCLIPrompt extends AbstractCLIPrompt {
 
   @Override
   public void start() {
+    super.start();
+
     String email = simplePrompt("What's your new email?");
     String password = simplePrompt("What's your new password?");
     try {

@@ -15,7 +15,10 @@ public class LoginCLIPrompt extends AbstractCLIPrompt {
     this.authUseCase = authUseCase;
   }
 
+  @Override
   public void start() {
+    super.start();
+
     String loginEmailInput = simplePrompt("What is your email?");
     String loginPasswordInput = simplePrompt("What is your password?");
 

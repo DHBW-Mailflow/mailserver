@@ -15,10 +15,19 @@ public abstract class AbstractCLIPrompt implements Server {
 
   private static final int MAX_ATTEMPTS = 3;
   private int attemptCount;
+  private Scanner scanner;
+
+  @Override
+  public void start() {
+    scanner = new Scanner(System.in);
+  }
 
   /** Stops the server */
   @Override
   public void stop() {
+    if (scanner != null) {
+      scanner.close();
+    }
     System.exit(0);
   }
 
@@ -40,7 +49,13 @@ public abstract class AbstractCLIPrompt implements Server {
   }
 
   private String readUserInput() {
-    return new Scanner(System.in).nextLine();
+    return scanner.nextLine();
+  }
+
+  public AbstractCLIPrompt resetAttemptCounterAndReadUserInputWithOptions(
+      Map<String, AbstractCLIPrompt> options) {
+    attemptCount = 0;
+    return readUserInputWithOptions(options);
   }
 
   /**
@@ -61,16 +76,16 @@ public abstract class AbstractCLIPrompt implements Server {
    *
    * @param options available options
    * @param input selected user input
-   * @return the interaktive CLI-Prompt for the selected option
+   * @return the interactive CLI-Prompt for the selected option
    */
-  private AbstractCLIPrompt retryOnInvalidSelection(
-      Map<String, AbstractCLIPrompt> options, String input) {
+  private AbstractCLIPrompt retryOnInvalidSelection(Map<String, AbstractCLIPrompt> options,
+      String input) {
     List<Map.Entry<String, AbstractCLIPrompt>> entries = options.entrySet().stream().toList();
     try {
       int parsedInput = Integer.parseInt(input);
-      attemptCount = 0;
+      attemptCount++;
       return entries.get(parsedInput).getValue();
-    } catch (NumberFormatException e) {
+    } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
       return retry(options);
     }
   }

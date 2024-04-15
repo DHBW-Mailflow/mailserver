@@ -14,8 +14,11 @@ public class LogoutCLIPrompt extends AbstractCLIPrompt {
   public LogoutCLIPrompt(AuthUseCase authUseCase) {
     this.authUseCase = authUseCase;
   }
+
   @Override
   public void start() {
+    super.start();
+
     User user = authUseCase.logout();
     printDefault("Good bye, %s!".formatted(user.email()));
     stop();
