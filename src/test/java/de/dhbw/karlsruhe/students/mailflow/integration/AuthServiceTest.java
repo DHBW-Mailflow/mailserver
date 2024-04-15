@@ -2,7 +2,7 @@ package de.dhbw.karlsruhe.students.mailflow.integration;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import de.dhbw.karlsruhe.students.mailflow.core.application.auth.LoginService;
+import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthService;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.AuthorizationException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.LoadingUsersException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.PasswordChecker;
@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 /**
  * @author Jonas-Karl
  */
-class LoginServiceTest {
+class AuthServiceTest {
 
   @Test
   void shouldLoginSuccessfully() throws AuthorizationException, LoadingUsersException {
@@ -36,11 +36,11 @@ class LoginServiceTest {
           }
         };
 
-    var loginService = new LoginService(mockedUserRepository, (password, user) -> true);
+    var loginService = new AuthService(mockedUserRepository, (password, user) -> true);
 
-    User returningUser = loginService.login(userToLogin.email(), userToLogin.password());
+    loginService.login(userToLogin.email().toString(), userToLogin.password());
 
-    assertEquals(userToLogin, returningUser);
+    assertEquals(userToLogin, loginService.getSessionUser());
   }
 
   @Test
@@ -63,13 +63,13 @@ class LoginServiceTest {
         };
     PasswordChecker mockedPasswordChecker = (password, user) -> false;
 
-    var loginService = new LoginService(mockedUserRepository, mockedPasswordChecker);
+    var loginService = new AuthService(mockedUserRepository, mockedPasswordChecker);
     // Assert
     Assertions.assertThrows(
         AuthorizationException.class,
         () -> {
           // Act
-          loginService.login(otherUser.email(), userToLogin.password());
+          loginService.login(otherUser.email().toString(), userToLogin.password());
         });
   }
 }
