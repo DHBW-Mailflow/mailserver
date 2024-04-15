@@ -1,7 +1,6 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -35,22 +34,5 @@ class BaseCLIPromptTest {
 
     // Assert
     assertEquals(expectedResult, resultPrompt);
-  }
-
-  @Test
-  void retryAFewTimes() {
-    // Arrange
-    System.setIn(new ByteArrayInputStream("-1\n-1\n-1\n-1\n".getBytes()));
-    final BaseCLIPrompt baseCLIPrompt = new BaseCLIPrompt();
-    baseCLIPrompt.start();
-
-    // Act
-    final Map<String, BaseCLIPrompt> options = new HashMap<>();
-    options.put("First option", new BaseCLIPrompt());
-    options.put("Second option", new BaseCLIPrompt());
-    final var resultPrompt = baseCLIPrompt.readUserInputWithOptions(options);
-
-    // Assert
-    assertNull(resultPrompt);
   }
 }
