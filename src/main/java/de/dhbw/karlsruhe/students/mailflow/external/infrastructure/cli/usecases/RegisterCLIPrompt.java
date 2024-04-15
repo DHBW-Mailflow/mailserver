@@ -4,12 +4,12 @@ import de.dhbw.karlsruhe.students.mailflow.core.application.auth.RegisterUseCase
 import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.AuthorizationException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.LoadingUsersException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.AbstractCLIPrompt;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
 
 /**
  * @author Jonas-Karl
  */
-public class RegisterCLIPrompt extends AbstractCLIPrompt {
+public final class RegisterCLIPrompt extends BaseCLIPrompt {
   private final RegisterUseCase registerUseCase;
 
   public RegisterCLIPrompt(RegisterUseCase registerUseCase) {

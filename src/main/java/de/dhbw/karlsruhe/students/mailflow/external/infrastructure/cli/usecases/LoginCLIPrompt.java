@@ -3,12 +3,12 @@ package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.AuthorizationException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.LoadingUsersException;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.AbstractCLIPrompt;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
 
 /**
  * @author Jonas-Karl
  */
-public class LoginCLIPrompt extends AbstractCLIPrompt {
+public final class LoginCLIPrompt extends BaseCLIPrompt {
   private final AuthUseCase authUseCase;
 
   public LoginCLIPrompt(AuthUseCase authUseCase) {

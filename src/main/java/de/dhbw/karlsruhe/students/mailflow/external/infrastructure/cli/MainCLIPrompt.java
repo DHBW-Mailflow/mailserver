@@ -13,7 +13,7 @@ import java.util.Map;
  *
  * @author Jonas-Karl
  */
-public class MainCLIPrompt extends AbstractCLIPrompt {
+public final class MainCLIPrompt extends BaseCLIPrompt {
   private final AuthUseCase authUseCase;
   private final RegisterUseCase registerUseCase;
 
@@ -22,17 +22,17 @@ public class MainCLIPrompt extends AbstractCLIPrompt {
     this.registerUseCase = registerUseCase;
   }
 
-  private AbstractCLIPrompt showRegisterOrEmailPrompt() {
+  private BaseCLIPrompt showRegisterOrEmailPrompt() {
     printDefault("What do you want to do?");
-    Map<String, AbstractCLIPrompt> promptMap = new HashMap<>();
+    Map<String, BaseCLIPrompt> promptMap = new HashMap<>();
     promptMap.put("Register", new RegisterCLIPrompt(registerUseCase));
     promptMap.put("Login", new LoginCLIPrompt(authUseCase));
     return readUserInputWithOptions(promptMap);
   }
 
-  private AbstractCLIPrompt showActionMenuPrompt() {
+  private BaseCLIPrompt showActionMenuPrompt() {
     printDefault("What do you want to do?");
-    Map<String, AbstractCLIPrompt> promptMap = new HashMap<>();
+    Map<String, BaseCLIPrompt> promptMap = new HashMap<>();
     promptMap.put("Logout", new LogoutCLIPrompt(authUseCase));
     return readUserInputWithOptions(promptMap);
   }
@@ -42,11 +42,11 @@ public class MainCLIPrompt extends AbstractCLIPrompt {
     super.start();
 
     while (authUseCase.getSessionUser() == null) {
-      AbstractCLIPrompt registerOrEmailPrompt = showRegisterOrEmailPrompt();
+      BaseCLIPrompt registerOrEmailPrompt = showRegisterOrEmailPrompt();
       registerOrEmailPrompt.start();
     }
 
-    AbstractCLIPrompt action = showActionMenuPrompt();
+    BaseCLIPrompt action = showActionMenuPrompt();
     action.start();
   }
 }

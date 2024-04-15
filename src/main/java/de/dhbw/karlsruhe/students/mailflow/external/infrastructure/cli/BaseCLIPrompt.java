@@ -11,7 +11,7 @@ import java.util.Scanner;
  *
  * @author Jonas-Karl
  */
-public abstract class AbstractCLIPrompt implements Server {
+public class BaseCLIPrompt implements Server {
 
   private static final int MAX_ATTEMPTS = 3;
   private int attemptCount;
@@ -55,7 +55,7 @@ public abstract class AbstractCLIPrompt implements Server {
    * @param options for each option entry, there is a new CLI-Prompt
    * @return the new CLI-Prompt after the user selected an option
    */
-  public AbstractCLIPrompt readUserInputWithOptions(Map<String, AbstractCLIPrompt> options) {
+  public BaseCLIPrompt readUserInputWithOptions(Map<String, BaseCLIPrompt> options) {
     showOptions(options);
     String input = readUserInput();
     return retryOnInvalidSelection(options, input);
@@ -73,9 +73,8 @@ public abstract class AbstractCLIPrompt implements Server {
    * @param input selected user input
    * @return the interactive CLI-Prompt for the selected option
    */
-  private AbstractCLIPrompt retryOnInvalidSelection(
-      Map<String, AbstractCLIPrompt> options, String input) {
-    List<Map.Entry<String, AbstractCLIPrompt>> entries = options.entrySet().stream().toList();
+  private BaseCLIPrompt retryOnInvalidSelection(Map<String, BaseCLIPrompt> options, String input) {
+    List<Map.Entry<String, BaseCLIPrompt>> entries = options.entrySet().stream().toList();
     try {
       int parsedInput = Integer.parseInt(input);
       return entries.get(parsedInput).getValue();
@@ -85,7 +84,7 @@ public abstract class AbstractCLIPrompt implements Server {
     }
   }
 
-  private AbstractCLIPrompt retry(Map<String, AbstractCLIPrompt> options) {
+  private BaseCLIPrompt retry(Map<String, BaseCLIPrompt> options) {
     if (attemptCount > MAX_ATTEMPTS) {
       printWarning("Too many attempts!");
       System.exit(0);
@@ -99,8 +98,8 @@ public abstract class AbstractCLIPrompt implements Server {
    *
    * @param options every available option for the client to select
    */
-  private void showOptions(Map<String, AbstractCLIPrompt> options) {
-    List<Map.Entry<String, AbstractCLIPrompt>> entries = options.entrySet().stream().toList();
+  private void showOptions(Map<String, BaseCLIPrompt> options) {
+    List<Map.Entry<String, BaseCLIPrompt>> entries = options.entrySet().stream().toList();
 
     for (int i = 0; i < entries.size(); i++) {
       printDefault("[%s]: %s".formatted(i, entries.get(i).getKey()));
