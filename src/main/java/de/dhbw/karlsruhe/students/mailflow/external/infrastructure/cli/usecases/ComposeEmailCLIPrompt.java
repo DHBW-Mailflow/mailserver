@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * @author jens1o
  */
-public class ComposeEmailCLIPrompt extends BaseCLIPrompt {
+public final class ComposeEmailCLIPrompt extends BaseCLIPrompt {
 
     private final AuthUseCase authUseCase;
     private final EmailSendUseCase emailSendUseCase;
