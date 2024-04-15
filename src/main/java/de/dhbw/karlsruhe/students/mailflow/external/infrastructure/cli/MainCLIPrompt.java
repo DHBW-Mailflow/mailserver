@@ -2,6 +2,7 @@ package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli;
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.RegisterUseCase;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.unreadmails.ProvideUnreadEmailsUseCase;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.LoginCLIPrompt;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.LogoutCLIPrompt;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.RegisterCLIPrompt;
@@ -16,10 +17,12 @@ import java.util.Map;
 public final class MainCLIPrompt extends BaseCLIPrompt {
   private final AuthUseCase authUseCase;
   private final RegisterUseCase registerUseCase;
+  private final ProvideUnreadEmailsUseCase provideUnreadEmailsUseCase;
 
-  public MainCLIPrompt(AuthUseCase authUseCase, RegisterUseCase registerUseCase) {
+  public MainCLIPrompt(AuthUseCase authUseCase, RegisterUseCase registerUseCase, ProvideUnreadEmailsUseCase provideUnreadEmailsUseCase) {
     this.authUseCase = authUseCase;
     this.registerUseCase = registerUseCase;
+    this.provideUnreadEmailsUseCase = provideUnreadEmailsUseCase;
   }
 
   private BaseCLIPrompt showRegisterOrEmailPrompt() {
@@ -34,6 +37,7 @@ public final class MainCLIPrompt extends BaseCLIPrompt {
     printDefault("What do you want to do?");
     Map<String, BaseCLIPrompt> promptMap = new HashMap<>();
     promptMap.put("Logout", new LogoutCLIPrompt(authUseCase));
+    promptMap.put("Show unread emails", new ShowUnreadEmailsCLIPrompt(authUseCase, provideUnreadEmailsUseCase));
     return readUserInputWithOptions(promptMap);
   }
 
