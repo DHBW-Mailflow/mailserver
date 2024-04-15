@@ -32,8 +32,11 @@ public class EmailSendService implements EmailSendUseCase {
 
         mailboxRepository.save(mailbox);
 
-        // send it to To and CC recipients first...
-        List<Address> addresses = collectToAndCcRecipients(email);
+        // strip the BCC recipients to uphold the guarantee that they don't see each other
+        // mail addresses
+        List<Address> addresses = collectRecipientAddresses(email);
+        email = email.withoutBCCRecipients();
+
         // put the email into the INBOX folder of the respective recipient
         for (Address address : addresses) {
             Mailbox recipientMailbox =
@@ -41,23 +44,11 @@ public class EmailSendService implements EmailSendUseCase {
             recipientMailbox.deliverEmail(email, true);
             mailboxRepository.save(recipientMailbox);
         }
-
-        // ...then strip the BCC recipients to uphold the guarantee that they don't see each other
-        // mail addresses
-        List<Address> bccAddresses = email.getRecipientBCC();
-        email = email.withoutBCCRecipients();
-
-        for (Address address : bccAddresses) {
-            Mailbox recipientMailbox =
-                    mailboxRepository.findByAddressAndType(address, MailboxType.INBOX);
-            recipientMailbox.deliverEmail(email, true);
-            mailboxRepository.save(recipientMailbox);
-        }
     }
 
-    private List<Address> collectToAndCcRecipients(Email email) {
-        return Stream.of(email.getRecipientTo(), email.getRecipientCC()).flatMap(Collection::stream)
-                .toList();
+    private List<Address> collectRecipientAddresses(Email email) {
+        return Stream.of(email.getRecipientTo(), email.getRecipientCC(), email.getRecipientBCC())
+                .flatMap(Collection::stream).toList();
     }
 
 }
