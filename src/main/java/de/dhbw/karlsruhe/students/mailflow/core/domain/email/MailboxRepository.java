@@ -21,6 +21,4 @@ public interface MailboxRepository {
    * @throws MailboxSavingException when a error occurred during the saving process
    */
   void save(Mailbox mailbox) throws MailboxSavingException;
-
-
 }

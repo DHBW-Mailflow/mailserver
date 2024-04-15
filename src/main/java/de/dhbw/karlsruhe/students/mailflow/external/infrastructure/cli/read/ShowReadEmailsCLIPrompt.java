@@ -6,7 +6,6 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.unread.ShowUnreadEmailContentCLIPrompt;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +35,7 @@ public class ShowReadEmailsCLIPrompt extends BaseCLIPrompt {
   }
 
   private BaseCLIPrompt showActionMenuPrompt(List<Email> emailList) {
-    printDefault("Which email do you want to read?");
+    printDefault("Which email do you want to open?");
     Map<String, BaseCLIPrompt> promptMap = new LinkedHashMap<>();
     for (Email email : emailList) {
       promptMap.put(formatEmail(email), new ShowReadEmailContentCLIPrompt(email));

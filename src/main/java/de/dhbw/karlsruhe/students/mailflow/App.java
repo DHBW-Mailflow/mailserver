@@ -25,16 +25,18 @@ import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.parsing
  * @author jens1o, Jonas-Karl, seiferla
  */
 public class App {
-    public static void main(String[] args) throws MailboxSavingException, MailboxLoadingException {
+  public static void main(String[] args) throws MailboxSavingException, MailboxLoadingException {
 
     AuthUseCase authUseCase = new AuthService(new FileUserRepository(), new LocalPasswordChecker());
     RegisterUseCase registerUseCase =
         new RegistrationService(new FileUserRepository(), new LocalUserCreator());
-      ProvideUnreadEmailsUseCase provideUnreadEmailsUseCase =
-          new ProvideUnreadEmailsService(new FileMailboxRepository(new JSONMailboxConverter()));
+    ProvideUnreadEmailsUseCase provideUnreadEmailsUseCase =
+        new ProvideUnreadEmailsService(new FileMailboxRepository(new JSONMailboxConverter()));
     ProvideReadEmailsUseCase provideReadEmailsUseCase =
         new ProvideReadEmailsService(new FileMailboxRepository(new JSONMailboxConverter()));
-    Server server = new MainCLIPrompt(authUseCase, registerUseCase, provideUnreadEmailsUseCase, provideReadEmailsUseCase);
+    Server server =
+        new MainCLIPrompt(
+            authUseCase, registerUseCase, provideUnreadEmailsUseCase, provideReadEmailsUseCase);
     server.start();
   }
 }
