@@ -71,4 +71,9 @@ public final class Mailbox extends AggregateRoot<MailboxId> {
   public Address getOwner() {
     return address;
   }
+
+  public void markWithLabel(Email email, Label... label) {
+    emails.remove(email);
+    emails.put(email, Set.of(label));
+  }
 }

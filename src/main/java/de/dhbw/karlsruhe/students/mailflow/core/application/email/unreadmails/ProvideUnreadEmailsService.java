@@ -8,7 +8,6 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.user.User;
 import java.util.List;
 
 public class ProvideUnreadEmailsService implements ProvideUnreadEmailsUseCase {
@@ -24,6 +23,14 @@ public class ProvideUnreadEmailsService implements ProvideUnreadEmailsUseCase {
       throws MailboxSavingException, MailboxLoadingException {
     Mailbox mailbox = mailboxRepository.findByAddressAndType(address, MailboxType.INBOX);
     return mailbox.getEmailsWithLabel(Label.UNREAD);
+
+  }
+
+  @Override
+  public void markEmailAsRead(Email email, Address address) throws MailboxSavingException, MailboxLoadingException {
+    Mailbox mailbox = mailboxRepository.findByAddressAndType(address, MailboxType.INBOX);
+    mailbox.markWithLabel(email, Label.READ);
+    mailboxRepository.save(mailbox);
 
   }
 }

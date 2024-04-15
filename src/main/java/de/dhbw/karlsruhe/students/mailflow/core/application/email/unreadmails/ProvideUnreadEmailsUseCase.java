@@ -10,4 +10,7 @@ public interface ProvideUnreadEmailsUseCase {
 
   List<Email> provideUnreadEmails(Address address)
       throws MailboxSavingException, MailboxLoadingException;
+
+  void markEmailAsRead(Email email,
+      Address address) throws MailboxSavingException, MailboxLoadingException;
 }

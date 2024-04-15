@@ -45,7 +45,7 @@ public class ShowUnreadEmailsCLIPrompt extends BaseCLIPrompt {
     printDefault("Which email do you want to read?");
     Map<String, BaseCLIPrompt> promptMap = new LinkedHashMap<>();
     for (Email email : emailList) {
-      promptMap.put(formatEmail(email), new ShowEmailContentCLIPrompt(email));
+      promptMap.put(formatEmail(email), new ShowEmailContentCLIPrompt(email, provideUnreadEmailsUseCase, authUseCase));
     }
     return readUserInputWithOptions(promptMap);
   }
