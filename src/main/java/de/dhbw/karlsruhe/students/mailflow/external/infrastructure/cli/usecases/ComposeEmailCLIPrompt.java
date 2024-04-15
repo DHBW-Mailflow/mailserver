@@ -71,7 +71,13 @@ public final class ComposeEmailCLIPrompt extends BaseCLIPrompt {
 
         for (String addressCandidate : promptResponse.split(",")) {
             try {
-                result.add(Address.from(addressCandidate.trim()));
+                addressCandidate = addressCandidate.trim();
+
+                if (addressCandidate.isEmpty()) {
+                    continue;
+                }
+
+                result.add(Address.from(addressCandidate));
             } catch (IllegalArgumentException e) {
                 printWarning(addressCandidate + " is not a valid e-mail address, ignoring!");
             }
