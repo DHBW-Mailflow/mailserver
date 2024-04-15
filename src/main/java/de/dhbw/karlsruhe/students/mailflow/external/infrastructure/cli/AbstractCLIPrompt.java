@@ -90,7 +90,7 @@ public abstract class AbstractCLIPrompt implements Server {
       printWarning("Too many attempts!");
       System.exit(0);
     }
-    printWarning("Your input was not a number. Please try again");
+    printWarning("Your input was not a valid number. Please try again");
     return readUserInputWithOptions(options);
   }
 
