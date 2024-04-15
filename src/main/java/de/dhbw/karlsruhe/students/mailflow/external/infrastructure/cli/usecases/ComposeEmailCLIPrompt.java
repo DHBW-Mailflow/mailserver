@@ -8,10 +8,6 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.EmailMetadata;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Recipients;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.SentDate;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Subject;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.User;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
 
@@ -76,6 +72,7 @@ public class ComposeEmailCLIPrompt extends BaseCLIPrompt {
             try {
                 result.add(Address.from(addressCandidate.trim()));
             } catch (IllegalArgumentException e) {
+                printWarning(addressCandidate + " is not a valid e-mail address, ignoring!");
             }
         }
 

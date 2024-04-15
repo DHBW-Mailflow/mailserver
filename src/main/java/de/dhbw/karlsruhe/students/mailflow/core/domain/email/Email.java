@@ -88,6 +88,8 @@ public final class Email extends AggregateRoot<EmailId> {
     }
 
     public final class Builder {
+        private Builder() {}
+
         public static Email buildEmail(String subject, Address sender, List<Address> toRecipients,
                 List<Address> ccRecipients, List<Address> bccRecipients, String message) {
             EmailMetadata metadata = new EmailMetadata(new Subject(subject), sender, null,
