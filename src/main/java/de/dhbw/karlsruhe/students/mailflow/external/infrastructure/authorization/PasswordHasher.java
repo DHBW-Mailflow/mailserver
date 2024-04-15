@@ -14,9 +14,17 @@ public class PasswordHasher {
   private static final int SALT_LENGTH = 16;
   private static final SecureRandom secureRandom = new SecureRandom();
 
-  private PasswordHasher() {
-  }
+  private PasswordHasher() {}
 
+  /**
+   * This computes an horrifying insecure hash value.
+   *
+   * DO NOT USE IN PRODUCTION!
+   *
+   * You should actually use argon2id or something that is actually recommended to be used. However,
+   * we may not use other libraries simply, so let's stick with this before trying to get an
+   * approval. :D
+   */
   public static String hashPassword(String password, String salt) throws HashingFailedException {
     return generateHash(password + salt);
   }
@@ -28,7 +36,6 @@ public class PasswordHasher {
   }
 
   private static String generateHash(String input) throws HashingFailedException {
-
     try {
       MessageDigest md = MessageDigest.getInstance("SHA-256");
       byte[] hash = md.digest(input.getBytes());

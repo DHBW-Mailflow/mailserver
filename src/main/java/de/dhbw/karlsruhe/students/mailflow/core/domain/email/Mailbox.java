@@ -41,6 +41,10 @@ public final class Mailbox extends AggregateRoot<MailboxId> {
     return emails.keySet().stream().toList();
   }
 
+  public void deliverEmail(Email email, boolean isUnread) {
+    this.emails.put(email, Set.of(isUnread ? Label.UNREAD : Label.READ));
+  }
+
   public List<Email> getEmailsWithLabel(Label... labels){
     return emails.entrySet().stream()
         .filter(entry -> entry.getValue().containsAll(Set.of(labels)))
