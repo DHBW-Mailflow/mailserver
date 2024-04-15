@@ -38,8 +38,8 @@ public final class MainCLIPrompt extends BaseCLIPrompt {
   private BaseCLIPrompt showActionMenuPrompt() {
     printDefault("What do you want to do?");
     Map<String, BaseCLIPrompt> promptMap = new LinkedHashMap<>();
-    promptMap.put("Send E-Mail", new ComposeEmailCLIPrompt(authUseCase, emailSendUseCase));
     promptMap.put("Logout", new LogoutCLIPrompt(authUseCase));
+    promptMap.put("Send E-Mail", new ComposeEmailCLIPrompt(authUseCase, emailSendUseCase));
     return readUserInputWithOptions(promptMap);
   }
 
