@@ -1,6 +1,8 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -9,7 +11,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 class BaseCLIPromptTest {
-  private BaseCLIPrompt baseCLIPrompt;
   private static final InputStream originalStandardIn = System.in;
 
   @AfterEach
@@ -21,17 +22,35 @@ class BaseCLIPromptTest {
   void readUserInputWithOptions() {
     // Arrange
     System.setIn(new ByteArrayInputStream("1\n".getBytes()));
-
-    baseCLIPrompt = new BaseCLIPrompt();
+    final BaseCLIPrompt baseCLIPrompt = new BaseCLIPrompt();
     baseCLIPrompt.start();
 
     // Act
-    Map<String, BaseCLIPrompt> options = new HashMap<>();
+    var expectedResult = new BaseCLIPrompt();
+
+    final Map<String, BaseCLIPrompt> options = new HashMap<>();
     options.put("First option", new BaseCLIPrompt());
-    options.put("Second option", new BaseCLIPrompt());
-    baseCLIPrompt.readUserInputWithOptions(options);
+    options.put("Second option", expectedResult);
+    final var resultPrompt = baseCLIPrompt.readUserInputWithOptions(options);
 
     // Assert
-    assertTrue(true);
+    assertEquals(expectedResult, resultPrompt);
+  }
+
+  @Test
+  void retryAFewTimes() {
+    // Arrange
+    System.setIn(new ByteArrayInputStream("-1\n-1\n-1\n-1\n".getBytes()));
+    final BaseCLIPrompt baseCLIPrompt = new BaseCLIPrompt();
+    baseCLIPrompt.start();
+
+    // Act
+    final Map<String, BaseCLIPrompt> options = new HashMap<>();
+    options.put("First option", new BaseCLIPrompt());
+    options.put("Second option", new BaseCLIPrompt());
+    final var resultPrompt = baseCLIPrompt.readUserInputWithOptions(options);
+
+    // Assert
+    assertNull(resultPrompt);
   }
 }
