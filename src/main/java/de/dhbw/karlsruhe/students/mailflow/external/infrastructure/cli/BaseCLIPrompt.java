@@ -76,7 +76,7 @@ public class BaseCLIPrompt implements Server {
 
     while (scanner.hasNextLine()) {
       try {
-        stringBuilder.append(scanner.nextLine() + "\n");
+        stringBuilder.append(scanner.nextLine()).append("\n");
       } catch (NoSuchElementException e) {
         break;
       }

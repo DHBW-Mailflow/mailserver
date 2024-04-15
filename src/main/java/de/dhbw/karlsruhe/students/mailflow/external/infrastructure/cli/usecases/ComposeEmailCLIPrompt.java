@@ -1,7 +1,5 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases;
 
-import java.util.ArrayList;
-import java.util.List;
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.EmailSendUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
@@ -10,6 +8,8 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxS
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.User;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author jens1o
@@ -50,8 +50,8 @@ public class ComposeEmailCLIPrompt extends BaseCLIPrompt {
         String subject = simplePrompt("What is the subject?");
         subject = subject.trim();
 
-        printDefault(
-                "Please write your message now: (To finish, please press Ctrl + D on Linux and Ctrl + Z on Windows)");
+    printDefault(
+        "Please write your message now: (To finish, please press Ctrl + D on Linux / Windows)");
         String message = readMultilineUserInput();
         message = message.trim();
 
@@ -59,7 +59,8 @@ public class ComposeEmailCLIPrompt extends BaseCLIPrompt {
                 bccRecipients, message);
 
         try {
-            emailSendUseCase.sendEmail(email);
+      emailSendUseCase.sendEmail(email);
+      printDefault("Email sent successfully!");
         } catch (MailboxLoadingException | MailboxSavingException e) {
             printWarning("Error sending mail, try again later.");
         }

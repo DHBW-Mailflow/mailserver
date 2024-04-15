@@ -20,8 +20,8 @@ public final class MainCLIPrompt extends BaseCLIPrompt {
   private final RegisterUseCase registerUseCase;
   private final EmailSendUseCase emailSendUseCase;
 
-  public MainCLIPrompt(AuthUseCase authUseCase, RegisterUseCase registerUseCase,
-      EmailSendUseCase emailSendUseCase) {
+  public MainCLIPrompt(
+      AuthUseCase authUseCase, RegisterUseCase registerUseCase, EmailSendUseCase emailSendUseCase) {
     this.authUseCase = authUseCase;
     this.registerUseCase = registerUseCase;
     this.emailSendUseCase = emailSendUseCase;
@@ -52,7 +52,9 @@ public final class MainCLIPrompt extends BaseCLIPrompt {
       registerOrEmailPrompt.start();
     }
 
-    BaseCLIPrompt action = showActionMenuPrompt();
-    action.start();
+    while (true) {
+      BaseCLIPrompt action = showActionMenuPrompt();
+      action.start();
+    }
   }
 }
