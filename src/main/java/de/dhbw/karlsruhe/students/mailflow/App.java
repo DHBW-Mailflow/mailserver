@@ -11,6 +11,8 @@ import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.LocalPasswordChecker;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.LocalUserCreator;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.MainCLIPrompt;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.parsing.FileMailboxRepository;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.parsing.JSONMailboxConverter;
 
 /**
  * Hello world!
@@ -23,7 +25,8 @@ public class App {
     AuthUseCase authUseCase = new AuthService(new FileUserRepository(), new LocalPasswordChecker());
     RegisterUseCase registerUseCase =
         new RegistrationService(new FileUserRepository(), new LocalUserCreator());
-    EmailSendUseCase emailSendUseCase = new EmailSendService();
+    EmailSendUseCase emailSendUseCase =
+        new EmailSendService(new FileMailboxRepository(new JSONMailboxConverter()));
 
     Server server = new MainCLIPrompt(authUseCase, registerUseCase, emailSendUseCase);
     server.start();

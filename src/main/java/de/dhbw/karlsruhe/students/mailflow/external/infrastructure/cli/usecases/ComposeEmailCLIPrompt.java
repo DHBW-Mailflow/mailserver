@@ -1,11 +1,12 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.EmailSendUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.EmailMetadata;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Recipients;
@@ -39,11 +40,11 @@ public class ComposeEmailCLIPrompt extends BaseCLIPrompt {
         }
 
         List<Address> toRecipients = getAddressesFromPromptResponse(
-                simplePrompt("Please write the TO-recipients (separate by a comma):"));
+                simplePrompt("Please write the TO-recipients (separated by a comma):"));
         List<Address> ccRecipients = getAddressesFromPromptResponse(
-                simplePrompt("Please write the CC-recipients (separate by a comma):"));
+                simplePrompt("Please write the CC-recipients (separated by a comma):"));
         List<Address> bccRecipients = getAddressesFromPromptResponse(
-                simplePrompt("Please write the BCC-recipients (separate by a comma):"));
+                simplePrompt("Please write the BCC-recipients (separated by a comma):"));
 
         if (toRecipients.isEmpty() && ccRecipients.isEmpty() && bccRecipients.isEmpty()) {
             printWarning("You need to specify at least one valid recipient!");
@@ -60,7 +61,12 @@ public class ComposeEmailCLIPrompt extends BaseCLIPrompt {
         Email email = buildEmail(subject, sender.email(), toRecipients, ccRecipients, bccRecipients,
                 message);
 
-        emailSendUseCase.deliverEmail(email);
+        try {
+            emailSendUseCase.sendEmail(email);
+        } catch (MailboxLoadingException | MailboxSavingException e) {
+            printWarning("Error sending mail, try again later.");
+            e.printStackTrace();
+        }
     }
 
 

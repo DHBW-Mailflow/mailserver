@@ -41,6 +41,10 @@ public final class Mailbox extends AggregateRoot<MailboxId> {
     return emails.keySet().stream().toList();
   }
 
+  public void deliverEmail(Email email, boolean isUnread) {
+    this.emails.put(email, Set.of(isUnread ? Label.UNREAD : Label.READ));
+  }
+
   @Override
   public String toString() {
 

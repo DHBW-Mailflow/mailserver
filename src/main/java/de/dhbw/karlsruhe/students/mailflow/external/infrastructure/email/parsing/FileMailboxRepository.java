@@ -9,6 +9,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Addre
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.logging.Logger;
 import org.fest.util.VisibleForTesting;
 
@@ -58,8 +59,8 @@ public class FileMailboxRepository implements MailboxRepository {
     try (FileWriter writer = new FileWriter(createdMailboxFile)) {
       writer.write(mailboxContent); // override existing content
     } catch (IOException e) {
-      throw new MailboxSavingException(
-          "Could not save mailbox content to file: " + mailboxContent, e);
+      throw new MailboxSavingException("Could not save mailbox content to file: " + mailboxContent,
+          e);
     }
   }
 
@@ -75,21 +76,29 @@ public class FileMailboxRepository implements MailboxRepository {
     if (mailboxFile.exists()) {
       return mailboxFile;
     }
-    return createMailboxFile(mailboxFile);
+    return createMailboxFile(address, type, mailboxFile);
   }
 
   /**
    * Creates needed directories and the file itself
    *
+   * @param address The address for which we need to create the inbox
+   * @param type The mailbox type we need to create
    * @param mailboxFile The file to create
    * @return the created file
    * @throws MailboxSavingException if the file could not be created
    */
-  private File createMailboxFile(File mailboxFile) throws MailboxSavingException {
+  private File createMailboxFile(Address address, MailboxType type, File mailboxFile)
+      throws MailboxSavingException {
     try {
       if (!mailboxFile.getParentFile().mkdirs() || !mailboxFile.createNewFile()) {
         throw new MailboxSavingException(mailboxFile.getPath());
       }
+
+      // initialize empty mailbox
+      Mailbox mailbox = Mailbox.create(address, new HashMap<>(), type);
+      writeContentToFile(mailboxFile, mailboxSerializer.serializeMailbox(mailbox));
+
       return mailboxFile;
     } catch (IOException e) {
       throw new MailboxSavingException(mailboxFile.getPath(), e);

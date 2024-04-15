@@ -81,4 +81,8 @@ public final class Email extends AggregateRoot<EmailId> {
     public List<Address> getRecipientTo() {
         return this.emailMetadata.recipients().to();
     }
+
+    public Email withoutBCCRecipients() {
+        return Email.create(getContent(), emailMetadata.withoutBCCRecipients());
+    }
 }
