@@ -11,22 +11,32 @@ import java.util.Optional;
 /**
  * @author seiferla
  */
-public class LoginService implements LoginUseCase {
+public class AuthService implements AuthUseCase {
 
   private final UserRepository userRepository;
 
   private final PasswordChecker passwordChecker;
+  private User sessionUser;
 
-  public LoginService(UserRepository userRepository, PasswordChecker passwordChecker) {
+  public AuthService(UserRepository userRepository, PasswordChecker passwordChecker) {
     this.userRepository = userRepository;
     this.passwordChecker = passwordChecker;
   }
 
   @Override
-  public User login(Address email, String password)
+  public void login(String email, String password)
       throws AuthorizationException, LoadingUsersException {
+    try {
+      Address address = Address.from(email);
+      authorizeUser(address, password);
+    } catch (IllegalArgumentException e) {
+      throw new AuthorizationException("Credentials are incorrect. " + e.getMessage());
+    }
+  }
 
-    Optional<User> foundUser = userRepository.findByEmail(email);
+  private void authorizeUser(Address address, String password)
+      throws LoadingUsersException, AuthorizationException {
+    Optional<User> foundUser = userRepository.findByEmail(address);
 
     if (foundUser.isEmpty()) {
       throw new AuthorizationException("Credentials are incorrect");
@@ -38,6 +48,18 @@ public class LoginService implements LoginUseCase {
       throw new AuthorizationException("Credentials are incorrect");
     }
 
-    return user;
+    this.sessionUser = user;
+  }
+
+  @Override
+  public User getSessionUser() {
+    return sessionUser;
+  }
+
+  @Override
+  public User logout() {
+    var userCopy = sessionUser;
+    this.sessionUser = null;
+    return userCopy;
   }
 }
