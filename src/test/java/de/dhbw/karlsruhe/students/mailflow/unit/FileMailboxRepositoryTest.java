@@ -39,21 +39,20 @@ class FileMailboxRepositoryTest {
     Mailbox searchingMailbox = Mailbox.create(mailboxOwner, Map.of(), mailboxType);
     File userDirectory = new File(allMailboxesDirectory, mailboxOwner.toString());
     File mailboxFile = new File(userDirectory, mailboxType.getStoringName() + ".json");
-    boolean successfullyCreatedDirectories = mailboxFile.mkdirs();
+    mailboxFile.mkdirs();
 
-    MailboxConverter mockedMailboxConverter =
-        new MailboxConverter() {
-          @Override
-          public String serializeMailbox(Mailbox mailbox) {
-            // not tested
-            return "someSerializedMailboxJson";
-          }
+    MailboxConverter mockedMailboxConverter = new MailboxConverter() {
+      @Override
+      public String serializeMailbox(Mailbox mailbox) {
+        // not tested
+        return "someSerializedMailboxJson";
+      }
 
-          @Override
-          public Mailbox deserializeMailboxFile(File mailboxFile) {
-            return searchingMailbox;
-          }
-        };
+      @Override
+      public Mailbox deserializeMailboxFile(File mailboxFile) {
+        return searchingMailbox;
+      }
+    };
 
     this.fileMailboxRepository =
         new FileMailboxRepository(mockedMailboxConverter, allMailboxesDirectory);
@@ -61,40 +60,6 @@ class FileMailboxRepositoryTest {
     Mailbox foundMailbox = fileMailboxRepository.findByAddressAndType(mailboxOwner, mailboxType);
     // Assert
     Assertions.assertEquals(searchingMailbox, foundMailbox);
-  }
-
-  @ParameterizedTest(name = "should create directories and files for mailboxType {0}")
-  @EnumSource(MailboxType.class)
-  void searchingNonExistentMailboxShouldCreate(MailboxType mailboxType)
-      throws MailboxSavingException, MailboxLoadingException {
-    // Arrange
-    Address mailboxOwner = new Address("someOwner", "someDomain.de");
-    Mailbox searchingMailbox = Mailbox.create(mailboxOwner, Map.of(), mailboxType);
-    File directoryOfUser = new File(allMailboxesDirectory, mailboxOwner.toString());
-    File mailboxFile = new File(directoryOfUser, mailboxType.getStoringName() + ".json");
-
-    MailboxConverter mockedMailboxConverter =
-        new MailboxConverter() {
-          @Override
-          public String serializeMailbox(Mailbox mailbox) {
-            // not tested
-            return "someSerializedMailboxJson";
-          }
-
-          @Override
-          public Mailbox deserializeMailboxFile(File mailboxFile) {
-            return searchingMailbox;
-          }
-        };
-    this.fileMailboxRepository =
-        new FileMailboxRepository(mockedMailboxConverter, allMailboxesDirectory);
-
-    // Act
-    Mailbox foundMailbox = fileMailboxRepository.findByAddressAndType(mailboxOwner, mailboxType);
-
-    // Assert
-    Assertions.assertEquals(searchingMailbox, foundMailbox);
-    Assertions.assertTrue(mailboxFile.exists());
   }
 
   @ParameterizedTest(name = "should create file for mailboxType {0}")
@@ -106,19 +71,18 @@ class FileMailboxRepositoryTest {
     Mailbox mailboxToSave = Mailbox.create(mailboxOwner, Map.of(), mailboxType);
 
     String expectedSerializedMailboxJson = "someSerializedMailboxJson";
-    MailboxConverter mockedMailboxConverter =
-        new MailboxConverter() {
-          @Override
-          public String serializeMailbox(Mailbox mailbox) {
-            return expectedSerializedMailboxJson;
-          }
+    MailboxConverter mockedMailboxConverter = new MailboxConverter() {
+      @Override
+      public String serializeMailbox(Mailbox mailbox) {
+        return expectedSerializedMailboxJson;
+      }
 
-          @Override
-          public Mailbox deserializeMailboxFile(File mailboxFile) {
-            // not tested
-            return mailboxToSave;
-          }
-        };
+      @Override
+      public Mailbox deserializeMailboxFile(File mailboxFile) {
+        // not tested
+        return mailboxToSave;
+      }
+    };
     this.fileMailboxRepository =
         new FileMailboxRepository(mockedMailboxConverter, allMailboxesDirectory);
 

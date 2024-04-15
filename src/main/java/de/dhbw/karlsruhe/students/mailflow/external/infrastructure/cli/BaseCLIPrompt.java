@@ -3,13 +3,14 @@ package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.server.Server;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
  * abstract representation of an interactive CLI-Prompt. It provides #simplePrompt and
  * #readUserInputWithOptions
  *
- * @author Jonas-Karl
+ * @author Jonas-Karl, jens1o
  */
 public class BaseCLIPrompt implements Server {
 
@@ -61,8 +62,28 @@ public class BaseCLIPrompt implements Server {
     return retryOnInvalidSelection(options, input);
   }
 
+  //TODO handle ^D at the end of multiline input
   private String readUserInput() {
     return scanner.nextLine();
+  }
+
+  /**
+   * Reads the user input until a Ctrl + D (Linux/macOS) or Ctrl + Z (Windows) is received
+   *
+   * @return the untrimmed answer from the user consisting of several lines
+   */
+  public String readMultilineUserInput() {
+    StringBuilder stringBuilder = new StringBuilder();
+
+    while (scanner.hasNextLine()) {
+      try {
+        stringBuilder.append(scanner.nextLine()).append("\n");
+      } catch (NoSuchElementException e) {
+        break;
+      }
+    }
+
+    return stringBuilder.toString();
   }
 
   /**
