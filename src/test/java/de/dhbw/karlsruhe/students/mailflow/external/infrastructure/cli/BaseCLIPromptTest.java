@@ -2,6 +2,8 @@ package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -18,7 +20,7 @@ class BaseCLIPromptTest {
   }
 
   @Test
-  void readUserInputWithOptions() {
+  void readUserInputWithOptions() throws MailboxSavingException, MailboxLoadingException {
     // Arrange
     System.setIn(new ByteArrayInputStream("1\n".getBytes()));
     final BaseCLIPrompt baseCLIPrompt = new BaseCLIPrompt();

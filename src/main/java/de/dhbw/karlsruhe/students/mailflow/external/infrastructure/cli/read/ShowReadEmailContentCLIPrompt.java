@@ -1,6 +1,6 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.read;
 
-;
+
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
