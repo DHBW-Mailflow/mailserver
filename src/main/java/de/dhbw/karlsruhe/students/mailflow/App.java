@@ -6,12 +6,8 @@ import de.dhbw.karlsruhe.students.mailflow.core.application.auth.RegisterUseCase
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.RegistrationService;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.EmailSendService;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.EmailSendUseCase;
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.readmails.ProvideReadEmailsService;
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.readmails.ProvideReadEmailsUseCase;
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.unreadmails.ProvideUnreadEmailsService;
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.unreadmails.ProvideUnreadEmailsUseCase;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.ProvideEmailsService;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.ProvideEmailsUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.server.Server;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.FileUserRepository;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.LocalPasswordChecker;
@@ -33,15 +29,11 @@ public class App {
         new RegistrationService(new FileUserRepository(), new LocalUserCreator());
     EmailSendUseCase emailSendUseCase =
         new EmailSendService(new FileMailboxRepository(new JSONMailboxConverter()));
-
-    Server server = new MainCLIPrompt(authUseCase, registerUseCase, emailSendUseCase);
-    ProvideUnreadEmailsUseCase provideUnreadEmailsUseCase =
-        new ProvideUnreadEmailsService(new FileMailboxRepository(new JSONMailboxConverter()));
-    ProvideReadEmailsUseCase provideReadEmailsUseCase =
-        new ProvideReadEmailsService(new FileMailboxRepository(new JSONMailboxConverter()));
+    ProvideEmailsUseCase provideEmailsUseCase =
+        new ProvideEmailsService(new FileMailboxRepository(new JSONMailboxConverter()));
     Server server =
         new MainCLIPrompt(
-            authUseCase, registerUseCase, provideUnreadEmailsUseCase, provideReadEmailsUseCase);
+            authUseCase, registerUseCase, emailSendUseCase, provideEmailsUseCase);
     server.start();
   }
 }

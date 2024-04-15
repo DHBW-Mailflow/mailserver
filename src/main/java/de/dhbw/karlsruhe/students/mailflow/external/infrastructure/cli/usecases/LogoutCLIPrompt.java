@@ -1,8 +1,6 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases;
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthUseCase;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.User;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
 
@@ -18,7 +16,7 @@ public final class LogoutCLIPrompt extends BaseCLIPrompt {
   }
 
   @Override
-  public void start() throws MailboxSavingException, MailboxLoadingException {
+  public void start() {
     super.start();
 
     User user = authUseCase.logout();

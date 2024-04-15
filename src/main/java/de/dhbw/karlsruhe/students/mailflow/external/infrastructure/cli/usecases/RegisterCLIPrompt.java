@@ -3,8 +3,6 @@ package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.RegisterUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.AuthorizationException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.LoadingUsersException;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
 
@@ -19,7 +17,7 @@ public final class RegisterCLIPrompt extends BaseCLIPrompt {
   }
 
   @Override
-  public void start() throws MailboxSavingException, MailboxLoadingException {
+  public void start() {
     super.start();
 
     String email = simplePrompt("What's your new email?");

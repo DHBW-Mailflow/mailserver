@@ -1,4 +1,4 @@
-package de.dhbw.karlsruhe.students.mailflow.core.application.email.unreadmails;
+package de.dhbw.karlsruhe.students.mailflow.core.application.email.provide;
 
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
@@ -10,11 +10,11 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxS
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import java.util.List;
 
-public class ProvideUnreadEmailsService implements ProvideUnreadEmailsUseCase {
-
+public class ProvideEmailsService implements ProvideEmailsUseCase {
   private final MailboxRepository mailboxRepository;
 
-  public ProvideUnreadEmailsService(MailboxRepository mailboxRepository) {
+  public ProvideEmailsService(
+      MailboxRepository mailboxRepository) {
     this.mailboxRepository = mailboxRepository;
   }
 
@@ -31,5 +31,26 @@ public class ProvideUnreadEmailsService implements ProvideUnreadEmailsUseCase {
     Mailbox mailbox = mailboxRepository.findByAddressAndType(address, MailboxType.INBOX);
     mailbox.markWithLabel(email, Label.READ);
     mailboxRepository.save(mailbox);
+  }
+
+  @Override
+  public List<Email> provideSpamEmails(Address address)
+      throws MailboxSavingException, MailboxLoadingException {
+    Mailbox mailbox = mailboxRepository.findByAddressAndType(address, MailboxType.SPAM);
+    return mailbox.getEmailsWithLabel(Label.UNREAD, Label.READ);
+  }
+
+  @Override
+  public List<Email> provideDeletedEmails(Address address)
+      throws MailboxSavingException, MailboxLoadingException {
+    Mailbox mailbox = mailboxRepository.findByAddressAndType(address, MailboxType.DELETED);
+    return mailbox.getEmailsWithLabel(Label.UNREAD, Label.READ);
+  }
+
+  @Override
+  public List<Email> provideReadEmails(Address address)
+      throws MailboxSavingException, MailboxLoadingException {
+    Mailbox mailbox = mailboxRepository.findByAddressAndType(address, MailboxType.INBOX);
+    return mailbox.getEmailsWithLabel(Label.READ);
   }
 }

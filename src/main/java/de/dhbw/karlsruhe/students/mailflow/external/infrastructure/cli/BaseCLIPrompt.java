@@ -1,7 +1,5 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli;
 
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.server.Server;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +20,7 @@ public class BaseCLIPrompt implements Server {
 
   /** Starts the server or CLIPrompt */
   @Override
-  public void start() throws MailboxSavingException, MailboxLoadingException {
+  public void start(){
     scanner = new Scanner(System.in);
   }
 
