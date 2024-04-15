@@ -1,20 +1,19 @@
-package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli;
+package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.unread;
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.unreadmails.ProvideUnreadEmailsUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
-import java.util.HashMap;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.commons.collections.map.LinkedMap;
 
 public class ShowUnreadEmailsCLIPrompt extends BaseCLIPrompt {
 
-  private AuthUseCase authUseCase;
-  private ProvideUnreadEmailsUseCase provideUnreadEmailsUseCase;
+  private final AuthUseCase authUseCase;
+  private final ProvideUnreadEmailsUseCase provideUnreadEmailsUseCase;
 
   public ShowUnreadEmailsCLIPrompt(
       AuthUseCase authUseCase, ProvideUnreadEmailsUseCase provideUnreadEmailsUseCase) {
@@ -23,7 +22,7 @@ public class ShowUnreadEmailsCLIPrompt extends BaseCLIPrompt {
   }
 
   @Override
-  public void start() {
+  public void start() throws MailboxSavingException, MailboxLoadingException {
     super.start();
     printDefault("Inbox Emails:");
     try {
@@ -45,7 +44,7 @@ public class ShowUnreadEmailsCLIPrompt extends BaseCLIPrompt {
     printDefault("Which email do you want to read?");
     Map<String, BaseCLIPrompt> promptMap = new LinkedHashMap<>();
     for (Email email : emailList) {
-      promptMap.put(formatEmail(email), new ShowEmailContentCLIPrompt(email, provideUnreadEmailsUseCase, authUseCase));
+      promptMap.put(formatEmail(email), new ShowUnreadEmailContentCLIPrompt(email, provideUnreadEmailsUseCase, authUseCase));
     }
     return readUserInputWithOptions(promptMap);
   }

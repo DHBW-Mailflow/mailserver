@@ -1,4 +1,4 @@
-package de.dhbw.karlsruhe.students.mailflow.core.application.email.unreadmails;
+package de.dhbw.karlsruhe.students.mailflow.core.application.email.readmails;
 
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
@@ -10,26 +10,18 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxS
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import java.util.List;
 
-public class ProvideUnreadEmailsService implements ProvideUnreadEmailsUseCase {
+public class ProvideReadEmailsService implements ProvideReadEmailsUseCase {
 
   private final MailboxRepository mailboxRepository;
 
-  public ProvideUnreadEmailsService(MailboxRepository mailboxRepository) {
+  public ProvideReadEmailsService(MailboxRepository mailboxRepository) {
     this.mailboxRepository = mailboxRepository;
   }
 
   @Override
-  public List<Email> provideUnreadEmails(Address address)
+  public List<Email> provideReadEmails(Address address)
       throws MailboxSavingException, MailboxLoadingException {
     Mailbox mailbox = mailboxRepository.findByAddressAndType(address, MailboxType.INBOX);
-    return mailbox.getEmailsWithLabel(Label.UNREAD);
-  }
-
-  @Override
-  public void markEmailAsRead(Email email, Address address)
-      throws MailboxSavingException, MailboxLoadingException {
-    Mailbox mailbox = mailboxRepository.findByAddressAndType(address, MailboxType.INBOX);
-    mailbox.markWithLabel(email, Label.READ);
-    mailboxRepository.save(mailbox);
+    return mailbox.getEmailsWithLabel(Label.READ);
   }
 }

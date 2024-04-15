@@ -2,7 +2,12 @@ package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli;
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.RegisterUseCase;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.readmails.ProvideReadEmailsUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.unreadmails.ProvideUnreadEmailsUseCase;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.read.ShowReadEmailsCLIPrompt;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.unread.ShowUnreadEmailsCLIPrompt;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.LoginCLIPrompt;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.LogoutCLIPrompt;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.RegisterCLIPrompt;
@@ -18,11 +23,14 @@ public final class MainCLIPrompt extends BaseCLIPrompt {
   private final AuthUseCase authUseCase;
   private final RegisterUseCase registerUseCase;
   private final ProvideUnreadEmailsUseCase provideUnreadEmailsUseCase;
+  private final ProvideReadEmailsUseCase provideReadEmailsUseCase;
 
-  public MainCLIPrompt(AuthUseCase authUseCase, RegisterUseCase registerUseCase, ProvideUnreadEmailsUseCase provideUnreadEmailsUseCase) {
+  public MainCLIPrompt(AuthUseCase authUseCase, RegisterUseCase registerUseCase, ProvideUnreadEmailsUseCase provideUnreadEmailsUseCase,
+      ProvideReadEmailsUseCase provideReadEmailsUseCase) {
     this.authUseCase = authUseCase;
     this.registerUseCase = registerUseCase;
     this.provideUnreadEmailsUseCase = provideUnreadEmailsUseCase;
+    this.provideReadEmailsUseCase = provideReadEmailsUseCase;
   }
 
   private BaseCLIPrompt showRegisterOrEmailPrompt() {
@@ -38,11 +46,12 @@ public final class MainCLIPrompt extends BaseCLIPrompt {
     Map<String, BaseCLIPrompt> promptMap = new HashMap<>();
     promptMap.put("Logout", new LogoutCLIPrompt(authUseCase));
     promptMap.put("Show unread emails", new ShowUnreadEmailsCLIPrompt(authUseCase, provideUnreadEmailsUseCase));
+    promptMap.put("Show read emails", new ShowReadEmailsCLIPrompt(authUseCase, provideReadEmailsUseCase));
     return readUserInputWithOptions(promptMap);
   }
 
   @Override
-  public void start() {
+  public void start() throws MailboxSavingException, MailboxLoadingException {
     super.start();
 
     while (authUseCase.getSessionUser() == null) {

@@ -1,13 +1,13 @@
-package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli;
+package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.unread;
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthUseCase;
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.unreadmails.ProvideUnreadEmailsService;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.unreadmails.ProvideUnreadEmailsUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
 
-public class ShowEmailContentCLIPrompt extends BaseCLIPrompt {
+public class ShowUnreadEmailContentCLIPrompt extends BaseCLIPrompt {
 
   private final Email email;
 
@@ -15,15 +15,17 @@ public class ShowEmailContentCLIPrompt extends BaseCLIPrompt {
 
   private final AuthUseCase authUseCase;
 
-  public ShowEmailContentCLIPrompt(Email email, ProvideUnreadEmailsUseCase provideUnreadEmailsUseCase, AuthUseCase authUseCase) {
+  public ShowUnreadEmailContentCLIPrompt(
+      Email email, ProvideUnreadEmailsUseCase provideUnreadEmailsUseCase, AuthUseCase authUseCase) {
     this.email = email;
     this.provideUnreadEmailsUseCase = provideUnreadEmailsUseCase;
     this.authUseCase = authUseCase;
   }
+
   @Override
   public void start() {
     try {
-      provideUnreadEmailsUseCase.markEmailAsRead(email,authUseCase.getSessionUser().email());
+      provideUnreadEmailsUseCase.markEmailAsRead(email, authUseCase.getSessionUser().email());
     } catch (MailboxSavingException | MailboxLoadingException e) {
       throw new RuntimeException(e);
     }
