@@ -11,6 +11,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.common.models.AggregateRo
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Attachment;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.EmailId;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.EmailMetadata;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Recipients;
 
 /**
  * Representation of an e-mail as AggregateRoot
@@ -84,5 +85,15 @@ public final class Email extends AggregateRoot<EmailId> {
 
     public Email withoutBCCRecipients() {
         return Email.create(getContent(), emailMetadata.withoutBCCRecipients());
+    }
+
+    public final class Builder {
+        public static Email buildEmail(String subject, Address sender, List<Address> toRecipients,
+                List<Address> ccRecipients, List<Address> bccRecipients, String message) {
+            EmailMetadata metadata = new EmailMetadata(new Subject(subject), sender, null,
+                    new Recipients(toRecipients, ccRecipients, bccRecipients), SentDate.ofNow());
+
+            return Email.create(message, metadata);
+        }
     }
 }

@@ -54,28 +54,19 @@ public class ComposeEmailCLIPrompt extends BaseCLIPrompt {
         String subject = simplePrompt("What is the subject?");
         subject = subject.trim();
 
-        printDefault("Please write your message now:");
+        printDefault(
+                "Please write your message now: (To finish, please press Ctrl + D on Linux and Ctrl + Z on Windows)");
         String message = readMultilineUserInput();
         message = message.trim();
 
-        Email email = buildEmail(subject, sender.email(), toRecipients, ccRecipients, bccRecipients,
-                message);
+        Email email = Email.Builder.buildEmail(subject, sender.email(), toRecipients, ccRecipients,
+                bccRecipients, message);
 
         try {
             emailSendUseCase.sendEmail(email);
         } catch (MailboxLoadingException | MailboxSavingException e) {
             printWarning("Error sending mail, try again later.");
-            e.printStackTrace();
         }
-    }
-
-
-    private Email buildEmail(String subject, Address sender, List<Address> toRecipients,
-            List<Address> ccRecipients, List<Address> bccRecipients, String message) {
-        EmailMetadata metadata = new EmailMetadata(new Subject(subject), sender, null,
-                new Recipients(toRecipients, ccRecipients, bccRecipients), SentDate.ofNow());
-
-        return Email.create(message, metadata);
     }
 
     private List<Address> getAddressesFromPromptResponse(String promptResponse) {
