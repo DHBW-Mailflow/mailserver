@@ -62,6 +62,7 @@ public class BaseCLIPrompt implements Server {
     return retryOnInvalidSelection(options, input);
   }
 
+  //TODO handle ^D at the end of multiline input
   private String readUserInput() {
     return scanner.nextLine();
   }
