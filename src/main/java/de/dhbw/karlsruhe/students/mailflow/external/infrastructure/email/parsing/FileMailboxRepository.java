@@ -91,7 +91,7 @@ public class FileMailboxRepository implements MailboxRepository {
   private File createMailboxFile(Address address, MailboxType type, File mailboxFile)
       throws MailboxSavingException {
     try {
-      if (!mailboxFile.getParentFile().mkdirs() || !mailboxFile.createNewFile()) {
+      if (!mailboxFile.getParentFile().mkdirs() && !mailboxFile.createNewFile()) {
         throw new MailboxSavingException(mailboxFile.getPath());
       }
 
