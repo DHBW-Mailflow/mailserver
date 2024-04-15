@@ -17,6 +17,7 @@ public abstract class AbstractCLIPrompt implements Server {
   private int attemptCount;
   private Scanner scanner;
 
+  /** Starts the server or CLIPrompt */
   @Override
   public void start() {
     scanner = new Scanner(System.in);
@@ -48,16 +49,6 @@ public abstract class AbstractCLIPrompt implements Server {
     return readUserInput();
   }
 
-  private String readUserInput() {
-    return scanner.nextLine();
-  }
-
-  public AbstractCLIPrompt resetAttemptCounterAndReadUserInputWithOptions(
-      Map<String, AbstractCLIPrompt> options) {
-    attemptCount = 0;
-    return readUserInputWithOptions(options);
-  }
-
   /**
    * Provides a list of options to the client. The client has 3 attempts to select a valid option.
    *
@@ -70,6 +61,10 @@ public abstract class AbstractCLIPrompt implements Server {
     return retryOnInvalidSelection(options, input);
   }
 
+  private String readUserInput() {
+    return scanner.nextLine();
+  }
+
   /**
    * Tries to parse the client input. If the input is not a valid selection, the client can try 2
    * more times. After that, the server stops.
@@ -78,14 +73,14 @@ public abstract class AbstractCLIPrompt implements Server {
    * @param input selected user input
    * @return the interactive CLI-Prompt for the selected option
    */
-  private AbstractCLIPrompt retryOnInvalidSelection(Map<String, AbstractCLIPrompt> options,
-      String input) {
+  private AbstractCLIPrompt retryOnInvalidSelection(
+      Map<String, AbstractCLIPrompt> options, String input) {
     List<Map.Entry<String, AbstractCLIPrompt>> entries = options.entrySet().stream().toList();
     try {
       int parsedInput = Integer.parseInt(input);
-      attemptCount++;
       return entries.get(parsedInput).getValue();
     } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+      attemptCount++;
       return retry(options);
     }
   }
