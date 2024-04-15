@@ -87,6 +87,9 @@ public final class Email extends AggregateRoot<EmailId> {
         return Email.create(getContent(), emailMetadata.withoutBCCRecipients());
     }
 
+    /**
+     * @author jens1o
+     */
     public final class Builder {
         private Builder() {}
 
