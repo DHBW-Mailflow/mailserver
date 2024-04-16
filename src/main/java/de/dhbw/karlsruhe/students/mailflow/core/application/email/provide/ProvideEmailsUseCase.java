@@ -1,6 +1,7 @@
 package de.dhbw.karlsruhe.students.mailflow.core.application.email.provide;
 
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
@@ -14,7 +15,7 @@ public interface ProvideEmailsUseCase {
   List<Email> provideUnreadEmails(Address address)
       throws MailboxSavingException, MailboxLoadingException;
 
-  void markEmailAsRead(Email email, Address address)
+  void markEmailAsRead(Email email, Address address, MailboxType mailboxType)
       throws MailboxSavingException, MailboxLoadingException;
 
   List<Email> provideSpamEmails(Address address)

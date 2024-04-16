@@ -13,8 +13,7 @@ import java.util.List;
 public class ProvideEmailsService implements ProvideEmailsUseCase {
   private final MailboxRepository mailboxRepository;
 
-  public ProvideEmailsService(
-      MailboxRepository mailboxRepository) {
+  public ProvideEmailsService(MailboxRepository mailboxRepository) {
     this.mailboxRepository = mailboxRepository;
   }
 
@@ -26,9 +25,9 @@ public class ProvideEmailsService implements ProvideEmailsUseCase {
   }
 
   @Override
-  public void markEmailAsRead(Email email, Address address)
+  public void markEmailAsRead(Email email, Address address, MailboxType mailboxType)
       throws MailboxSavingException, MailboxLoadingException {
-    Mailbox mailbox = mailboxRepository.findByAddressAndType(address, MailboxType.INBOX);
+    Mailbox mailbox = mailboxRepository.findByAddressAndType(address, mailboxType);
     mailbox.markWithLabel(email, Label.READ);
     mailboxRepository.save(mailbox);
   }

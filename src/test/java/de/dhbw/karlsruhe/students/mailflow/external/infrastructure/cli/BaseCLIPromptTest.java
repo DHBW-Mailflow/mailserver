@@ -20,7 +20,7 @@ class BaseCLIPromptTest {
   }
 
   @Test
-  void readUserInputWithOptions() throws MailboxSavingException, MailboxLoadingException {
+  void readUserInputWithOptions(){
     // Arrange
     System.setIn(new ByteArrayInputStream("1\n".getBytes()));
     final BaseCLIPrompt baseCLIPrompt = new BaseCLIPrompt();

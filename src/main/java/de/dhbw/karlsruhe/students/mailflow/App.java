@@ -23,7 +23,6 @@ import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.parsing
  */
 public class App {
   public static void main(String[] args) {
-
     AuthUseCase authUseCase = new AuthService(new FileUserRepository(), new LocalPasswordChecker());
     RegisterUseCase registerUseCase =
         new RegistrationService(new FileUserRepository(), new LocalUserCreator());
@@ -32,8 +31,7 @@ public class App {
     ProvideEmailsUseCase provideEmailsUseCase =
         new ProvideEmailsService(new FileMailboxRepository(new JSONMailboxConverter()));
     Server server =
-        new MainCLIPrompt(
-            authUseCase, registerUseCase, emailSendUseCase, provideEmailsUseCase);
+        new MainCLIPrompt(authUseCase, registerUseCase, emailSendUseCase, provideEmailsUseCase);
     server.start();
   }
 }
