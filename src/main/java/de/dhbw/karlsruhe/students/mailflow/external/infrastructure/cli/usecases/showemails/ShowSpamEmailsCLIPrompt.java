@@ -26,7 +26,7 @@ public class ShowSpamEmailsCLIPrompt extends ShowEmailsCLIPrompt {
 
     try {
       List<Email> emailList =
-          provideEmailsUseCase.provideSpamEmails(authUseCase.getSessionUser().email());
+          provideEmailsUseCase.provideSpamEmails(authUseCase.getSessionUserAddress());
       BaseCLIPrompt action = showActionMenuPrompt(emailList);
       action.start();
     } catch (MailboxSavingException | MailboxLoadingException e) {

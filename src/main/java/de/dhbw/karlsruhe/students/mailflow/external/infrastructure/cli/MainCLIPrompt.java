@@ -23,8 +23,11 @@ public final class MainCLIPrompt extends BaseCLIPrompt {
   private final EmailSendUseCase emailSendUseCase;
   private final ProvideEmailsUseCase provideEmailsUseCase;
 
-
-  public MainCLIPrompt(AuthUseCase authUseCase, RegisterUseCase registerUseCase, EmailSendUseCase emailSendUseCase, ProvideEmailsUseCase provideEmailsUseCase) {
+  public MainCLIPrompt(
+      AuthUseCase authUseCase,
+      RegisterUseCase registerUseCase,
+      EmailSendUseCase emailSendUseCase,
+      ProvideEmailsUseCase provideEmailsUseCase) {
     this.authUseCase = authUseCase;
     this.registerUseCase = registerUseCase;
     this.emailSendUseCase = emailSendUseCase;
@@ -44,7 +47,7 @@ public final class MainCLIPrompt extends BaseCLIPrompt {
     Map<String, BaseCLIPrompt> promptMap = new LinkedHashMap<>();
     promptMap.put("Logout", new LogoutCLIPrompt(authUseCase));
     promptMap.put("Send E-Mail", new ComposeEmailCLIPrompt(authUseCase, emailSendUseCase));
-    promptMap.put("Show emails", new ShowEmailTypesCLIPrompt(authUseCase,provideEmailsUseCase));
+    promptMap.put("Show emails", new ShowEmailTypesCLIPrompt(authUseCase, provideEmailsUseCase));
     return readUserInputWithOptions(promptMap);
   }
 
@@ -52,7 +55,7 @@ public final class MainCLIPrompt extends BaseCLIPrompt {
   public void start() {
     super.start();
 
-    while (authUseCase.getSessionUser() == null) {
+    while (!authUseCase.isLoggedIn()) {
       BaseCLIPrompt registerOrEmailPrompt = showRegisterOrEmailPrompt();
       registerOrEmailPrompt.start();
     }

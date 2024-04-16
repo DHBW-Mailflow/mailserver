@@ -52,14 +52,28 @@ public class AuthService implements AuthUseCase {
   }
 
   @Override
-  public User getSessionUser() {
-    return sessionUser;
+  public Address logout() {
+    ensureLoggedIn();
+    var userCopy = sessionUser;
+    this.sessionUser = null;
+    return userCopy.email();
   }
 
   @Override
-  public User logout() {
-    var userCopy = sessionUser;
-    this.sessionUser = null;
-    return userCopy;
+  public boolean isLoggedIn() {
+    return sessionUser != null;
+  }
+
+  @Override
+  public Address getSessionUserAddress() {
+    ensureLoggedIn();
+    return sessionUser.email();
+  }
+
+  @Override
+  public void ensureLoggedIn() {
+    if (sessionUser == null) {
+      throw new IllegalStateException("No user is logged in");
+    }
   }
 }
