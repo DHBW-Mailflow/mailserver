@@ -1,5 +1,6 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.parsing;
 
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.MailboxRepository;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
@@ -9,7 +10,9 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Addre
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Logger;
 import org.fest.util.VisibleForTesting;
 
@@ -47,6 +50,25 @@ public class FileMailboxRepository implements MailboxRepository {
     writeContentToFile(createdMailboxFile, mailboxContent);
   }
 
+  @Override
+  public List<Email> findAllEmails() {
+    List<Email> allEmails = new ArrayList<>();
+    File[] mailboxFiles = allMailboxesDirectory.listFiles();
+
+    if (mailboxFiles != null) {
+      for (File mailboxFile : mailboxFiles) {
+        try {
+          Mailbox mailbox = mailboxSerializer.deserializeMailboxFile(mailboxFile);
+          allEmails.addAll(mailbox.getEmailList());
+        } catch (MailboxLoadingException e) {
+          throw new RuntimeException(e);
+        }
+      }
+    }
+
+    return allEmails;
+  }
+
   /**
    * overrides existing content of provided file
    *
@@ -59,8 +81,8 @@ public class FileMailboxRepository implements MailboxRepository {
     try (FileWriter writer = new FileWriter(createdMailboxFile)) {
       writer.write(mailboxContent); // override existing content
     } catch (IOException e) {
-      throw new MailboxSavingException("Could not save mailbox content to file: " + mailboxContent,
-          e);
+      throw new MailboxSavingException(
+          "Could not save mailbox content to file: " + mailboxContent, e);
     }
   }
 
