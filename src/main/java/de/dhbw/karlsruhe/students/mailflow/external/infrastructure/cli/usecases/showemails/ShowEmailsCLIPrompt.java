@@ -4,6 +4,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.ProvideEmailsUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.AuthorizedCLIPrompt;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -12,15 +13,14 @@ import java.util.Map;
 /**
  * @author seiferla
  */
-public abstract class ShowEmailsCLIPrompt extends BaseCLIPrompt {
+public abstract class ShowEmailsCLIPrompt extends AuthorizedCLIPrompt {
 
-  final AuthUseCase authUseCase;
   final ProvideEmailsUseCase provideEmailsUseCase;
   final MailboxType mailboxType;
 
-  protected ShowEmailsCLIPrompt(AuthUseCase authUseCase, ProvideEmailsUseCase provideEmailsUseCase,
-      MailboxType mailboxType) {
-    this.authUseCase = authUseCase;
+  protected ShowEmailsCLIPrompt(
+      AuthUseCase authUseCase, ProvideEmailsUseCase provideEmailsUseCase, MailboxType mailboxType) {
+    super(authUseCase);
     this.provideEmailsUseCase = provideEmailsUseCase;
     this.mailboxType = mailboxType;
   }

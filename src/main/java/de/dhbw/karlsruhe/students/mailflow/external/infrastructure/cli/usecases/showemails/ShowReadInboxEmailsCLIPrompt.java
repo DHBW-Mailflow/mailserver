@@ -26,7 +26,7 @@ public class ShowReadInboxEmailsCLIPrompt extends ShowEmailsCLIPrompt {
 
     try {
       List<Email> emailList =
-          provideEmailsUseCase.provideReadEmails(authUseCase.getSessionUser().email());
+          provideEmailsUseCase.provideReadEmails(authUseCase.getSessionUserAddress());
       BaseCLIPrompt action = showActionMenuPrompt(emailList);
       action.start();
     } catch (MailboxSavingException | MailboxLoadingException e) {
