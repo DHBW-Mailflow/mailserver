@@ -13,15 +13,27 @@ import java.util.Scanner;
  * @author Jonas-Karl, jens1o
  */
 public class BaseCLIPrompt implements Server {
+  private final BaseCLIPrompt previousPrompt;
 
   private static final int MAX_ATTEMPTS = 3;
   private int attemptCount;
   private Scanner scanner;
 
+  public BaseCLIPrompt(BaseCLIPrompt previousPrompt) {
+    this.previousPrompt = previousPrompt;
+  }
+
   /** Starts the server or CLIPrompt */
   @Override
-  public void start(){
+  public void start() {
     scanner = new Scanner(System.in);
+  }
+
+  public BaseCLIPrompt getPreviousPrompt() {
+    if (previousPrompt == null) {
+      throw new IllegalStateException("No previous prompt available");
+    }
+    return previousPrompt;
   }
 
   /** Stops the server */
@@ -57,18 +69,21 @@ public class BaseCLIPrompt implements Server {
    * @return the new CLI-Prompt after the user selected an option
    */
   public BaseCLIPrompt readUserInputWithOptions(Map<String, BaseCLIPrompt> options) {
+    if (previousPrompt != null) {
+      options.put("Go back", previousPrompt);
+    }
     showOptions(options);
     String input = readUserInput();
     return retryOnInvalidSelection(options, input);
   }
 
-  //TODO handle ^D at the end of multiline input
+  // TODO handle ^D at the end of multiline input
   private String readUserInput() {
     return scanner.nextLine();
   }
 
   /**
-   * Reads the user input until a Ctrl + D (Linux/macOS) or Ctrl + Z (Windows) is received
+   * Reads the user input until a Ctrl + D or :q on an empty line is received
    *
    * @return the untrimmed answer from the user consisting of several lines
    */
@@ -77,7 +92,11 @@ public class BaseCLIPrompt implements Server {
 
     while (scanner.hasNextLine()) {
       try {
-        stringBuilder.append(scanner.nextLine()).append("\n");
+        String line = scanner.nextLine();
+        if (line.trim().equals(":q")) {
+          break;
+        }
+        stringBuilder.append(line).append("\n");
       } catch (NoSuchElementException e) {
         break;
       }

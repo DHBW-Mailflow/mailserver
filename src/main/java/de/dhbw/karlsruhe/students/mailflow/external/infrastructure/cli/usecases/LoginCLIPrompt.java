@@ -11,7 +11,8 @@ import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPr
 public final class LoginCLIPrompt extends BaseCLIPrompt {
   private final AuthUseCase authUseCase;
 
-  public LoginCLIPrompt(AuthUseCase authUseCase) {
+  public LoginCLIPrompt(BaseCLIPrompt previousPrompt, AuthUseCase authUseCase) {
+    super(previousPrompt);
     this.authUseCase = authUseCase;
   }
 

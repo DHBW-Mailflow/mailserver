@@ -19,8 +19,11 @@ public abstract class ShowEmailsCLIPrompt extends AuthorizedCLIPrompt {
   final MailboxType mailboxType;
 
   protected ShowEmailsCLIPrompt(
-      AuthUseCase authUseCase, ProvideEmailsUseCase provideEmailsUseCase, MailboxType mailboxType) {
-    super(authUseCase);
+      BaseCLIPrompt previousPrompt,
+      AuthUseCase authUseCase,
+      ProvideEmailsUseCase provideEmailsUseCase,
+      MailboxType mailboxType) {
+    super(previousPrompt, authUseCase);
     this.provideEmailsUseCase = provideEmailsUseCase;
     this.mailboxType = mailboxType;
   }
@@ -33,15 +36,16 @@ public abstract class ShowEmailsCLIPrompt extends AuthorizedCLIPrompt {
 
   public BaseCLIPrompt showActionMenuPrompt(List<Email> emailList) {
     if (emailList.isEmpty()) {
-      printWarning("No emails found");
-      return new ShowEmailTypesCLIPrompt(authUseCase, provideEmailsUseCase);
+      printDefault("No emails found");
+      return getPreviousPrompt();
     }
     printDefault("Which email do you want to read?");
     Map<String, BaseCLIPrompt> promptMap = new LinkedHashMap<>();
     for (Email email : emailList) {
       promptMap.put(
           formatEmail(email),
-          new ShowEmailContentCLIPrompt(email, provideEmailsUseCase, authUseCase, mailboxType));
+          new ShowEmailContentCLIPrompt(
+              this, email, provideEmailsUseCase, authUseCase, mailboxType));
     }
     return readUserInputWithOptions(promptMap);
   }
