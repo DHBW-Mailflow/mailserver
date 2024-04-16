@@ -15,8 +15,11 @@ import java.util.List;
 public class ShowUnreadInboxEmailsCLIPrompt extends ShowEmailsCLIPrompt {
 
   public ShowUnreadInboxEmailsCLIPrompt(
-      BaseCLIPrompt previousPrompt, AuthUseCase authUseCase, ProvideEmailsUseCase provideEmailsUseCase, MailboxType mailboxType) {
-    super(previousPrompt,authUseCase, provideEmailsUseCase, mailboxType);
+      BaseCLIPrompt previousPrompt,
+      AuthUseCase authUseCase,
+      ProvideEmailsUseCase provideEmailsUseCase,
+      MailboxType mailboxType) {
+    super(previousPrompt, authUseCase, provideEmailsUseCase, mailboxType);
   }
 
   @Override
