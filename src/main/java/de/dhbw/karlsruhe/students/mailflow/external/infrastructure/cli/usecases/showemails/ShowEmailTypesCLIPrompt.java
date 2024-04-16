@@ -2,6 +2,7 @@ package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.ProvideEmailsUseCase;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -29,12 +30,17 @@ public class ShowEmailTypesCLIPrompt extends BaseCLIPrompt {
 
   private BaseCLIPrompt showActionMenuPrompt() {
     Map<String, BaseCLIPrompt> promptMap = new LinkedHashMap<>();
-    promptMap.put("Spam", new ShowSpamEmailsCLIPrompt(authUseCase, provideEmailsUseCase));
-    promptMap.put("Deleted", new ShowDeletedEmailsCLIPrompt(authUseCase, provideEmailsUseCase));
     promptMap.put(
-        "Inbox unread", new ShowUnreadInboxEmailsCLIPrompt(authUseCase, provideEmailsUseCase));
+        "Spam", new ShowSpamEmailsCLIPrompt(authUseCase, provideEmailsUseCase, MailboxType.SPAM));
     promptMap.put(
-        "Inbox read", new ShowReadInboxEmailsCLIPrompt(authUseCase, provideEmailsUseCase));
+        "Deleted",
+        new ShowDeletedEmailsCLIPrompt(authUseCase, provideEmailsUseCase, MailboxType.DELETED));
+    promptMap.put(
+        "Inbox unread",
+        new ShowUnreadInboxEmailsCLIPrompt(authUseCase, provideEmailsUseCase, MailboxType.INBOX));
+    promptMap.put(
+        "Inbox read",
+        new ShowReadInboxEmailsCLIPrompt(authUseCase, provideEmailsUseCase, MailboxType.INBOX));
     return readUserInputWithOptions(promptMap);
   }
 }

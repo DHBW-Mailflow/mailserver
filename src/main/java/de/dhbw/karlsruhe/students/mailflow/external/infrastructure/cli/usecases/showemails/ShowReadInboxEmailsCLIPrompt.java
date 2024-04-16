@@ -3,6 +3,7 @@ package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.ProvideEmailsUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
@@ -14,8 +15,8 @@ import java.util.List;
 public class ShowReadInboxEmailsCLIPrompt extends ShowEmailsCLIPrompt {
 
   public ShowReadInboxEmailsCLIPrompt(
-      AuthUseCase authUseCase, ProvideEmailsUseCase provideEmailsUseCase) {
-    super(authUseCase, provideEmailsUseCase);
+      AuthUseCase authUseCase, ProvideEmailsUseCase provideEmailsUseCase, MailboxType mailboxType) {
+    super(authUseCase, provideEmailsUseCase, mailboxType);
   }
 
   @Override

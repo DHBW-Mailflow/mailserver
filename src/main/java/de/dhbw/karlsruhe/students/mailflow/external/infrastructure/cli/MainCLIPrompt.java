@@ -2,13 +2,13 @@ package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli;
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.RegisterUseCase;
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.ProvideEmailsUseCase;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.showemails.ShowEmailTypesCLIPrompt;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.EmailSendUseCase;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.ProvideEmailsUseCase;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.ComposeEmailCLIPrompt;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.LoginCLIPrompt;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.LogoutCLIPrompt;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.RegisterCLIPrompt;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.showemails.ShowEmailTypesCLIPrompt;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -22,6 +22,7 @@ public final class MainCLIPrompt extends BaseCLIPrompt {
   private final RegisterUseCase registerUseCase;
   private final EmailSendUseCase emailSendUseCase;
   private final ProvideEmailsUseCase provideEmailsUseCase;
+
 
   public MainCLIPrompt(AuthUseCase authUseCase, RegisterUseCase registerUseCase, EmailSendUseCase emailSendUseCase, ProvideEmailsUseCase provideEmailsUseCase) {
     this.authUseCase = authUseCase;
