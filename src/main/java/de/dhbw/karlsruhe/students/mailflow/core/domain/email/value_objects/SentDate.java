@@ -3,6 +3,8 @@ package de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.Date;
 
 /**
@@ -26,5 +28,11 @@ public record SentDate(LocalDateTime date) {
   public static SentDate ofDate(Date sentDate) {
     Instant instant = sentDate.toInstant();
     return new SentDate(LocalDateTime.ofInstant(instant, ZoneOffset.UTC));
+  }
+
+  public String formattedDate() {
+    DateTimeFormatter formatter = new DateTimeFormatterBuilder().appendPattern("yyyy-MM-dd HH:mm")
+        .toFormatter();
+    return date.format(formatter);
   }
 }
