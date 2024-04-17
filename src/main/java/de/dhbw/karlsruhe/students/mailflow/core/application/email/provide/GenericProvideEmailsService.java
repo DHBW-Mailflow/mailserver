@@ -18,7 +18,7 @@ abstract class GenericProvideEmailsService implements ProvideEmailsUseCase {
   private final MailboxType mailboxType;
   private final Label[] labels;
 
-  public GenericProvideEmailsService(
+  protected GenericProvideEmailsService(
       MailboxRepository mailboxRepository, MailboxType mailboxType, Label... labels) {
     this.mailboxRepository = mailboxRepository;
     this.mailboxType = mailboxType;
