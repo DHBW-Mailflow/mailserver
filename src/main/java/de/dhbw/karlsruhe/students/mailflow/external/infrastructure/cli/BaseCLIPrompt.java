@@ -77,11 +77,10 @@ public class BaseCLIPrompt implements Server {
     return retryOnInvalidSelection(options, input);
   }
 
-/**
-*
- * @return the string the user input
- * @throws NoSuchElementException when the user pressed Ctrl + D
-*/
+  /**
+   * @return the string the user input
+   * @throws NoSuchElementException when the user pressed Ctrl + D
+   */
   // TODO handle ^D at the end of multiline input
   private String readUserInput() {
     return scanner.nextLine();
