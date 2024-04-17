@@ -7,20 +7,27 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
+import java.util.ArrayList;
 import java.util.List;
 
-public class SearchEmailService implements SearchEmailUseCase {
+public class SearchContentEmailService implements SearchContentEmailUseCase {
 
   private final MailboxRepository mailboxRepository;
 
-  public SearchEmailService(MailboxRepository mailboxRepository) {
+  public SearchContentEmailService(MailboxRepository mailboxRepository) {
     this.mailboxRepository = mailboxRepository;
   }
 
-  public List<Email> searchContentInEmails(String content, Address address, MailboxType type)
+  public List<Email> searchContentInEmails(String content, Address address)
       throws MailboxSavingException, MailboxLoadingException {
-    Mailbox mailbox = mailboxRepository.findByAddressAndType(address, type);
-    return mailbox.getEmailList().stream()
+    Mailbox mailbox;
+    List<Email> emailList = new ArrayList<>();
+    for (MailboxType type : MailboxType.values()) {
+      mailbox = mailboxRepository.findByAddressAndType(address, type);
+      emailList.addAll(mailbox.getEmailList());
+    }
+
+    return emailList.stream()
         .filter(email -> email.getContent().contains(content))
         .toList();
   }

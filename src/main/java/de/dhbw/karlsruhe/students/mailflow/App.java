@@ -6,10 +6,8 @@ import de.dhbw.karlsruhe.students.mailflow.core.application.auth.RegisterUseCase
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.RegistrationService;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.EmailSendService;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.EmailSendUseCase;
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.ProvideEmailsService;
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.ProvideEmailsUseCase;
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.SearchEmailService;
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.SearchEmailUseCase;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.SearchContentEmailService;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.SearchContentEmailUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.UCCollectionProvideEmails;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.server.Server;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserRepository;
@@ -37,11 +35,12 @@ public class App {
     final RegisterUseCase registerUseCase =
         new RegistrationService(userRepository, new LocalUserCreator());
     final EmailSendUseCase sendEmails = new EmailSendService(mailboxRepository);
+    final SearchContentEmailUseCase searchEmails = new SearchContentEmailService(mailboxRepository);
     final UCCollectionProvideEmails provideEmails =
         UCCollectionProvideEmails.init(mailboxRepository);
 
     /// Start
-    Server server = new MainCLIPrompt(authUseCase, registerUseCase, sendEmails, provideEmails);
+    Server server = new MainCLIPrompt(authUseCase, registerUseCase, sendEmails, provideEmails, searchEmails);
     server.start();
   }
 }

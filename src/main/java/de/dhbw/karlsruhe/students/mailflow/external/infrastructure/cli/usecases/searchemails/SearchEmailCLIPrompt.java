@@ -1,30 +1,27 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.searchemails;
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthUseCase;
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.SearchEmailUseCase;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.SearchContentEmailUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.AuthorizedCLIPrompt;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-public class SearchEmailCLIPrompt extends BaseCLIPrompt {
+public class SearchEmailCLIPrompt extends AuthorizedCLIPrompt {
 
-  private final AuthUseCase authUseCase;
-
-  private final SearchEmailUseCase searchEmailUseCase;
-
-  private final MailboxType mailboxType;
+  private final SearchContentEmailUseCase searchEmailUseCase;
 
   public SearchEmailCLIPrompt(
-      AuthUseCase authUseCase, SearchEmailUseCase searchEmailUseCase, MailboxType mailboxType) {
-    this.authUseCase = authUseCase;
+      BaseCLIPrompt previousPrompt,
+      AuthUseCase authUseCase,
+      SearchContentEmailUseCase searchEmailUseCase) {
+    super(previousPrompt, authUseCase);
     this.searchEmailUseCase = searchEmailUseCase;
-    this.mailboxType = mailboxType;
   }
 
   @Override
@@ -35,8 +32,7 @@ public class SearchEmailCLIPrompt extends BaseCLIPrompt {
     String s = scanner.nextLine();
     try {
       List<Email> emailList =
-          searchEmailUseCase.searchContentInEmails(
-              s, authUseCase.getSessionUser().email(), mailboxType);
+          searchEmailUseCase.searchContentInEmails(s, authUseCase.getSessionUserAddress());
       BaseCLIPrompt action = showActionMenuPrompt(emailList);
       action.start();
     } catch (MailboxSavingException | MailboxLoadingException e) {
@@ -55,7 +51,7 @@ public class SearchEmailCLIPrompt extends BaseCLIPrompt {
     printDefault("Search results - Select an email to view:");
     Map<String, BaseCLIPrompt> promptMap = new LinkedHashMap<>();
     for (Email email : emailList) {
-      promptMap.put(formatEmail(email), new ShowSearchEmailContentCLIPrompt(email));
+      promptMap.put(formatEmail(email), new ShowSearchEmailContentCLIPrompt(this, authUseCase, email));
     }
 
     return readUserInputWithOptions(promptMap);
