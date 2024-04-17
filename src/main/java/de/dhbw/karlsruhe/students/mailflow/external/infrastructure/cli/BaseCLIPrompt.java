@@ -77,6 +77,11 @@ public class BaseCLIPrompt implements Server {
     return retryOnInvalidSelection(options, input);
   }
 
+/**
+*
+ * @return the string the user input
+ * @throws NoSuchElementException when the user pressed Ctrl + D
+*/
   // TODO handle ^D at the end of multiline input
   private String readUserInput() {
     return scanner.nextLine();
@@ -91,15 +96,11 @@ public class BaseCLIPrompt implements Server {
     StringBuilder stringBuilder = new StringBuilder();
 
     while (scanner.hasNextLine()) {
-      try {
-        String line = scanner.nextLine();
-        if (line.trim().equals(":q")) {
-          break;
-        }
-        stringBuilder.append(line).append("\n");
-      } catch (NoSuchElementException e) {
+      String line = readUserInput();
+      if (line.trim().equals(":q")) {
         break;
       }
+      stringBuilder.append(line).append("\n");
     }
 
     return stringBuilder.toString();
@@ -127,7 +128,7 @@ public class BaseCLIPrompt implements Server {
   private BaseCLIPrompt retry(Map<String, BaseCLIPrompt> options) {
     if (attemptCount > MAX_ATTEMPTS) {
       printWarning("Too many attempts!");
-      System.exit(0);
+      stop();
     }
     printWarning("Your input was not a valid number. Please try again");
     return readUserInputWithOptions(options);
