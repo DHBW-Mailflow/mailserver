@@ -14,7 +14,7 @@ import java.util.List;
  * @author seiferla , Jonas-Karl
  */
 abstract class GenericProvideEmailsService implements ProvideEmailsUseCase {
-  final MailboxRepository mailboxRepository;
+  private final MailboxRepository mailboxRepository;
   private final MailboxType mailboxType;
   private final Label[] labels;
 
