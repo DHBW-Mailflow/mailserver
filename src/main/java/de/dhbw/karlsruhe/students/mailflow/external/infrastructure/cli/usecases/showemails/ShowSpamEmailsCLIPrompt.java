@@ -15,8 +15,11 @@ import java.util.List;
 public class ShowSpamEmailsCLIPrompt extends ShowEmailsCLIPrompt {
 
   public ShowSpamEmailsCLIPrompt(
-      AuthUseCase authUseCase, ProvideEmailsUseCase provideEmailsUseCase, MailboxType mailboxType) {
-    super(authUseCase, provideEmailsUseCase, mailboxType);
+      BaseCLIPrompt previousPrompt,
+      AuthUseCase authUseCase,
+      ProvideEmailsUseCase provideEmailsUseCase,
+      MailboxType mailboxType) {
+    super(previousPrompt, authUseCase, provideEmailsUseCase, mailboxType);
   }
 
   @Override

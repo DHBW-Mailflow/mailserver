@@ -15,8 +15,10 @@ public class ShowEmailTypesCLIPrompt extends AuthorizedCLIPrompt {
   private final ProvideEmailsUseCase provideEmailsUseCase;
 
   public ShowEmailTypesCLIPrompt(
-      AuthUseCase authUseCase, ProvideEmailsUseCase provideEmailsUseCase) {
-    super(authUseCase);
+      BaseCLIPrompt previousPrompt,
+      AuthUseCase authUseCase,
+      ProvideEmailsUseCase provideEmailsUseCase) {
+    super(previousPrompt, authUseCase);
     this.provideEmailsUseCase = provideEmailsUseCase;
   }
 
@@ -31,16 +33,20 @@ public class ShowEmailTypesCLIPrompt extends AuthorizedCLIPrompt {
   private BaseCLIPrompt showActionMenuPrompt() {
     Map<String, BaseCLIPrompt> promptMap = new LinkedHashMap<>();
     promptMap.put(
-        "Spam", new ShowSpamEmailsCLIPrompt(authUseCase, provideEmailsUseCase, MailboxType.SPAM));
+        "Spam",
+        new ShowSpamEmailsCLIPrompt(this, authUseCase, provideEmailsUseCase, MailboxType.SPAM));
     promptMap.put(
         "Deleted",
-        new ShowDeletedEmailsCLIPrompt(authUseCase, provideEmailsUseCase, MailboxType.DELETED));
+        new ShowDeletedEmailsCLIPrompt(
+            this, authUseCase, provideEmailsUseCase, MailboxType.DELETED));
     promptMap.put(
         "Inbox unread",
-        new ShowUnreadInboxEmailsCLIPrompt(authUseCase, provideEmailsUseCase, MailboxType.INBOX));
+        new ShowUnreadInboxEmailsCLIPrompt(
+            this, authUseCase, provideEmailsUseCase, MailboxType.INBOX));
     promptMap.put(
         "Inbox read",
-        new ShowReadInboxEmailsCLIPrompt(authUseCase, provideEmailsUseCase, MailboxType.INBOX));
+        new ShowReadInboxEmailsCLIPrompt(
+            this, authUseCase, provideEmailsUseCase, MailboxType.INBOX));
     return readUserInputWithOptions(promptMap);
   }
 }
