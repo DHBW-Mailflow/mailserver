@@ -3,7 +3,8 @@ package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli;
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.RegisterUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.EmailSendUseCase;
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.SearchContentEmailUseCase;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.UCCollectionSearchEmail;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.content.SearchContentEmailUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.UCCollectionProvideEmails;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.ComposeEmailCLIPrompt;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.LoginCLIPrompt;
@@ -24,19 +25,20 @@ public final class MainCLIPrompt extends BaseCLIPrompt {
   private final RegisterUseCase registerUseCase;
   private final EmailSendUseCase emailSendUseCase;
   private final UCCollectionProvideEmails provideEmails;
-  private final SearchContentEmailUseCase searchEmailUseCase;
+  private final UCCollectionSearchEmail searchEmails;
 
   public MainCLIPrompt(
       AuthUseCase authUseCase,
       RegisterUseCase registerUseCase,
       EmailSendUseCase emailSendUseCase,
-      UCCollectionProvideEmails provideEmails, SearchContentEmailUseCase searchEmailUseCase ) {
+      UCCollectionProvideEmails provideEmails, UCCollectionSearchEmail searchEmails) {
     super(null);
     this.authUseCase = authUseCase;
     this.registerUseCase = registerUseCase;
     this.emailSendUseCase = emailSendUseCase;
     this.provideEmails = provideEmails;
-    this.searchEmailUseCase = searchEmailUseCase;
+    this.searchEmails = searchEmails;
+
   }
 
   private BaseCLIPrompt showRegisterOrEmailPrompt() {
@@ -52,7 +54,7 @@ public final class MainCLIPrompt extends BaseCLIPrompt {
     Map<String, BaseCLIPrompt> promptMap = new LinkedHashMap<>();
     promptMap.put("Logout", new LogoutCLIPrompt(this, authUseCase));
     promptMap.put("Send E-Mail", new ComposeEmailCLIPrompt(this, authUseCase, emailSendUseCase));
-    promptMap.put("Search E-Mails", new SearchEmailCLIPrompt(this, authUseCase, searchEmailUseCase));
+    promptMap.put("Search E-Mails", new SearchEmailCLIPrompt(this, authUseCase, searchEmails));
     promptMap.put(
         "Show emails", new ShowEmailTypesCLIPrompt(this, authUseCase, provideEmails));
     return readUserInputWithOptions(promptMap);

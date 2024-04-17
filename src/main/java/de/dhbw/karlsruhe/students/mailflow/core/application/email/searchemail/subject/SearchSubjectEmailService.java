@@ -1,4 +1,4 @@
-package de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail;
+package de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.subject;
 
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
@@ -10,15 +10,16 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Addre
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchContentEmailService implements SearchContentEmailUseCase {
+public class SearchSubjectEmailService implements SearchSubjectEmailUseCase {
 
   private final MailboxRepository mailboxRepository;
 
-  public SearchContentEmailService(MailboxRepository mailboxRepository) {
+  public SearchSubjectEmailService(MailboxRepository mailboxRepository) {
     this.mailboxRepository = mailboxRepository;
   }
 
-  public List<Email> searchContentInEmails(String content, Address address)
+  @Override
+  public List<Email> searchSubjectInEmails(String subject, Address address)
       throws MailboxSavingException, MailboxLoadingException {
     Mailbox mailbox;
     List<Email> emailList = new ArrayList<>();
@@ -26,9 +27,8 @@ public class SearchContentEmailService implements SearchContentEmailUseCase {
       mailbox = mailboxRepository.findByAddressAndType(address, type);
       emailList.addAll(mailbox.getEmailList());
     }
-
     return emailList.stream()
-        .filter(email -> email.getContent().contains(content))
+        .filter(email -> email.getSubject().subject().contains(subject))
         .toList();
   }
 }
