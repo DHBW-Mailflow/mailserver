@@ -19,6 +19,5 @@ public final class LogoutCLIPrompt extends AuthorizedCLIPrompt {
 
     Address user = authUseCase.logout();
     printDefault("Good bye, %s!".formatted(user));
-    stop();
   }
 }
