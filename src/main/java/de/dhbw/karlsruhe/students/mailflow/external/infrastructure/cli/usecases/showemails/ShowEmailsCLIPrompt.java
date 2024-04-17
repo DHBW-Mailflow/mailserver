@@ -18,7 +18,8 @@ public class ShowEmailsCLIPrompt extends AuthorizedCLIPrompt {
 
   private final ProvideEmailsUseCase provideEmailsUseCase;
 
-  ShowEmailsCLIPrompt(BaseCLIPrompt previousPrompt,
+  ShowEmailsCLIPrompt(
+      BaseCLIPrompt previousPrompt,
       AuthUseCase authUseCase,
       ProvideEmailsUseCase provideEmailsUseCase) {
     super(previousPrompt, authUseCase);
@@ -57,8 +58,7 @@ public class ShowEmailsCLIPrompt extends AuthorizedCLIPrompt {
     for (Email email : emailList) {
       promptMap.put(
           formatEmail(email),
-          new ShowEmailContentCLIPrompt(
-              this, email, provideEmailsUseCase, authUseCase));
+          new ShowEmailContentCLIPrompt(this, email, provideEmailsUseCase, authUseCase));
     }
     return readUserInputWithOptions(promptMap);
   }

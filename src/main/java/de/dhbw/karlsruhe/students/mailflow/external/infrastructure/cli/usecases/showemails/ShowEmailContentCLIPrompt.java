@@ -19,7 +19,9 @@ public class ShowEmailContentCLIPrompt extends AuthorizedCLIPrompt {
 
   public ShowEmailContentCLIPrompt(
       BaseCLIPrompt previousPrompt,
-      Email email, ProvideEmailsUseCase provideEmailsUseCase, AuthUseCase authUseCase) {
+      Email email,
+      ProvideEmailsUseCase provideEmailsUseCase,
+      AuthUseCase authUseCase) {
     super(previousPrompt, authUseCase);
     this.email = email;
     this.provideEmailsUseCase = provideEmailsUseCase;
