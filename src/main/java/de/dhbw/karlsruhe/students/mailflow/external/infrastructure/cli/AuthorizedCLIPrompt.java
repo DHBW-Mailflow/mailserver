@@ -2,10 +2,14 @@ package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli;
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthUseCase;
 
+/**
+ * @author Jonas-Karl
+ */
 public class AuthorizedCLIPrompt extends BaseCLIPrompt {
   public final AuthUseCase authUseCase;
 
-  public AuthorizedCLIPrompt(AuthUseCase authUseCase) {
+  public AuthorizedCLIPrompt(BaseCLIPrompt previousPrompt, AuthUseCase authUseCase) {
+    super(previousPrompt);
     if (authUseCase == null) {
       throw new IllegalArgumentException("AuthUseCase must not be null");
     }

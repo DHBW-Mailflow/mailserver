@@ -7,6 +7,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxL
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.AuthorizedCLIPrompt;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,8 +18,9 @@ public final class ComposeEmailCLIPrompt extends AuthorizedCLIPrompt {
 
   private final EmailSendUseCase emailSendUseCase;
 
-  public ComposeEmailCLIPrompt(AuthUseCase authUseCase, EmailSendUseCase emailSendUseCase) {
-    super(authUseCase);
+  public ComposeEmailCLIPrompt(
+      BaseCLIPrompt previousPrompt, AuthUseCase authUseCase, EmailSendUseCase emailSendUseCase) {
+    super(previousPrompt, authUseCase);
     this.emailSendUseCase = emailSendUseCase;
   }
 
@@ -44,8 +46,7 @@ public final class ComposeEmailCLIPrompt extends AuthorizedCLIPrompt {
     String subject = simplePrompt("What is the subject?");
     subject = subject.trim();
 
-    printDefault(
-        "Please write your message now: (To finish, please press Ctrl + D on Linux / Windows)");
+    printDefault("Please write your message now: (To finish, please write :q on a new line)");
     String message = readMultilineUserInput();
     message = message.trim();
 

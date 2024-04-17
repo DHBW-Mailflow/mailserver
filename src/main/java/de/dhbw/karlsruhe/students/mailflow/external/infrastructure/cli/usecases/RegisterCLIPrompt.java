@@ -12,7 +12,8 @@ import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPr
 public final class RegisterCLIPrompt extends BaseCLIPrompt {
   private final RegisterUseCase registerUseCase;
 
-  public RegisterCLIPrompt(RegisterUseCase registerUseCase) {
+  public RegisterCLIPrompt(BaseCLIPrompt previousPrompt, RegisterUseCase registerUseCase) {
+    super(previousPrompt);
     this.registerUseCase = registerUseCase;
   }
 

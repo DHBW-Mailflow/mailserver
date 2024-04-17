@@ -28,6 +28,7 @@ public final class MainCLIPrompt extends BaseCLIPrompt {
       RegisterUseCase registerUseCase,
       EmailSendUseCase emailSendUseCase,
       UCCollectionProvideEmails provideEmails) {
+    super(null);
     this.authUseCase = authUseCase;
     this.registerUseCase = registerUseCase;
     this.emailSendUseCase = emailSendUseCase;
@@ -37,17 +38,18 @@ public final class MainCLIPrompt extends BaseCLIPrompt {
   private BaseCLIPrompt showRegisterOrEmailPrompt() {
     printDefault("What do you want to do?");
     Map<String, BaseCLIPrompt> promptMap = new LinkedHashMap<>();
-    promptMap.put("Register", new RegisterCLIPrompt(registerUseCase));
-    promptMap.put("Login", new LoginCLIPrompt(authUseCase));
+    promptMap.put("Register", new RegisterCLIPrompt(this, registerUseCase));
+    promptMap.put("Login", new LoginCLIPrompt(this, authUseCase));
     return readUserInputWithOptions(promptMap);
   }
 
   private BaseCLIPrompt showActionMenuPrompt() {
     printDefault("What do you want to do?");
     Map<String, BaseCLIPrompt> promptMap = new LinkedHashMap<>();
-    promptMap.put("Logout", new LogoutCLIPrompt(authUseCase));
-    promptMap.put("Send E-Mail", new ComposeEmailCLIPrompt(authUseCase, emailSendUseCase));
-    promptMap.put("Show emails", new ShowEmailTypesCLIPrompt(authUseCase, provideEmails));
+    promptMap.put("Logout", new LogoutCLIPrompt(this, authUseCase));
+    promptMap.put("Send E-Mail", new ComposeEmailCLIPrompt(this, authUseCase, emailSendUseCase));
+    promptMap.put(
+        "Show emails", new ShowEmailTypesCLIPrompt(this, authUseCase, provideEmails));
     return readUserInputWithOptions(promptMap);
   }
 

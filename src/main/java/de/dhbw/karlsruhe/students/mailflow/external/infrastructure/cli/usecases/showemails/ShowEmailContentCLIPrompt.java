@@ -6,6 +6,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.AuthorizedCLIPrompt;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
 
 /**
  * @author seiferla
@@ -17,8 +18,9 @@ public class ShowEmailContentCLIPrompt extends AuthorizedCLIPrompt {
   private final ProvideEmailsUseCase provideEmailsUseCase;
 
   public ShowEmailContentCLIPrompt(
+      BaseCLIPrompt previousPrompt,
       Email email, ProvideEmailsUseCase provideEmailsUseCase, AuthUseCase authUseCase) {
-    super(authUseCase);
+    super(previousPrompt, authUseCase);
     this.email = email;
     this.provideEmailsUseCase = provideEmailsUseCase;
   }

@@ -14,8 +14,11 @@ public class ShowEmailTypesCLIPrompt extends AuthorizedCLIPrompt {
 
   private final UCCollectionProvideEmails provideEmails;
 
-  public ShowEmailTypesCLIPrompt(AuthUseCase authUseCase, UCCollectionProvideEmails provideEmails) {
-    super(authUseCase);
+  public ShowEmailTypesCLIPrompt(
+      BaseCLIPrompt previousPrompt,
+      AuthUseCase authUseCase,
+        UCCollectionProvideEmails provideEmails) {
+    super(previousPrompt, authUseCase);
     this.provideEmails = provideEmails;
   }
 
@@ -28,26 +31,20 @@ public class ShowEmailTypesCLIPrompt extends AuthorizedCLIPrompt {
   }
 
   private BaseCLIPrompt showActionMenuPrompt() {
-    if (provideEmails == null) {
-      // TODO this will be fixed by another PR
-      printWarning("should return to previous CLIPrompt");
-      return null;
-    }
-
     Map<String, BaseCLIPrompt> promptMap = new LinkedHashMap<>();
     promptMap.put(
-        "Sent", new ShowEmailsCLIPrompt(authUseCase, provideEmails.provideSentEmailsUseCase()));
+        "Sent", new ShowEmailsCLIPrompt(this,authUseCase, provideEmails.provideSentEmailsUseCase()));
     promptMap.put(
-        "Spam", new ShowEmailsCLIPrompt(authUseCase, provideEmails.provideSpamEmailsUseCase()));
+        "Spam", new ShowEmailsCLIPrompt(this,authUseCase, provideEmails.provideSpamEmailsUseCase()));
     promptMap.put(
         "Deleted",
-        new ShowEmailsCLIPrompt(authUseCase, provideEmails.provideDeletedEmailsUseCase()));
+        new ShowEmailsCLIPrompt(this,authUseCase, provideEmails.provideDeletedEmailsUseCase()));
+     promptMap.put(
+        "Inbox unread",
+        new ShowEmailsCLIPrompt(this,authUseCase, provideEmails.provideInboxUnreadEmailsUseCase()));
     promptMap.put(
         "Inbox read",
-        new ShowEmailsCLIPrompt(authUseCase, provideEmails.provideInboxReadEmailsUseCase()));
-    promptMap.put(
-        "Inbox unread",
-        new ShowEmailsCLIPrompt(authUseCase, provideEmails.provideInboxUnreadEmailsUseCase()));
+        new ShowEmailsCLIPrompt(this,authUseCase, provideEmails.provideInboxReadEmailsUseCase()));
     return readUserInputWithOptions(promptMap);
   }
 }
