@@ -54,11 +54,4 @@ public class MarkEmailsCLIPrompt extends AuthorizedCLIPrompt {
     }
     return readUserInputWithOptions(promptMap);
   }
-
-  // TODO avoid duplicate code
-  private String formatEmail(Email email) {
-    return "%s: %s - %s"
-        .formatted(
-            email.getSender(), email.getSubject().subject(), email.getSendDate().formattedDate());
-  }
 }

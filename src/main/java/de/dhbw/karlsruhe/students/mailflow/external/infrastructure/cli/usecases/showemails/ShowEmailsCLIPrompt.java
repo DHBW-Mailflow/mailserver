@@ -46,12 +46,6 @@ public class ShowEmailsCLIPrompt extends AuthorizedCLIPrompt {
     }
   }
 
-  private String formatEmail(Email email) {
-    return "%s: %s - %s"
-        .formatted(
-            email.getSender(), email.getSubject().subject(), email.getSendDate().formattedDate());
-  }
-
   private BaseCLIPrompt showActionMenuPrompt(List<Email> emailList) {
     if (emailList.isEmpty()) {
       printDefault("No emails found");

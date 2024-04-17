@@ -1,6 +1,7 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli;
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthUseCase;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 
 /**
  * @author Jonas-Karl
@@ -20,5 +21,11 @@ public class AuthorizedCLIPrompt extends BaseCLIPrompt {
   public void start() {
     super.start();
     authUseCase.ensureLoggedIn();
+  }
+
+  public String formatEmail(Email email) {
+    return "%s: %s - %s"
+        .formatted(
+            email.getSender(), email.getSubject().subject(), email.getSendDate().formattedDate());
   }
 }
