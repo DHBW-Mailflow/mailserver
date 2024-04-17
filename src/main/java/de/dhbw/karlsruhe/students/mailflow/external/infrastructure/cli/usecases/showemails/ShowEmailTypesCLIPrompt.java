@@ -44,10 +44,10 @@ public class ShowEmailTypesCLIPrompt extends AuthorizedCLIPrompt {
         new ShowEmailsCLIPrompt(authUseCase, provideEmails.provideDeletedEmailsUseCase()));
     promptMap.put(
         "Inbox read",
-        new ShowEmailsCLIPrompt(authUseCase, provideEmails.provideInboxUnreadEmailsUseCase()));
-    promptMap.put(
-        "Inbox Unread",
         new ShowEmailsCLIPrompt(authUseCase, provideEmails.provideInboxReadEmailsUseCase()));
+    promptMap.put(
+        "Inbox unread",
+        new ShowEmailsCLIPrompt(authUseCase, provideEmails.provideInboxUnreadEmailsUseCase()));
     return readUserInputWithOptions(promptMap);
   }
 }

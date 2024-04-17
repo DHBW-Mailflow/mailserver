@@ -21,17 +21,17 @@ public final class MainCLIPrompt extends BaseCLIPrompt {
   private final AuthUseCase authUseCase;
   private final RegisterUseCase registerUseCase;
   private final EmailSendUseCase emailSendUseCase;
-  private final UCCollectionProvideEmails UCCollectionProvideEmails;
+  private final UCCollectionProvideEmails provideEmails;
 
   public MainCLIPrompt(
       AuthUseCase authUseCase,
       RegisterUseCase registerUseCase,
       EmailSendUseCase emailSendUseCase,
-      UCCollectionProvideEmails UCCollectionProvideEmails) {
+      UCCollectionProvideEmails provideEmails) {
     this.authUseCase = authUseCase;
     this.registerUseCase = registerUseCase;
     this.emailSendUseCase = emailSendUseCase;
-    this.UCCollectionProvideEmails = UCCollectionProvideEmails;
+    this.provideEmails = provideEmails;
   }
 
   private BaseCLIPrompt showRegisterOrEmailPrompt() {
@@ -47,8 +47,7 @@ public final class MainCLIPrompt extends BaseCLIPrompt {
     Map<String, BaseCLIPrompt> promptMap = new LinkedHashMap<>();
     promptMap.put("Logout", new LogoutCLIPrompt(authUseCase));
     promptMap.put("Send E-Mail", new ComposeEmailCLIPrompt(authUseCase, emailSendUseCase));
-    promptMap.put(
-        "Show emails", new ShowEmailTypesCLIPrompt(authUseCase, UCCollectionProvideEmails));
+    promptMap.put("Show emails", new ShowEmailTypesCLIPrompt(authUseCase, provideEmails));
     return readUserInputWithOptions(promptMap);
   }
 
