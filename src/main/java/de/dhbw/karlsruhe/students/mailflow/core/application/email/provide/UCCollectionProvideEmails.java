@@ -13,7 +13,9 @@ public record UCCollectionProvideEmails(
     ProvideSpamEmailsService provideSpamEmailsUseCase,
     ProvideInboxReadEmailsService provideInboxReadEmailsUseCase,
     ProvideInboxUnreadEmailsService provideInboxUnreadEmailsUseCase,
-    ProvideSentEmailsService provideSentEmailsUseCase) {
+    ProvideSentEmailsService provideSentEmailsUseCase,
+    ProvideAllReadEmailsService provideAllReadEmailsService,
+    ProvideAllUnreadEmailsService provideAllUnreadEmailsService) {
 
   public static UCCollectionProvideEmails init(FileMailboxRepository mailboxRepository) {
     return new UCCollectionProvideEmails(
@@ -21,6 +23,8 @@ public record UCCollectionProvideEmails(
         new ProvideSpamEmailsService(mailboxRepository),
         new ProvideInboxReadEmailsService(mailboxRepository),
         new ProvideInboxUnreadEmailsService(mailboxRepository),
-        new ProvideSentEmailsService(mailboxRepository));
+        new ProvideSentEmailsService(mailboxRepository),
+        new ProvideAllReadEmailsService(mailboxRepository),
+        new ProvideAllUnreadEmailsService(mailboxRepository));
   }
 }

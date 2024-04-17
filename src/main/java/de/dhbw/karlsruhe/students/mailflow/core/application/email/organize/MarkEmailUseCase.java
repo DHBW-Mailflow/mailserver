@@ -1,15 +1,12 @@
-package de.dhbw.karlsruhe.students.mailflow.core.application.email.provide;
+package de.dhbw.karlsruhe.students.mailflow.core.application.email.organize;
 
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
-import java.util.List;
 
-public interface ProvideEmailsUseCase {
+public interface MarkEmailUseCase {
 
-  List<Email> provideEmails(Address sessionUserAddress)
+  void mark(Address mailboxOwner, Email email)
       throws MailboxSavingException, MailboxLoadingException;
-
-  String getMailboxName();
 }

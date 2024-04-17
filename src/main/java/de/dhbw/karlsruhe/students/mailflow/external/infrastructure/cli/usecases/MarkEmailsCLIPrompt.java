@@ -1,4 +1,4 @@
-package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.showemails;
+package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases;
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.organize.MarkEmailUseCase;
@@ -8,48 +8,36 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxL
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.AuthorizedCLIPrompt;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.showemails.ReadEmailCLIPrompt;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @author seiferla
- */
-public class ShowEmailsCLIPrompt extends AuthorizedCLIPrompt {
+public class MarkEmailsCLIPrompt extends AuthorizedCLIPrompt {
 
+  private final MarkEmailUseCase markUseCase;
   private final ProvideEmailsUseCase provideEmailsUseCase;
-  private final MarkEmailUseCase markEmailUseCase;
 
-  ShowEmailsCLIPrompt(
+  public MarkEmailsCLIPrompt(
       BaseCLIPrompt previousPrompt,
       AuthUseCase authUseCase,
       ProvideEmailsUseCase provideEmailsUseCase,
-      MarkEmailUseCase markEmailUseCase) {
+      MarkEmailUseCase markUseCase) {
     super(previousPrompt, authUseCase);
+    this.markUseCase = markUseCase;
     this.provideEmailsUseCase = provideEmailsUseCase;
-    this.markEmailUseCase = markEmailUseCase;
   }
 
   @Override
   public void start() {
     super.start();
-    String mailboxString = provideEmailsUseCase.getMailboxName();
-    printDefault("This are your %s emails:".formatted(mailboxString));
-
     try {
-      List<Email> emailList =
-          provideEmailsUseCase.provideEmails(authUseCase.getSessionUserAddress());
-      BaseCLIPrompt action = showActionMenuPrompt(emailList);
-      action.start();
+      var filteredEmails = provideEmailsUseCase.provideEmails(authUseCase.getSessionUserAddress());
+      BaseCLIPrompt baseCLIPrompt = showActionMenuPrompt(filteredEmails);
+      baseCLIPrompt.start();
     } catch (MailboxSavingException | MailboxLoadingException e) {
-      printWarning("Could not read %s emails".formatted(mailboxString));
+      printWarning("Could not emails");
     }
-  }
-
-  private String formatEmail(Email email) {
-    return "%s: %s - %s"
-        .formatted(
-            email.getSender(), email.getSubject().subject(), email.getSendDate().formattedDate());
   }
 
   private BaseCLIPrompt showActionMenuPrompt(List<Email> emailList) {
@@ -57,13 +45,20 @@ public class ShowEmailsCLIPrompt extends AuthorizedCLIPrompt {
       printDefault("No emails found");
       return getPreviousPrompt();
     }
-    printDefault("Which email do you want to read?");
+    printDefault(
+        "Which email do you want to mark as %s?".formatted(provideEmailsUseCase.getMailboxName()));
     Map<String, BaseCLIPrompt> promptMap = new LinkedHashMap<>();
     for (Email email : emailList) {
       promptMap.put(
-          formatEmail(email),
-          new ReadEmailCLIPrompt(this, email, markEmailUseCase, authUseCase, true));
+          formatEmail(email), new ReadEmailCLIPrompt(this, email, markUseCase, authUseCase, false));
     }
     return readUserInputWithOptions(promptMap);
+  }
+
+  // TODO avoid duplicate code
+  private String formatEmail(Email email) {
+    return "%s: %s - %s"
+        .formatted(
+            email.getSender(), email.getSubject().subject(), email.getSendDate().formattedDate());
   }
 }
