@@ -46,8 +46,10 @@ public final class Mailbox extends AggregateRoot<MailboxId> {
   }
 
   public List<Email> getEmailsWithLabel(Label... labels) {
-    return emails.entrySet().stream().filter(entry -> entry.getValue().containsAll(Set.of(labels)))
-        .map(Map.Entry::getKey).toList();
+    return emails.entrySet().stream()
+        .filter(entry -> entry.getValue().containsAll(Set.of(labels)))
+        .map(Map.Entry::getKey)
+        .toList();
   }
 
   @Override
