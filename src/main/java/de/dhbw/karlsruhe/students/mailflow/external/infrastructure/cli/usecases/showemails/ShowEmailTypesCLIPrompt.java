@@ -31,16 +31,16 @@ public class ShowEmailTypesCLIPrompt extends AuthorizedCLIPrompt {
   private BaseCLIPrompt showActionMenuPrompt() {
     Map<String, BaseCLIPrompt> promptMap = new LinkedHashMap<>();
     promptMap.put(
-        "Spam", new ShowSpamEmailsCLIPrompt(authUseCase, provideEmailsUseCase, MailboxType.SPAM));
+        "Sent", ShowEmailsCLIPrompt.ofType(authUseCase, provideEmailsUseCase, MailboxType.SENT));
+    promptMap.put(
+        "Spam", ShowEmailsCLIPrompt.ofType(authUseCase, provideEmailsUseCase, MailboxType.SPAM));
     promptMap.put(
         "Deleted",
-        new ShowDeletedEmailsCLIPrompt(authUseCase, provideEmailsUseCase, MailboxType.DELETED));
+        ShowEmailsCLIPrompt.ofType(authUseCase, provideEmailsUseCase, MailboxType.DELETED));
     promptMap.put(
-        "Inbox unread",
-        new ShowUnreadInboxEmailsCLIPrompt(authUseCase, provideEmailsUseCase, MailboxType.INBOX));
-    promptMap.put(
-        "Inbox read",
-        new ShowReadInboxEmailsCLIPrompt(authUseCase, provideEmailsUseCase, MailboxType.INBOX));
+        "Inbox unread", ShowEmailsCLIPrompt.unreadInbox(authUseCase, provideEmailsUseCase));
+    promptMap.put("Inbox read", ShowEmailsCLIPrompt.readInbox(authUseCase, provideEmailsUseCase));
+
     return readUserInputWithOptions(promptMap);
   }
 }

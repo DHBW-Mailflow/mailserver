@@ -44,7 +44,7 @@ class ProvideUnreadEmailsTest {
     ProvideEmailsService provideEmailsService = new ProvideEmailsService(mailboxRepository);
 
     // Act
-    List<Email> emailList = provideEmailsService.provideUnreadEmails(address);
+    List<Email> emailList = provideEmailsService.provideEmails(address, mailboxType, Label.UNREAD);
 
     // Assert
     Assertions.assertEquals(1, emailList.size());

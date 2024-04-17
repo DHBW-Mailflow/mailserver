@@ -18,13 +18,6 @@ public class ProvideEmailsService implements ProvideEmailsUseCase {
   }
 
   @Override
-  public List<Email> provideUnreadEmails(Address address)
-      throws MailboxSavingException, MailboxLoadingException {
-    Mailbox mailbox = mailboxRepository.findByAddressAndType(address, MailboxType.INBOX);
-    return mailbox.getEmailsWithLabel(Label.UNREAD);
-  }
-
-  @Override
   public void markEmailAsRead(Email email, Address address, MailboxType mailboxType)
       throws MailboxSavingException, MailboxLoadingException {
     Mailbox mailbox = mailboxRepository.findByAddressAndType(address, mailboxType);
@@ -33,23 +26,10 @@ public class ProvideEmailsService implements ProvideEmailsUseCase {
   }
 
   @Override
-  public List<Email> provideSpamEmails(Address address)
+  public List<Email> provideEmails(
+      Address sessionUserAddress, MailboxType mailboxType, Label... labels)
       throws MailboxSavingException, MailboxLoadingException {
-    Mailbox mailbox = mailboxRepository.findByAddressAndType(address, MailboxType.SPAM);
-    return mailbox.getEmailsWithLabel(Label.UNREAD, Label.READ);
-  }
-
-  @Override
-  public List<Email> provideDeletedEmails(Address address)
-      throws MailboxSavingException, MailboxLoadingException {
-    Mailbox mailbox = mailboxRepository.findByAddressAndType(address, MailboxType.DELETED);
-    return mailbox.getEmailsWithLabel(Label.UNREAD, Label.READ);
-  }
-
-  @Override
-  public List<Email> provideReadEmails(Address address)
-      throws MailboxSavingException, MailboxLoadingException {
-    Mailbox mailbox = mailboxRepository.findByAddressAndType(address, MailboxType.INBOX);
-    return mailbox.getEmailsWithLabel(Label.READ);
+    Mailbox mailbox = mailboxRepository.findByAddressAndType(sessionUserAddress, mailboxType);
+    return mailbox.getEmailsWithLabel(labels);
   }
 }
