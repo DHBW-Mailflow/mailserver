@@ -1,6 +1,6 @@
 package de.dhbw.karlsruhe.students.mailflow.unit;
 
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.GenericProvideEmailsService;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.ProvideEmailsUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.ProvideInboxUnreadEmailsService;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
@@ -42,7 +42,7 @@ class ProvideUnreadEmailsTest {
           }
         };
 
-    GenericProvideEmailsService provideEmailsService =
+    ProvideEmailsUseCase provideEmailsService =
         new ProvideInboxUnreadEmailsService(mailboxRepository);
 
     // Act

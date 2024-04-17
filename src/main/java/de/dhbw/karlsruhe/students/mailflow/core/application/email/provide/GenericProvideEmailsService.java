@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * @author seiferla , Jonas-Karl
  */
-public abstract class GenericProvideEmailsService implements ProvideEmailsUseCase {
+abstract class GenericProvideEmailsService implements ProvideEmailsUseCase {
   final MailboxRepository mailboxRepository;
   private final MailboxType mailboxType;
   private final Label[] labels;
