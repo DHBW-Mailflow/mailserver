@@ -3,7 +3,7 @@ package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli;
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.RegisterUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.EmailSendUseCase;
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.ProvideEmailsUseCase;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.UCCollectionProvideEmails;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.ComposeEmailCLIPrompt;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.LoginCLIPrompt;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.LogoutCLIPrompt;
@@ -21,17 +21,17 @@ public final class MainCLIPrompt extends BaseCLIPrompt {
   private final AuthUseCase authUseCase;
   private final RegisterUseCase registerUseCase;
   private final EmailSendUseCase emailSendUseCase;
-  private final ProvideEmailsUseCase provideEmailsUseCase;
+  private final UCCollectionProvideEmails UCCollectionProvideEmails;
 
   public MainCLIPrompt(
       AuthUseCase authUseCase,
       RegisterUseCase registerUseCase,
       EmailSendUseCase emailSendUseCase,
-      ProvideEmailsUseCase provideEmailsUseCase) {
+      UCCollectionProvideEmails UCCollectionProvideEmails) {
     this.authUseCase = authUseCase;
     this.registerUseCase = registerUseCase;
     this.emailSendUseCase = emailSendUseCase;
-    this.provideEmailsUseCase = provideEmailsUseCase;
+    this.UCCollectionProvideEmails = UCCollectionProvideEmails;
   }
 
   private BaseCLIPrompt showRegisterOrEmailPrompt() {
@@ -47,7 +47,8 @@ public final class MainCLIPrompt extends BaseCLIPrompt {
     Map<String, BaseCLIPrompt> promptMap = new LinkedHashMap<>();
     promptMap.put("Logout", new LogoutCLIPrompt(authUseCase));
     promptMap.put("Send E-Mail", new ComposeEmailCLIPrompt(authUseCase, emailSendUseCase));
-    promptMap.put("Show emails", new ShowEmailTypesCLIPrompt(authUseCase, provideEmailsUseCase));
+    promptMap.put(
+        "Show emails", new ShowEmailTypesCLIPrompt(authUseCase, UCCollectionProvideEmails));
     return readUserInputWithOptions(promptMap);
   }
 

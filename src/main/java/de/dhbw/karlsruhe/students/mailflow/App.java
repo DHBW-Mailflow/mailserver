@@ -6,9 +6,14 @@ import de.dhbw.karlsruhe.students.mailflow.core.application.auth.RegisterUseCase
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.RegistrationService;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.EmailSendService;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.EmailSendUseCase;
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.ProvideEmailsService;
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.ProvideEmailsUseCase;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.ProvideDeletedEmailsService;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.ProvideInboxReadEmailsService;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.ProvideInboxUnreadEmailsService;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.ProvideSentEmailsService;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.ProvideSpamEmailsService;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.UCCollectionProvideEmails;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.server.Server;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserRepository;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.FileUserRepository;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.LocalPasswordChecker;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.LocalUserCreator;
@@ -23,16 +28,39 @@ import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.parsing
  */
 public class App {
   public static void main(String[] args) {
-    AuthUseCase authUseCase = new AuthService(new FileUserRepository(), new LocalPasswordChecker());
-    RegisterUseCase registerUseCase =
-        new RegistrationService(new FileUserRepository(), new LocalUserCreator());
-    EmailSendUseCase emailSendUseCase =
-        new EmailSendService(new FileMailboxRepository(new JSONMailboxConverter()));
-    ProvideEmailsUseCase provideEmailsUseCase =
-        new ProvideEmailsService(new FileMailboxRepository(new JSONMailboxConverter()));
-    Server server =
-        new MainCLIPrompt(
-            authUseCase, registerUseCase, emailSendUseCase, provideEmailsUseCase);
+    /// Repositories
+    final FileMailboxRepository mailboxRepository =
+        new FileMailboxRepository(new JSONMailboxConverter());
+    final UserRepository userRepository = new FileUserRepository();
+
+    /// UseCases / Services
+    final AuthUseCase authUseCase = new AuthService(userRepository, new LocalPasswordChecker());
+    final RegisterUseCase registerUseCase =
+        new RegistrationService(userRepository, new LocalUserCreator());
+    final EmailSendUseCase sendEmails = new EmailSendService(mailboxRepository);
+    final UCCollectionProvideEmails provideEmails = initProvideEmailUCs(mailboxRepository);
+
+    /// Start
+    Server server = new MainCLIPrompt(authUseCase, registerUseCase, sendEmails, provideEmails);
     server.start();
+  }
+
+  /**
+   * @param mailboxRepository The mailbox repository to use
+   * @return A collection of all use cases to provide emails
+   */
+  private static UCCollectionProvideEmails initProvideEmailUCs(
+      FileMailboxRepository mailboxRepository) {
+    final ProvideSpamEmailsService provideSpam = new ProvideSpamEmailsService(mailboxRepository);
+    final ProvideInboxUnreadEmailsService provideInboxUnread =
+        new ProvideInboxUnreadEmailsService(mailboxRepository);
+    final ProvideInboxReadEmailsService provideInboxRead =
+        new ProvideInboxReadEmailsService(mailboxRepository);
+    final ProvideSentEmailsService provideSent = new ProvideSentEmailsService(mailboxRepository);
+    final ProvideDeletedEmailsService provideDeleted =
+        new ProvideDeletedEmailsService(mailboxRepository);
+
+    return new UCCollectionProvideEmails(
+        provideDeleted, provideSpam, provideInboxRead, provideInboxUnread, provideSent);
   }
 }

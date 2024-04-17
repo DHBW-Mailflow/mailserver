@@ -10,15 +10,23 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxS
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import java.util.List;
 
-public class ProvideEmailsService implements ProvideEmailsUseCase {
-  private final MailboxRepository mailboxRepository;
+/**
+ * @author seiferla , Jonas-Karl
+ */
+public abstract class GenericProvideEmailsService implements ProvideEmailsUseCase {
+  final MailboxRepository mailboxRepository;
+  private final MailboxType mailboxType;
+  private final Label[] labels;
 
-  public ProvideEmailsService(MailboxRepository mailboxRepository) {
+  public GenericProvideEmailsService(
+      MailboxRepository mailboxRepository, MailboxType mailboxType, Label... labels) {
     this.mailboxRepository = mailboxRepository;
+    this.mailboxType = mailboxType;
+    this.labels = labels;
   }
 
   @Override
-  public void markEmailAsRead(Email email, Address address, MailboxType mailboxType)
+  public void markEmailAsRead(Email email, Address address)
       throws MailboxSavingException, MailboxLoadingException {
     Mailbox mailbox = mailboxRepository.findByAddressAndType(address, mailboxType);
     mailbox.markWithLabel(email, Label.READ);
@@ -26,10 +34,14 @@ public class ProvideEmailsService implements ProvideEmailsUseCase {
   }
 
   @Override
-  public List<Email> provideEmails(
-      Address sessionUserAddress, MailboxType mailboxType, Label... labels)
+  public List<Email> provideEmails(Address sessionUserAddress)
       throws MailboxSavingException, MailboxLoadingException {
-    Mailbox mailbox = mailboxRepository.findByAddressAndType(sessionUserAddress, mailboxType);
+    var mailbox = mailboxRepository.findByAddressAndType(sessionUserAddress, mailboxType);
     return mailbox.getEmailsWithLabel(labels);
+  }
+
+  @Override
+  public String getMailboxName() {
+    return mailboxType.getStoringName();
   }
 }
