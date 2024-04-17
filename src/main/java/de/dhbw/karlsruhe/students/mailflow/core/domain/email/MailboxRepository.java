@@ -25,5 +25,4 @@ public interface MailboxRepository {
    */
   void save(Mailbox mailbox) throws MailboxSavingException;
 
-  List<Email> findAllEmails();
 }

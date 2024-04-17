@@ -8,6 +8,8 @@ import de.dhbw.karlsruhe.students.mailflow.core.application.email.EmailSendServi
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.EmailSendUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.ProvideEmailsService;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.ProvideEmailsUseCase;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.SearchEmailService;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.SearchEmailUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.server.Server;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.FileUserRepository;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.LocalPasswordChecker;
@@ -30,9 +32,11 @@ public class App {
         new EmailSendService(new FileMailboxRepository(new JSONMailboxConverter()));
     ProvideEmailsUseCase provideEmailsUseCase =
         new ProvideEmailsService(new FileMailboxRepository(new JSONMailboxConverter()));
+    SearchEmailUseCase searchEmailUseCase =
+        new SearchEmailService(new FileMailboxRepository(new JSONMailboxConverter()));
     Server server =
         new MainCLIPrompt(
-            authUseCase, registerUseCase, emailSendUseCase, provideEmailsUseCase);
+            authUseCase, registerUseCase, emailSendUseCase, provideEmailsUseCase, searchEmailUseCase);
     server.start();
   }
 }
