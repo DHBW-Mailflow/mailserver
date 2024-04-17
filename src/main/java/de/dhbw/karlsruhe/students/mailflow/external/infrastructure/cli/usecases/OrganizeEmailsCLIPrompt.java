@@ -8,6 +8,9 @@ import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPr
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * @author Jonas-Karl
+ */
 public class OrganizeEmailsCLIPrompt extends AuthorizedCLIPrompt {
 
   private final UCCollectionOrganizeEmails organizeUseCases;

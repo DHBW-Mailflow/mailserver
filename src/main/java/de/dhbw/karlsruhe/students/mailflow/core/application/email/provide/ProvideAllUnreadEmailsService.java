@@ -11,6 +11,9 @@ import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.parsing
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Jonas-Karl
+ */
 public class ProvideAllUnreadEmailsService implements ProvideEmailsUseCase {
 
   private final FileMailboxRepository mailboxRepository;

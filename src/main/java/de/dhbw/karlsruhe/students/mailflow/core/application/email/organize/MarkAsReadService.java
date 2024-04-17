@@ -9,6 +9,9 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxL
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 
+/**
+ * @author Jonas-Karl
+ */
 public class MarkAsReadService implements MarkEmailUseCase {
 
   private final MailboxRepository mailboxRepository;
