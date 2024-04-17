@@ -56,13 +56,13 @@ public final class MainCLIPrompt extends BaseCLIPrompt {
   @Override
   public void start() {
     super.start();
-
-    while (!authUseCase.isLoggedIn()) {
-      BaseCLIPrompt registerOrEmailPrompt = showRegisterOrEmailPrompt();
-      registerOrEmailPrompt.start();
-    }
-
     while (true) {
+
+      while (!authUseCase.isLoggedIn()) {
+        BaseCLIPrompt registerOrEmailPrompt = showRegisterOrEmailPrompt();
+        registerOrEmailPrompt.start();
+      }
+
       BaseCLIPrompt action = showActionMenuPrompt();
       action.start();
     }
