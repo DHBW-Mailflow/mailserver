@@ -40,7 +40,8 @@ class AuthServiceTest {
 
     loginService.login(userToLogin.email().toString(), userToLogin.password());
 
-    assertEquals(userToLogin, loginService.getSessionUser());
+    Assertions.assertTrue(loginService.isLoggedIn());
+    assertEquals(userToLogin.email(), loginService.getSessionUserAddress());
   }
 
   @Test

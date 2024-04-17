@@ -13,15 +13,27 @@ import java.util.Scanner;
  * @author Jonas-Karl, jens1o
  */
 public class BaseCLIPrompt implements Server {
+  private final BaseCLIPrompt previousPrompt;
 
   private static final int MAX_ATTEMPTS = 3;
   private int attemptCount;
   private Scanner scanner;
 
+  public BaseCLIPrompt(BaseCLIPrompt previousPrompt) {
+    this.previousPrompt = previousPrompt;
+  }
+
   /** Starts the server or CLIPrompt */
   @Override
-  public void start(){
+  public void start() {
     scanner = new Scanner(System.in);
+  }
+
+  public BaseCLIPrompt getPreviousPrompt() {
+    if (previousPrompt == null) {
+      throw new IllegalStateException("No previous prompt available");
+    }
+    return previousPrompt;
   }
 
   /** Stops the server */
@@ -57,18 +69,31 @@ public class BaseCLIPrompt implements Server {
    * @return the new CLI-Prompt after the user selected an option
    */
   public BaseCLIPrompt readUserInputWithOptions(Map<String, BaseCLIPrompt> options) {
+    if (previousPrompt != null) {
+      options.put("Go back", previousPrompt);
+    }
     showOptions(options);
     String input = readUserInput();
     return retryOnInvalidSelection(options, input);
   }
 
-  //TODO handle ^D at the end of multiline input
+  /**
+   * @return the string the user input
+   * @throws NoSuchElementException when the user pressed Ctrl + D
+   */
+  // TODO handle ^D at the end of multiline input
   private String readUserInput() {
-    return scanner.nextLine();
+    try {
+      return scanner.nextLine();
+    } catch (NoSuchElementException ignored) {
+      printWarning("Ctrl + D detected. Exiting...");
+      stop();
+      return "";
+    }
   }
 
   /**
-   * Reads the user input until a Ctrl + D (Linux/macOS) or Ctrl + Z (Windows) is received
+   * Reads the user input until a Ctrl + D or :q on an empty line is received
    *
    * @return the untrimmed answer from the user consisting of several lines
    */
@@ -76,11 +101,11 @@ public class BaseCLIPrompt implements Server {
     StringBuilder stringBuilder = new StringBuilder();
 
     while (scanner.hasNextLine()) {
-      try {
-        stringBuilder.append(scanner.nextLine()).append("\n");
-      } catch (NoSuchElementException e) {
+      String line = readUserInput();
+      if (line.trim().equals(":q")) {
         break;
       }
+      stringBuilder.append(line).append("\n");
     }
 
     return stringBuilder.toString();
@@ -108,7 +133,7 @@ public class BaseCLIPrompt implements Server {
   private BaseCLIPrompt retry(Map<String, BaseCLIPrompt> options) {
     if (attemptCount > MAX_ATTEMPTS) {
       printWarning("Too many attempts!");
-      System.exit(0);
+      stop();
     }
     printWarning("Your input was not a valid number. Please try again");
     return readUserInputWithOptions(options);
