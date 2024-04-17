@@ -83,7 +83,13 @@ public class BaseCLIPrompt implements Server {
    */
   // TODO handle ^D at the end of multiline input
   private String readUserInput() {
-    return scanner.nextLine();
+    try {
+      return scanner.nextLine();
+    } catch (NoSuchElementException ignored) {
+      printWarning("Ctrl + D detected. Exiting...");
+      stop();
+      return "";
+    }
   }
 
   /**
