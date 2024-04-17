@@ -39,7 +39,7 @@ public class MarkEmailsCLIPrompt extends AuthorizedCLIPrompt {
       BaseCLIPrompt baseCLIPrompt = showActionMenuPrompt(filteredEmails);
       baseCLIPrompt.start();
     } catch (MailboxSavingException | MailboxLoadingException e) {
-      printWarning("Could not emails");
+      printWarning("Could not load emails");
     }
   }
 
