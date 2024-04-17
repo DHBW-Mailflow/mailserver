@@ -1,6 +1,7 @@
 package de.dhbw.karlsruhe.students.mailflow.unit;
 
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.ProvideEmailsService;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.ProvideEmailsUseCase;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.ProvideInboxUnreadEmailsService;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.MailboxRepository;
@@ -41,10 +42,11 @@ class ProvideUnreadEmailsTest {
           }
         };
 
-    ProvideEmailsService provideEmailsService = new ProvideEmailsService(mailboxRepository);
+    ProvideEmailsUseCase provideEmailsService =
+        new ProvideInboxUnreadEmailsService(mailboxRepository);
 
     // Act
-    List<Email> emailList = provideEmailsService.provideUnreadEmails(address);
+    List<Email> emailList = provideEmailsService.provideEmails(address);
 
     // Assert
     Assertions.assertEquals(1, emailList.size());

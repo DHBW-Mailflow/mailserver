@@ -6,9 +6,9 @@ import de.dhbw.karlsruhe.students.mailflow.core.application.auth.RegisterUseCase
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.RegistrationService;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.EmailSendService;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.EmailSendUseCase;
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.ProvideEmailsService;
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.ProvideEmailsUseCase;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.UCCollectionProvideEmails;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.server.Server;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserRepository;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.FileUserRepository;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.LocalPasswordChecker;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.LocalUserCreator;
@@ -23,16 +23,21 @@ import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.parsing
  */
 public class App {
   public static void main(String[] args) {
-    AuthUseCase authUseCase = new AuthService(new FileUserRepository(), new LocalPasswordChecker());
-    RegisterUseCase registerUseCase =
-        new RegistrationService(new FileUserRepository(), new LocalUserCreator());
-    EmailSendUseCase emailSendUseCase =
-        new EmailSendService(new FileMailboxRepository(new JSONMailboxConverter()));
-    ProvideEmailsUseCase provideEmailsUseCase =
-        new ProvideEmailsService(new FileMailboxRepository(new JSONMailboxConverter()));
-    Server server =
-        new MainCLIPrompt(
-            authUseCase, registerUseCase, emailSendUseCase, provideEmailsUseCase);
+    /// Repositories
+    final FileMailboxRepository mailboxRepository =
+        new FileMailboxRepository(new JSONMailboxConverter());
+    final UserRepository userRepository = new FileUserRepository();
+
+    /// UseCases / Services
+    final AuthUseCase authUseCase = new AuthService(userRepository, new LocalPasswordChecker());
+    final RegisterUseCase registerUseCase =
+        new RegistrationService(userRepository, new LocalUserCreator());
+    final EmailSendUseCase sendEmails = new EmailSendService(mailboxRepository);
+    final UCCollectionProvideEmails provideEmails =
+        UCCollectionProvideEmails.init(mailboxRepository);
+
+    /// Start
+    Server server = new MainCLIPrompt(authUseCase, registerUseCase, sendEmails, provideEmails);
     server.start();
   }
 }
