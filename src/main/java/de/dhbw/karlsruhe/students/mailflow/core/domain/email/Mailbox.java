@@ -45,7 +45,7 @@ public final class Mailbox extends AggregateRoot<MailboxId> {
     this.emails.put(email, Set.of(isUnread ? Label.UNREAD : Label.READ));
   }
 
-  public List<Email> getEmailsWithLabel(Label... labels){
+  public List<Email> getEmailsWithLabel(Label... labels) {
     return emails.entrySet().stream()
         .filter(entry -> entry.getValue().containsAll(Set.of(labels)))
         .map(Map.Entry::getKey)
@@ -77,7 +77,6 @@ public final class Mailbox extends AggregateRoot<MailboxId> {
   }
 
   public void markWithLabel(Email email, Label... label) {
-    emails.remove(email);
     emails.put(email, Set.of(label));
   }
 }
