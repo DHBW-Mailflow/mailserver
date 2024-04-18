@@ -4,9 +4,6 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
 
 public interface MailboxRepository {
   /**
