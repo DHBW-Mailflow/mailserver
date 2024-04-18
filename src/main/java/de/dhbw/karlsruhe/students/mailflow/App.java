@@ -7,8 +7,6 @@ import de.dhbw.karlsruhe.students.mailflow.core.application.auth.RegistrationSer
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.EmailSendService;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.EmailSendUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.UCCollectionSearchEmail;
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.content.SearchContentEmailService;
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.content.SearchContentEmailUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.UCCollectionProvideEmails;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.server.Server;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserRepository;

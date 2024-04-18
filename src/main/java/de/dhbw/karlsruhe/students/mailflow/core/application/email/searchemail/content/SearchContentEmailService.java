@@ -1,20 +1,26 @@
 package de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.content;
 
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.GenericSearchEmailService;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.ProvideEmailsUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.MailboxRepository;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
-import java.util.ArrayList;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.parsing.FileMailboxRepository;
 import java.util.List;
 
-public class SearchContentEmailService extends GenericSearchEmailService {
+public class SearchContentEmailService implements SearchEmailUseCase{
+  private final ProvideEmailsUseCase provideEmailsUseCase;
 
+  public SearchContentEmailService(ProvideEmailsUseCase provideEmailsUseCase){
+    this.provideEmailsUseCase = provideEmailsUseCase;
+  }
 
-  public SearchContentEmailService(MailboxRepository mailboxRepository) {
-    super(mailboxRepository);
+  @Override
+  public List<Email> searchEmails(String content, Address address)
+      throws MailboxSavingException, MailboxLoadingException {
+    List<Email> emailList = provideEmailsUseCase.provideEmails(address);
+    return emailList.stream()
+        .filter(email -> email.getContent().contains(content))
+        .toList();
   }
 }

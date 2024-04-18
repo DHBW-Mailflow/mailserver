@@ -1,9 +1,9 @@
-package de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail;
+package de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.sender;
 
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.ProvideEmailsUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.content.SearchEmailUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.MailboxRepository;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
@@ -11,24 +11,20 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Addre
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class GenericSearchEmailService implements SearchEmailUseCase {
+public class SearchSenderEmailService implements SearchEmailUseCase {
 
-  private final MailboxRepository mailboxRepository;
+  private final ProvideEmailsUseCase provideEmailsUseCase;
 
-  protected GenericSearchEmailService(MailboxRepository mailboxRepository) {
-    this.mailboxRepository = mailboxRepository;
+  public SearchSenderEmailService(ProvideEmailsUseCase provideEmailsUseCase) {
+  this.provideEmailsUseCase = provideEmailsUseCase;
   }
 
   @Override
-  public List<Email> searchEmails(Address address)
+  public List<Email> searchEmails(String content, Address address)
       throws MailboxSavingException, MailboxLoadingException {
-    Mailbox mailbox;
-    List<Email> emailList = new ArrayList<>();
-    for (MailboxType type : MailboxType.values()) {
-      mailbox = mailboxRepository.findByAddressAndType(address, type);
-      emailList.addAll(mailbox.getEmailList());
-    }
-    return emailList;
+    List<Email> emailList = provideEmailsUseCase.provideEmails(address);
+    return emailList.stream()
+        .filter(email -> email.getSubject().subject().contains(content))
+        .toList();
   }
 }
-

@@ -53,7 +53,7 @@ public final class MainCLIPrompt extends BaseCLIPrompt {
     Map<String, BaseCLIPrompt> promptMap = new LinkedHashMap<>();
     promptMap.put("Logout", new LogoutCLIPrompt(this, authUseCase));
     promptMap.put("Send E-Mail", new ComposeEmailCLIPrompt(this, authUseCase, emailSendUseCase));
-    promptMap.put("Search E-Mails", new SearchEmailTypesCLIPrompt(this, authUseCase, searchEmails));
+    promptMap.put("Search E-Mails", new SearchEmailTypesCLIPrompt(this, authUseCase, searchEmails, provideEmails.provideDeletedEmailsUseCase()));
     promptMap.put("Show emails", new ShowEmailTypesCLIPrompt(this, authUseCase, provideEmails));
     return readUserInputWithOptions(promptMap);
   }
