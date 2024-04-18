@@ -9,6 +9,10 @@ import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPr
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * @author seiferla , Jonas-Karl
+
+ */
 public class SearchEmailTypesCLIPrompt extends AuthorizedCLIPrompt {
 
   private final UCCollectionSearchEmail searchEmails;

@@ -9,7 +9,10 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Addre
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.List;
+/**
+ * @author seiferla , Jonas-Karl
 
+ */
 public class SearchAfterDateEmailService implements SearchEmailUseCase {
 
   private final ProvideEmailsUseCase provideEmailsUseCase;

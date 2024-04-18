@@ -9,6 +9,9 @@ import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.re
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.sender.SearchSenderEmailService;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.subject.SearchSubjectEmailService;
 
+/**
+ * @author seiferla , Jonas-Karl
+ */
 public record UCCollectionSearchEmail(
     SearchContentEmailService searchContentEmailUseCase,
     SearchSubjectEmailService searchSubjectEmailUseCase,

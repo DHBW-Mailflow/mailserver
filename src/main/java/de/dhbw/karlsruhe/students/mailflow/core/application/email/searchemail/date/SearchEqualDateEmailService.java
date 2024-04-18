@@ -10,6 +10,10 @@ import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * @author seiferla , Jonas-Karl
+
+ */
 public class SearchEqualDateEmailService implements SearchEmailUseCase {
 
   private final ProvideEmailsUseCase provideEmailsUseCase;

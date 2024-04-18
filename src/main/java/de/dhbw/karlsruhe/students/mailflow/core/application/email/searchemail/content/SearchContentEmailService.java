@@ -7,6 +7,10 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxS
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import java.util.List;
 
+/**
+ * @author seiferla , Jonas-Karl
+
+ */
 public class SearchContentEmailService implements SearchEmailUseCase {
   private final ProvideEmailsUseCase provideEmailsUseCase;
 

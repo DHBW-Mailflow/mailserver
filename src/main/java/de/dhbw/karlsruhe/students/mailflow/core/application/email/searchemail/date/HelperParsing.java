@@ -2,7 +2,10 @@ package de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.d
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+/**
+ * @author seiferla , Jonas-Karl
 
+ */
 public class HelperParsing {
   public static final String DATE_FORMAT = "yyyy-MM-dd";
 

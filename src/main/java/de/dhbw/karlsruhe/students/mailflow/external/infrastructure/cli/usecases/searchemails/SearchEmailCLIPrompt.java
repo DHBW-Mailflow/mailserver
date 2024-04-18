@@ -14,6 +14,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author seiferla , Jonas-Karl
+ */
 public class SearchEmailCLIPrompt extends AuthorizedCLIPrompt {
 
   private final SearchEmailUseCase searchEmailUseCase;
