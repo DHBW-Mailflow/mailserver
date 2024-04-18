@@ -7,6 +7,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.application.auth.RegistrationSer
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.EmailSendService;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.EmailSendUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.organize.UCCollectionOrganizeEmails;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.UCCollectionSearchEmail;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.UCCollectionProvideEmails;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.server.Server;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserRepository;
@@ -38,10 +39,11 @@ public class App {
         UCCollectionProvideEmails.init(mailboxRepository);
     final UCCollectionOrganizeEmails organizeEmails =
         UCCollectionOrganizeEmails.init(mailboxRepository);
+    final UCCollectionSearchEmail searchEmails = UCCollectionSearchEmail.init(provideEmails.provideAllEmailService());
 
     /// Start
     Server server =
-        new MainCLIPrompt(authUseCase, registerUseCase, sendEmails, provideEmails, organizeEmails);
+        new MainCLIPrompt(authUseCase, registerUseCase, sendEmails, provideEmails, organizeEmails, searchEmails);
     server.start();
   }
 }

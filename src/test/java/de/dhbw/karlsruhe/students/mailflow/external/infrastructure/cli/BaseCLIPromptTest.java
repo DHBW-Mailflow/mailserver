@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -27,7 +28,7 @@ class BaseCLIPromptTest {
     // Act
     var expectedResult = new BaseCLIPrompt(null);
 
-    final Map<String, BaseCLIPrompt> options = new HashMap<>();
+    final Map<String, BaseCLIPrompt> options = new LinkedHashMap<>();
     options.put("First option", new BaseCLIPrompt(baseCLIPrompt));
     options.put("Second option", expectedResult);
     final var resultPrompt = baseCLIPrompt.readUserInputWithOptions(options);

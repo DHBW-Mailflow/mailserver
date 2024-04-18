@@ -1,6 +1,7 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli;
 
 import de.dhbw.karlsruhe.students.mailflow.core.domain.server.Server;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -70,7 +71,11 @@ public class BaseCLIPrompt implements Server {
    */
   public BaseCLIPrompt readUserInputWithOptions(Map<String, BaseCLIPrompt> options) {
     if (previousPrompt != null) {
-      options.put("Go back", previousPrompt);
+      if (options instanceof LinkedHashMap<String, BaseCLIPrompt> optionsMap) {
+        optionsMap.putFirst("Go back", previousPrompt);
+      } else {
+        options.put("Go back", previousPrompt);
+      }
     }
     showOptions(options);
     String input = readUserInput();
@@ -119,7 +124,8 @@ public class BaseCLIPrompt implements Server {
    * @param input selected user input
    * @return the interactive CLI-Prompt for the selected option
    */
-  private BaseCLIPrompt retryOnInvalidSelection(Map<String, BaseCLIPrompt> options, String input) {
+  private BaseCLIPrompt retryOnInvalidSelection(
+      Map<String, BaseCLIPrompt> options, String input) {
     List<Map.Entry<String, BaseCLIPrompt>> entries = options.entrySet().stream().toList();
     try {
       int parsedInput = Integer.parseInt(input);

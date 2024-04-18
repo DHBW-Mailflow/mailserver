@@ -3,6 +3,7 @@ package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli;
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.RegisterUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.EmailSendUseCase;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.UCCollectionSearchEmail;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.organize.UCCollectionOrganizeEmails;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.UCCollectionProvideEmails;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.ComposeEmailCLIPrompt;
@@ -10,6 +11,7 @@ import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.LogoutCLIPrompt;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.OrganizeEmailsCLIPrompt;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.RegisterCLIPrompt;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.searchemails.SearchEmailTypesCLIPrompt;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.showemails.ShowEmailTypesCLIPrompt;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -25,19 +27,22 @@ public final class MainCLIPrompt extends BaseCLIPrompt {
   private final EmailSendUseCase emailSendUseCase;
   private final UCCollectionProvideEmails provideEmails;
   private final UCCollectionOrganizeEmails organizeEmails;
+  private final UCCollectionSearchEmail searchEmails;
 
   public MainCLIPrompt(
       AuthUseCase authUseCase,
       RegisterUseCase registerUseCase,
       EmailSendUseCase emailSendUseCase,
       UCCollectionProvideEmails provideEmails,
-      UCCollectionOrganizeEmails organizeEmails) {
+      UCCollectionOrganizeEmails organizeEmails,
+      UCCollectionSearchEmail searchEmails) {
     super(null);
     this.authUseCase = authUseCase;
     this.registerUseCase = registerUseCase;
     this.emailSendUseCase = emailSendUseCase;
     this.provideEmails = provideEmails;
     this.organizeEmails = organizeEmails;
+    this.searchEmails = searchEmails;
   }
 
   private BaseCLIPrompt showRegisterOrEmailPrompt() {
@@ -63,6 +68,10 @@ public final class MainCLIPrompt extends BaseCLIPrompt {
     promptMap.put(
         "Organize E-Mails",
         new OrganizeEmailsCLIPrompt(this, authUseCase, provideEmails, organizeEmails));
+    promptMap.put(
+        "Search E-Mails",
+        new SearchEmailTypesCLIPrompt(
+            this, authUseCase, searchEmails, organizeEmails.markAsReadService()));
     return readUserInputWithOptions(promptMap);
   }
 
