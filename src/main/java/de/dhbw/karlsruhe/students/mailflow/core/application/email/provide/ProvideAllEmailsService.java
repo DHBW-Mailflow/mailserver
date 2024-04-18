@@ -10,6 +10,9 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Addre
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Jonas-Karl
+ */
 public class ProvideAllEmailsService extends AbstractProvideEmailsService {
 
   ProvideAllEmailsService(MailboxRepository mailboxRepository) {
