@@ -11,4 +11,6 @@ public interface SearchSubjectEmailUseCase {
 
   List<Email> searchSubjectInEmails(String subject, Address address)
       throws MailboxSavingException, MailboxLoadingException;
+
+  List<Email> filterEmailsBySubject(List<Email> emails, String subject);
 }

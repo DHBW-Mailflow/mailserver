@@ -1,44 +1,45 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.searchemails;
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthUseCase;
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.UCCollectionProvideEmails;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.UCCollectionSearchEmail;
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.content.SearchContentEmailUseCase;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.content.SearchEmailUseCase;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.subject.SearchSubjectEmailService;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.AuthorizedCLIPrompt;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.List;
 
 public class SearchEmailCLIPrompt extends AuthorizedCLIPrompt {
 
-  private final UCCollectionSearchEmail searchEmails;
-
+  private final SearchEmailUseCase searchEmailUseCase;
 
   public SearchEmailCLIPrompt(
       BaseCLIPrompt previousPrompt,
-      AuthUseCase authUseCase, UCCollectionSearchEmail searchEmails) {
+      AuthUseCase authUseCase,
+      SearchEmailUseCase searchEmailUseCase) {
     super(previousPrompt, authUseCase);
-    this.searchEmails = searchEmails;
+    this.searchEmailUseCase = searchEmailUseCase;
   }
+
+
 
   @Override
   public void start() {
     super.start();
-    printDefault("Which metadata do you want to search for in the mail?");
-    BaseCLIPrompt action = showActionMenuPrompt();
-    action.start();
+    try {
+      List<Email> emailList =
+          searchEmailUseCase.searchEmails(authUseCase.getSessionUserAddress()).;
+      BaseCLIPrompt action = showActionMenuPrompt(emailList);
+      action.start();
+    } catch (MailboxSavingException | MailboxLoadingException e) {
+      printWarning("Could not read %s emails".formatted(mailboxString));
+    }
   }
 
-  public String formatEmail(Email email) {
-    return "%s: %s - %s"
-        .formatted(
-            email.getSender(), email.getSubject().subject(), email.getSendDate().formattedDate());
+  private BaseCLIPrompt showActionMenuPrompt(List<Email> emailList) {
+    return null;
   }
 
-  private BaseCLIPrompt showActionMenuPrompt() {
-    Map<String, BaseCLIPrompt> promptMap = new LinkedHashMap<>();
-    promptMap.put("Subject", new SearchSubjectCLIPrompt(this, authUseCase, searchEmails.searchSubjectEmailUseCase()));
-    return readUserInputWithOptions(promptMap);
-  }
 }

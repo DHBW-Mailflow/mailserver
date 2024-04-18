@@ -1,5 +1,6 @@
-package de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.subject;
+package de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail;
 
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.content.SearchEmailUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.MailboxRepository;
@@ -10,16 +11,16 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Addre
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchSubjectEmailService implements SearchSubjectEmailUseCase {
+public abstract class GenericSearchEmailService implements SearchEmailUseCase {
 
   private final MailboxRepository mailboxRepository;
 
-  public SearchSubjectEmailService(MailboxRepository mailboxRepository) {
+  protected GenericSearchEmailService(MailboxRepository mailboxRepository) {
     this.mailboxRepository = mailboxRepository;
   }
 
   @Override
-  public List<Email> searchSubjectInEmails(String subject, Address address)
+  public List<Email> searchEmails(Address address)
       throws MailboxSavingException, MailboxLoadingException {
     Mailbox mailbox;
     List<Email> emailList = new ArrayList<>();
@@ -27,15 +28,7 @@ public class SearchSubjectEmailService implements SearchSubjectEmailUseCase {
       mailbox = mailboxRepository.findByAddressAndType(address, type);
       emailList.addAll(mailbox.getEmailList());
     }
-    return emailList.stream()
-        .filter(email -> email.getSubject().subject().contains(subject))
-        .toList();
-  }
-
-  @Override
-  public List<Email> filterEmailsBySubject(List<Email> emails, String subject) {
-    return emails.stream()
-        .filter(email -> email.getSubject().subject().contains(subject))
-        .toList();
+    return emailList;
   }
 }
+

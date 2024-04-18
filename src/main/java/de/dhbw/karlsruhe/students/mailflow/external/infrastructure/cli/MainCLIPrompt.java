@@ -4,13 +4,12 @@ import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.RegisterUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.EmailSendUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.UCCollectionSearchEmail;
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.content.SearchContentEmailUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.UCCollectionProvideEmails;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.ComposeEmailCLIPrompt;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.LoginCLIPrompt;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.LogoutCLIPrompt;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.RegisterCLIPrompt;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.searchemails.SearchEmailCLIPrompt;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.searchemails.SearchEmailTypesCLIPrompt;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.showemails.ShowEmailTypesCLIPrompt;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -31,14 +30,14 @@ public final class MainCLIPrompt extends BaseCLIPrompt {
       AuthUseCase authUseCase,
       RegisterUseCase registerUseCase,
       EmailSendUseCase emailSendUseCase,
-      UCCollectionProvideEmails provideEmails, UCCollectionSearchEmail searchEmails) {
+      UCCollectionProvideEmails provideEmails,
+      UCCollectionSearchEmail searchEmails) {
     super(null);
     this.authUseCase = authUseCase;
     this.registerUseCase = registerUseCase;
     this.emailSendUseCase = emailSendUseCase;
     this.provideEmails = provideEmails;
     this.searchEmails = searchEmails;
-
   }
 
   private BaseCLIPrompt showRegisterOrEmailPrompt() {
@@ -54,9 +53,8 @@ public final class MainCLIPrompt extends BaseCLIPrompt {
     Map<String, BaseCLIPrompt> promptMap = new LinkedHashMap<>();
     promptMap.put("Logout", new LogoutCLIPrompt(this, authUseCase));
     promptMap.put("Send E-Mail", new ComposeEmailCLIPrompt(this, authUseCase, emailSendUseCase));
-    promptMap.put("Search E-Mails", new SearchEmailCLIPrompt(this, authUseCase, searchEmails));
-    promptMap.put(
-        "Show emails", new ShowEmailTypesCLIPrompt(this, authUseCase, provideEmails));
+    promptMap.put("Search E-Mails", new SearchEmailTypesCLIPrompt(this, authUseCase, searchEmails));
+    promptMap.put("Show emails", new ShowEmailTypesCLIPrompt(this, authUseCase, provideEmails));
     return readUserInputWithOptions(promptMap);
   }
 

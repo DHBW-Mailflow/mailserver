@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface SearchEmailUseCase {
 
-List<Email> searchEmails(String content, Address address) throws MailboxSavingException, MailboxLoadingException;
+List<Email> searchEmails(Address address) throws MailboxSavingException, MailboxLoadingException;
 
 }
