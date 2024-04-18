@@ -10,16 +10,17 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Addre
 import java.util.List;
 
 /**
+ * provides functionality to find emails in one specific mailboxType
+ *
  * @author seiferla , Jonas-Karl
  */
-abstract class GenericProvideEmailsService implements ProvideEmailsUseCase {
-  private final MailboxRepository mailboxRepository;
+abstract class AbstractProvideMailboxTypeEmailsService extends AbstractProvideEmailsService {
   private final MailboxType mailboxType;
   private final Label[] labels;
 
-  protected GenericProvideEmailsService(
+  protected AbstractProvideMailboxTypeEmailsService(
       MailboxRepository mailboxRepository, MailboxType mailboxType, Label... labels) {
-    this.mailboxRepository = mailboxRepository;
+    super(mailboxRepository);
     this.mailboxType = mailboxType;
     this.labels = labels;
   }

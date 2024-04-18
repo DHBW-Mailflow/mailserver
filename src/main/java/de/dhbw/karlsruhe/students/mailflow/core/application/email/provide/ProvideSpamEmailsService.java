@@ -7,7 +7,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
 /**
  * @author seiferla
  */
-public class ProvideSpamEmailsService extends GenericProvideEmailsService {
+public class ProvideSpamEmailsService extends AbstractProvideMailboxTypeEmailsService {
   public ProvideSpamEmailsService(MailboxRepository mailboxRepository) {
     super(mailboxRepository, MailboxType.SPAM, Label.UNREAD, Label.READ);
   }

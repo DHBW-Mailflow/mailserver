@@ -7,7 +7,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
 /**
  * @author seiferla
  */
-public class ProvideDeletedEmailsService extends GenericProvideEmailsService {
+public class ProvideDeletedEmailsService extends AbstractProvideMailboxTypeEmailsService {
   public ProvideDeletedEmailsService(MailboxRepository mailboxRepository) {
     super(mailboxRepository, MailboxType.DELETED, Label.UNREAD, Label.READ);
   }

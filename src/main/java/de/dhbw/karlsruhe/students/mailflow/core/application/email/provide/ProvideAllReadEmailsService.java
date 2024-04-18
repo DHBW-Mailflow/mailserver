@@ -14,12 +14,10 @@ import java.util.List;
 /**
  * @author Jonas-Karl
  */
-public class ProvideAllReadEmailsService implements ProvideEmailsUseCase {
-
-  private final FileMailboxRepository mailboxRepository;
+public class ProvideAllReadEmailsService extends AbstractProvideEmailsService {
 
   public ProvideAllReadEmailsService(FileMailboxRepository mailboxRepository) {
-    this.mailboxRepository = mailboxRepository;
+    super(mailboxRepository);
   }
 
   @Override

@@ -7,8 +7,8 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
 /**
  * @author seiferla
  */
-public class ProvideSentEmailsService extends GenericProvideEmailsService {
+public class ProvideSentEmailsService extends AbstractProvideMailboxTypeEmailsService {
   public ProvideSentEmailsService(MailboxRepository mailboxRepository) {
-    super(mailboxRepository, MailboxType.SENT, Label.UNREAD, Label.READ);
+    super(mailboxRepository, MailboxType.SENT, Label.READ);
   }
 }

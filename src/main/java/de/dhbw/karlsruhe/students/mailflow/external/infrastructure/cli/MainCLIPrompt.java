@@ -54,12 +54,15 @@ public final class MainCLIPrompt extends BaseCLIPrompt {
   }
 
   private BaseCLIPrompt showActionMenuPrompt() {
+    int allEmails =
+        provideEmails.provideAllEmailsService().getEmailCount(authUseCase.getSessionUserAddress());
+
     printDefault("What do you want to do?");
     Map<String, BaseCLIPrompt> promptMap = new LinkedHashMap<>();
     promptMap.put("Logout", new LogoutCLIPrompt(this, authUseCase));
     promptMap.put("Send E-Mail", new ComposeEmailCLIPrompt(this, authUseCase, emailSendUseCase));
     promptMap.put(
-        "Show E-Mails",
+        "Show E-Mails (%s)".formatted(allEmails),
         new ShowEmailTypesCLIPrompt(
             this, authUseCase, provideEmails, organizeEmails.markAsReadService()));
     promptMap.put(
