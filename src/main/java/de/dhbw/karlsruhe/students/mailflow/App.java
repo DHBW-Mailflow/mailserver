@@ -7,8 +7,8 @@ import de.dhbw.karlsruhe.students.mailflow.core.application.auth.RegistrationSer
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.EmailSendService;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.EmailSendUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.organize.UCCollectionOrganizeEmails;
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.UCCollectionSearchEmail;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.UCCollectionProvideEmails;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.UCCollectionSearchEmail;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.server.Server;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserRepository;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.FileUserRepository;
@@ -39,7 +39,7 @@ public class App {
         UCCollectionProvideEmails.init(mailboxRepository);
     final UCCollectionOrganizeEmails organizeEmails =
         UCCollectionOrganizeEmails.init(mailboxRepository);
-    final UCCollectionSearchEmail searchEmails = UCCollectionSearchEmail.init(provideEmails.provideAllEmailService());
+    final UCCollectionSearchEmail searchEmails = UCCollectionSearchEmail.init(provideEmails.provideAllEmailsService());
 
     /// Start
     Server server =
