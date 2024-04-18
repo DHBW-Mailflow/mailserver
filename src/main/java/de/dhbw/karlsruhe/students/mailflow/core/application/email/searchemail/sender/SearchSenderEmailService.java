@@ -5,7 +5,6 @@ import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.co
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import java.util.List;
 
 /**
@@ -20,9 +19,9 @@ public class SearchSenderEmailService implements SearchEmailUseCase {
   }
 
   @Override
-  public List<Email> searchEmails(String content, Address address)
+  public List<Email> searchEmails(String content)
       throws MailboxSavingException, MailboxLoadingException {
-    List<Email> emailList = provideEmailsUseCase.provideEmails(address);
+    List<Email> emailList = provideEmailsUseCase.provideEmails();
     return emailList.stream()
         .filter(email -> email.getSender().toString().contains(content))
         .toList();

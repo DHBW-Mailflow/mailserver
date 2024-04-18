@@ -1,5 +1,6 @@
 package de.dhbw.karlsruhe.students.mailflow.core.application.email.organize;
 
+import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthSessionUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.MailboxRepository;
 
 /**
@@ -7,8 +8,10 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.MailboxRepository;
  */
 public record UCCollectionOrganizeEmails(
     MarkAsReadService markAsReadService, MarkAsUnreadService markAsUnreadService) {
-  public static UCCollectionOrganizeEmails init(MailboxRepository mailboxRepository) {
+  public static UCCollectionOrganizeEmails init(
+      AuthSessionUseCase authSession, MailboxRepository mailboxRepository) {
     return new UCCollectionOrganizeEmails(
-        new MarkAsReadService(mailboxRepository), new MarkAsUnreadService(mailboxRepository));
+        new MarkAsReadService(authSession, mailboxRepository),
+        new MarkAsUnreadService(authSession, mailboxRepository));
   }
 }

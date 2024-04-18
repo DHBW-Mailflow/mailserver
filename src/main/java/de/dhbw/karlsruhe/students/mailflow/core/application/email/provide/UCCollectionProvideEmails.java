@@ -1,5 +1,6 @@
 package de.dhbw.karlsruhe.students.mailflow.core.application.email.provide;
 
+import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthSessionUseCase;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.parsing.FileMailboxRepository;
 
 /**
@@ -18,15 +19,16 @@ public record UCCollectionProvideEmails(
     ProvideAllUnreadEmailsService provideAllUnreadEmailsService,
     ProvideAllEmailsService provideAllEmailsService) {
 
-  public static UCCollectionProvideEmails init(FileMailboxRepository mailboxRepository) {
+  public static UCCollectionProvideEmails init(
+      AuthSessionUseCase authSession, FileMailboxRepository mailboxRepository) {
     return new UCCollectionProvideEmails(
-        new ProvideDeletedEmailsService(mailboxRepository),
-        new ProvideSpamEmailsService(mailboxRepository),
-        new ProvideInboxReadEmailsService(mailboxRepository),
-        new ProvideInboxUnreadEmailsService(mailboxRepository),
-        new ProvideSentEmailsService(mailboxRepository),
-        new ProvideAllReadEmailsService(mailboxRepository),
-        new ProvideAllUnreadEmailsService(mailboxRepository),
-        new ProvideAllEmailsService(mailboxRepository));
+        new ProvideDeletedEmailsService(authSession, mailboxRepository),
+        new ProvideSpamEmailsService(authSession, mailboxRepository),
+        new ProvideInboxReadEmailsService(authSession, mailboxRepository),
+        new ProvideInboxUnreadEmailsService(authSession, mailboxRepository),
+        new ProvideSentEmailsService(authSession, mailboxRepository),
+        new ProvideAllReadEmailsService(authSession, mailboxRepository),
+        new ProvideAllUnreadEmailsService(authSession, mailboxRepository),
+        new ProvideAllEmailsService(authSession, mailboxRepository));
   }
 }

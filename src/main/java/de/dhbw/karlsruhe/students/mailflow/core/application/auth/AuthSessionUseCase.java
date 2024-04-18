@@ -1,18 +1,9 @@
 package de.dhbw.karlsruhe.students.mailflow.core.application.auth;
 
-import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.AuthorizationException;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.LoadingUsersException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.user.User;
 
-public interface AuthUseCase {
-
-  void login(String email, String password) throws AuthorizationException, LoadingUsersException;
-
-  /**
-   * @return the address of the user that was logged out
-   * @throws IllegalStateException when there is no logged-in user
-   */
-  Address logout() throws IllegalStateException;
+public interface AuthSessionUseCase {
 
   boolean isLoggedIn();
 
@@ -26,4 +17,8 @@ public interface AuthUseCase {
    * @throws IllegalStateException when there is no logged-in user
    */
   void ensureLoggedIn();
+
+  void removeSessionUser();
+
+  void setSessionUser(User user);
 }

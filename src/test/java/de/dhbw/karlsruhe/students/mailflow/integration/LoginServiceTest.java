@@ -2,7 +2,8 @@ package de.dhbw.karlsruhe.students.mailflow.integration;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthService;
+import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthSession;
+import de.dhbw.karlsruhe.students.mailflow.core.application.auth.LoginService;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.AuthorizationException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.LoadingUsersException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.PasswordChecker;
@@ -16,13 +17,13 @@ import org.junit.jupiter.api.Test;
 /**
  * @author Jonas-Karl
  */
-class AuthServiceTest {
+class LoginServiceTest {
 
   @Test
   void shouldLoginSuccessfully() throws AuthorizationException, LoadingUsersException {
     // Arrange
-    User userToLogin = new User(new Address("test", "example.de"), "password", "salt");
-    UserRepository mockedUserRepository =
+    final User userToLogin = new User(new Address("test", "example.de"), "password", "salt");
+    final UserRepository mockedUserRepository =
         new UserRepository() {
           @Override
           public Optional<User> findByEmail(Address email) {
@@ -35,21 +36,25 @@ class AuthServiceTest {
             return true;
           }
         };
+    final AuthSession authSession = new AuthSession();
 
-    var loginService = new AuthService(mockedUserRepository, (password, user) -> true);
+    final var loginService =
+        new LoginService(authSession, mockedUserRepository, (password, user) -> true);
 
     loginService.login(userToLogin.email().toString(), userToLogin.password());
 
-    Assertions.assertTrue(loginService.isLoggedIn());
-    assertEquals(userToLogin.email(), loginService.getSessionUserAddress());
+    Assertions.assertTrue(authSession.isLoggedIn());
+    assertEquals(userToLogin.email(), authSession.getSessionUserAddress());
   }
 
   @Test
   void shouldNotLoginSuccessfully() {
     // Arrange
-    User userToLogin = new User(new Address("someUser", "example.de"), "somePassword", "salt");
-    User otherUser = new User(new Address("anotherUser", "example.de"), "anotherPassword", "salt");
-    UserRepository mockedUserRepository =
+    final User userToLogin =
+        new User(new Address("someUser", "example.de"), "somePassword", "salt");
+    final User otherUser =
+        new User(new Address("anotherUser", "example.de"), "anotherPassword", "salt");
+    final UserRepository mockedUserRepository =
         new UserRepository() {
           @Override
           public Optional<User> findByEmail(Address email) {
@@ -62,9 +67,12 @@ class AuthServiceTest {
             return true;
           }
         };
-    PasswordChecker mockedPasswordChecker = (password, user) -> false;
+    final PasswordChecker mockedPasswordChecker = (password, user) -> false;
 
-    var loginService = new AuthService(mockedUserRepository, mockedPasswordChecker);
+    final AuthSession authSession = new AuthSession();
+
+    final var loginService =
+        new LoginService(authSession, mockedUserRepository, mockedPasswordChecker);
     // Assert
     Assertions.assertThrows(
         AuthorizationException.class,

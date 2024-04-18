@@ -5,14 +5,12 @@ import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.co
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.List;
 
 /**
  * @author seiferla , Jonas-Karl
-
  */
 public class SearchEqualDateEmailService implements SearchEmailUseCase {
 
@@ -23,10 +21,10 @@ public class SearchEqualDateEmailService implements SearchEmailUseCase {
   }
 
   @Override
-  public List<Email> searchEmails(String content, Address address)
+  public List<Email> searchEmails(String content)
       throws MailboxSavingException, MailboxLoadingException, DateTimeException {
 
-    List<Email> emailList = provideEmailsUseCase.provideEmails(address);
+    List<Email> emailList = provideEmailsUseCase.provideEmails();
 
     LocalDate sentDate = HelperParsing.parseDate(content);
 

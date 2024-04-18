@@ -1,5 +1,6 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli;
 
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.server.Server;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -14,9 +15,8 @@ import java.util.Scanner;
  * @author Jonas-Karl, jens1o
  */
 public class BaseCLIPrompt implements Server {
-  private final BaseCLIPrompt previousPrompt;
-
   private static final int MAX_ATTEMPTS = 3;
+  private final BaseCLIPrompt previousPrompt;
   private int attemptCount;
   private Scanner scanner;
 
@@ -124,8 +124,7 @@ public class BaseCLIPrompt implements Server {
    * @param input selected user input
    * @return the interactive CLI-Prompt for the selected option
    */
-  private BaseCLIPrompt retryOnInvalidSelection(
-      Map<String, BaseCLIPrompt> options, String input) {
+  private BaseCLIPrompt retryOnInvalidSelection(Map<String, BaseCLIPrompt> options, String input) {
     List<Map.Entry<String, BaseCLIPrompt>> entries = options.entrySet().stream().toList();
     try {
       int parsedInput = Integer.parseInt(input);
@@ -156,5 +155,11 @@ public class BaseCLIPrompt implements Server {
     for (int i = 0; i < entries.size(); i++) {
       printDefault("[%s]: %s".formatted(i, entries.get(i).getKey()));
     }
+  }
+
+  public String formatEmail(Email email) {
+    return "%s: %s - %s"
+        .formatted(
+            email.getSender(), email.getSubject().subject(), email.getSendDate().formattedDate());
   }
 }

@@ -1,6 +1,6 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases;
 
-import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthUseCase;
+import de.dhbw.karlsruhe.students.mailflow.core.application.auth.LoginUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.AuthorizationException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.LoadingUsersException;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
@@ -9,11 +9,11 @@ import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPr
  * @author Jonas-Karl
  */
 public final class LoginCLIPrompt extends BaseCLIPrompt {
-  private final AuthUseCase authUseCase;
+  private final LoginUseCase loginUseCase;
 
-  public LoginCLIPrompt(BaseCLIPrompt previousPrompt, AuthUseCase authUseCase) {
+  public LoginCLIPrompt(BaseCLIPrompt previousPrompt, LoginUseCase loginUseCase) {
     super(previousPrompt);
-    this.authUseCase = authUseCase;
+    this.loginUseCase = loginUseCase;
   }
 
   @Override
@@ -24,7 +24,7 @@ public final class LoginCLIPrompt extends BaseCLIPrompt {
     String loginPasswordInput = simplePrompt("What is your password?");
 
     try {
-      authUseCase.login(loginEmailInput, loginPasswordInput);
+      loginUseCase.login(loginEmailInput, loginPasswordInput);
     } catch (AuthorizationException | LoadingUsersException e) {
       printWarning(e.getMessage());
     }

@@ -1,9 +1,9 @@
 package de.dhbw.karlsruhe.students.mailflow.core.application.email.provide;
 
+import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthSessionUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.MailboxRepository;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 
 /**
  * Provides functionality that is needed across all ProvideEmail-services
@@ -12,14 +12,18 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Addre
  */
 abstract class AbstractProvideEmailsService implements ProvideEmailsUseCase {
   final MailboxRepository mailboxRepository;
+  final AuthSessionUseCase authSession;
 
-  AbstractProvideEmailsService(MailboxRepository mailboxRepository) {
+  AbstractProvideEmailsService(
+      AuthSessionUseCase authSession, MailboxRepository mailboxRepository) {
+    super();
     this.mailboxRepository = mailboxRepository;
+    this.authSession = authSession;
   }
 
-  public int getEmailCount(Address sessionUser) {
+  public int getEmailCount() {
     try {
-      return provideEmails(sessionUser).size();
+      return provideEmails().size();
     } catch (MailboxSavingException | MailboxLoadingException e) {
       return 0;
     }

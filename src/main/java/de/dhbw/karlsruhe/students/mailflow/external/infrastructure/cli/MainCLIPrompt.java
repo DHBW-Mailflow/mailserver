@@ -1,11 +1,10 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli;
 
-import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthUseCase;
-import de.dhbw.karlsruhe.students.mailflow.core.application.auth.RegisterUseCase;
+import de.dhbw.karlsruhe.students.mailflow.core.application.auth.UCCollectionAuth;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.EmailSendUseCase;
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.UCCollectionSearchEmail;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.organize.UCCollectionOrganizeEmails;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.UCCollectionProvideEmails;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.UCCollectionSearchEmail;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.ComposeEmailCLIPrompt;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.LoginCLIPrompt;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.LogoutCLIPrompt;
@@ -22,23 +21,20 @@ import java.util.Map;
  * @author Jonas-Karl
  */
 public final class MainCLIPrompt extends BaseCLIPrompt {
-  private final AuthUseCase authUseCase;
-  private final RegisterUseCase registerUseCase;
+  private final UCCollectionAuth collectionAuth;
   private final EmailSendUseCase emailSendUseCase;
   private final UCCollectionProvideEmails provideEmails;
   private final UCCollectionOrganizeEmails organizeEmails;
   private final UCCollectionSearchEmail searchEmails;
 
   public MainCLIPrompt(
-      AuthUseCase authUseCase,
-      RegisterUseCase registerUseCase,
+      UCCollectionAuth collectionAuth,
       EmailSendUseCase emailSendUseCase,
       UCCollectionProvideEmails provideEmails,
       UCCollectionOrganizeEmails organizeEmails,
       UCCollectionSearchEmail searchEmails) {
     super(null);
-    this.authUseCase = authUseCase;
-    this.registerUseCase = registerUseCase;
+    this.collectionAuth = collectionAuth;
     this.emailSendUseCase = emailSendUseCase;
     this.provideEmails = provideEmails;
     this.organizeEmails = organizeEmails;
@@ -48,30 +44,26 @@ public final class MainCLIPrompt extends BaseCLIPrompt {
   private BaseCLIPrompt showRegisterOrEmailPrompt() {
     printDefault("What do you want to do?");
     Map<String, BaseCLIPrompt> promptMap = new LinkedHashMap<>();
-    promptMap.put("Register", new RegisterCLIPrompt(this, registerUseCase));
-    promptMap.put("Login", new LoginCLIPrompt(this, authUseCase));
+    promptMap.put("Register", new RegisterCLIPrompt(this, collectionAuth.registerUseCase()));
+    promptMap.put("Login", new LoginCLIPrompt(this, collectionAuth.loginUseCase()));
     return readUserInputWithOptions(promptMap);
   }
 
   private BaseCLIPrompt showActionMenuPrompt() {
-    int allEmails =
-        provideEmails.provideAllEmailsService().getEmailCount(authUseCase.getSessionUserAddress());
+    int allEmails = provideEmails.provideAllEmailsService().getEmailCount();
 
     printDefault("What do you want to do?");
     Map<String, BaseCLIPrompt> promptMap = new LinkedHashMap<>();
-    promptMap.put("Logout", new LogoutCLIPrompt(this, authUseCase));
-    promptMap.put("Send E-Mail", new ComposeEmailCLIPrompt(this, authUseCase, emailSendUseCase));
+    promptMap.put("Logout", new LogoutCLIPrompt(this, collectionAuth.logoutUseCase()));
+    promptMap.put("Send E-Mail", new ComposeEmailCLIPrompt(this, emailSendUseCase));
     promptMap.put(
         "Show E-Mails (%s)".formatted(allEmails),
-        new ShowEmailTypesCLIPrompt(
-            this, authUseCase, provideEmails, organizeEmails.markAsReadService()));
+        new ShowEmailTypesCLIPrompt(this, provideEmails, organizeEmails.markAsReadService()));
     promptMap.put(
-        "Organize E-Mails",
-        new OrganizeEmailsCLIPrompt(this, authUseCase, provideEmails, organizeEmails));
+        "Organize E-Mails", new OrganizeEmailsCLIPrompt(this, provideEmails, organizeEmails));
     promptMap.put(
         "Search E-Mails",
-        new SearchEmailTypesCLIPrompt(
-            this, authUseCase, searchEmails, organizeEmails.markAsReadService()));
+        new SearchEmailTypesCLIPrompt(this, searchEmails, organizeEmails.markAsReadService()));
     return readUserInputWithOptions(promptMap);
   }
 
@@ -80,7 +72,7 @@ public final class MainCLIPrompt extends BaseCLIPrompt {
     super.start();
     while (true) {
 
-      while (!authUseCase.isLoggedIn()) {
+      while (!collectionAuth.authSession().isLoggedIn()) {
         BaseCLIPrompt registerOrEmailPrompt = showRegisterOrEmailPrompt();
         registerOrEmailPrompt.start();
       }
