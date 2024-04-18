@@ -5,6 +5,11 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxL
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 
+/**
+ * Provides functionality that is needed across all ProvideEmail-services
+ *
+ * @author Jonas-Karl
+ */
 abstract class AbstractProvideEmailsService implements ProvideEmailsUseCase {
   final MailboxRepository mailboxRepository;
 

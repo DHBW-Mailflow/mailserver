@@ -36,5 +36,4 @@ abstract class AbstractProvideMailboxTypeEmailsService extends AbstractProvideEm
   public String getMailboxName() {
     return mailboxType.getStoringName();
   }
-
 }

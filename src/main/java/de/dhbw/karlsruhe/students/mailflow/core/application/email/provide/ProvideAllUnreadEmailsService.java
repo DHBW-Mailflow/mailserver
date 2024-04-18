@@ -37,5 +37,4 @@ public class ProvideAllUnreadEmailsService extends AbstractProvideEmailsService 
   public String getMailboxName() {
     return "unread";
   }
-
 }
