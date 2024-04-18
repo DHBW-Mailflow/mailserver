@@ -2,21 +2,17 @@ package de.dhbw.karlsruhe.students.mailflow.core.application.email.provide;
 
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.Label;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.MailboxRepository;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.parsing.FileMailboxRepository;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author Jonas-Karl
- */
-public class ProvideAllUnreadEmailsService extends AbstractProvideEmailsService {
+public class ProvideAllEmailsService extends AbstractProvideEmailsService {
 
-  public ProvideAllUnreadEmailsService(FileMailboxRepository mailboxRepository) {
+  ProvideAllEmailsService(MailboxRepository mailboxRepository) {
     super(mailboxRepository);
   }
 
@@ -27,7 +23,7 @@ public class ProvideAllUnreadEmailsService extends AbstractProvideEmailsService 
     List<Email> allEmails = new ArrayList<>();
     for (MailboxType type : MailboxType.values()) {
       Mailbox mailbox = mailboxRepository.findByAddressAndType(mailboxOwner, type);
-      allEmails.addAll(mailbox.getEmailsWithLabel(Label.UNREAD));
+      allEmails.addAll(mailbox.getEmailList());
     }
 
     return allEmails;
@@ -35,7 +31,6 @@ public class ProvideAllUnreadEmailsService extends AbstractProvideEmailsService 
 
   @Override
   public String getMailboxName() {
-    return "unread";
+    return "all";
   }
-
 }

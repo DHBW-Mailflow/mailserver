@@ -7,7 +7,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
 /**
  * @author seiferla
  */
-public class ProvideInboxReadEmailsService extends GenericProvideEmailsService {
+public class ProvideInboxReadEmailsService extends AbstractProvideMailboxTypeEmailsService {
   public ProvideInboxReadEmailsService(MailboxRepository mailboxRepository) {
     super(mailboxRepository, MailboxType.INBOX, Label.READ);
   }

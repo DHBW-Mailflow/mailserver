@@ -35,25 +35,42 @@ public class ShowEmailTypesCLIPrompt extends AuthorizedCLIPrompt {
   }
 
   private BaseCLIPrompt showActionMenuPrompt() {
+    int unreadEmails =
+        provideEmails
+            .provideInboxUnreadEmailsUseCase()
+            .getEmailCount(authUseCase.getSessionUserAddress());
+    int readEmails =
+        provideEmails
+            .provideInboxReadEmailsUseCase()
+            .getEmailCount(authUseCase.getSessionUserAddress());
+    int sentEmails =
+        provideEmails.provideSentEmailsUseCase().getEmailCount(authUseCase.getSessionUserAddress());
+    int spamEmails =
+        provideEmails.provideSpamEmailsUseCase().getEmailCount(authUseCase.getSessionUserAddress());
+    int deletedEmails =
+        provideEmails
+            .provideDeletedEmailsUseCase()
+            .getEmailCount(authUseCase.getSessionUserAddress());
+
     Map<String, BaseCLIPrompt> promptMap = new LinkedHashMap<>();
     promptMap.put(
-        "Sent",
+        "Sent (%s)".formatted(sentEmails),
         new ShowEmailsCLIPrompt(
             this, authUseCase, provideEmails.provideSentEmailsUseCase(), markEmailUseCase));
     promptMap.put(
-        "Spam",
+        "Spam (%s)".formatted(spamEmails),
         new ShowEmailsCLIPrompt(
             this, authUseCase, provideEmails.provideSpamEmailsUseCase(), markEmailUseCase));
     promptMap.put(
-        "Deleted",
+        "Deleted (%s)".formatted(deletedEmails),
         new ShowEmailsCLIPrompt(
             this, authUseCase, provideEmails.provideDeletedEmailsUseCase(), markEmailUseCase));
     promptMap.put(
-        "Inbox unread",
+        "Inbox unread (%s)".formatted(unreadEmails),
         new ShowEmailsCLIPrompt(
             this, authUseCase, provideEmails.provideInboxUnreadEmailsUseCase(), markEmailUseCase));
     promptMap.put(
-        "Inbox read",
+        "Inbox read (%s)".formatted(readEmails),
         new ShowEmailsCLIPrompt(
             this, authUseCase, provideEmails.provideInboxReadEmailsUseCase(), markEmailUseCase));
     return readUserInputWithOptions(promptMap);

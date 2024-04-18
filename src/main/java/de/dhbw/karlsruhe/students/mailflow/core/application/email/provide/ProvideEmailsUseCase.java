@@ -12,4 +12,6 @@ public interface ProvideEmailsUseCase {
       throws MailboxSavingException, MailboxLoadingException;
 
   String getMailboxName();
+
+  int getEmailCount(Address sessionUser);
 }
