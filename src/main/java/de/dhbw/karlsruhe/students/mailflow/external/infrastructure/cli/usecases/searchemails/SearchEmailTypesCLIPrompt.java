@@ -1,8 +1,9 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.searchemails;
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthUseCase;
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.ProvideEmailsUseCase;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.organize.MarkEmailUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.UCCollectionSearchEmail;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.date.HelperParsing;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.AuthorizedCLIPrompt;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
 import java.util.LinkedHashMap;
@@ -11,16 +12,17 @@ import java.util.Map;
 public class SearchEmailTypesCLIPrompt extends AuthorizedCLIPrompt {
 
   private final UCCollectionSearchEmail searchEmails;
-  private final ProvideEmailsUseCase provideEmailsUseCase;
+  private final MarkEmailUseCase markEmailUseCase;
+
 
   public SearchEmailTypesCLIPrompt(
       BaseCLIPrompt previousPrompt,
       AuthUseCase authUseCase,
       UCCollectionSearchEmail searchEmails,
-      ProvideEmailsUseCase provideEmailsUseCase) {
+      MarkEmailUseCase markEmailUseCase) {
     super(previousPrompt, authUseCase);
     this.searchEmails = searchEmails;
-    this.provideEmailsUseCase = provideEmailsUseCase;
+    this.markEmailUseCase = markEmailUseCase;
   }
 
   @Override
@@ -36,19 +38,43 @@ public class SearchEmailTypesCLIPrompt extends AuthorizedCLIPrompt {
     promptMap.put(
         "Subject",
         new SearchEmailCLIPrompt(
-            this, authUseCase, searchEmails.searchSubjectEmailUseCase(), provideEmailsUseCase));
+            this, authUseCase, searchEmails.searchSubjectEmailUseCase(), markEmailUseCase));
     promptMap.put(
         "Content",
         new SearchEmailCLIPrompt(
-            this, authUseCase, searchEmails.searchContentEmailUseCase(), provideEmailsUseCase));
-    promptMap.put("Date After", new SearchEmailCLIPrompt(
-            this, authUseCase, searchEmails.searchAfterDateEmailService(), provideEmailsUseCase));
-    promptMap.put("Date Before", new SearchEmailCLIPrompt( this, authUseCase, searchEmails.searchBeforeDateEmailService(), provideEmailsUseCase));
-    promptMap.put("Exact Date", new SearchEmailCLIPrompt(
-            this, authUseCase, searchEmails.searchEqualDateEmailService(), provideEmailsUseCase)
-    promptMap.put("Sender", new SearchEmailCLIPrompt(
-            this, authUseCase, searchEmails.searchSenderEmailService(), provideEmailsUseCase));
-    promptMap.put("Recipients", new SearchEmailCLIPrompt(this, authUseCase, searchEmails.searchRecipientEmailService(), provideEmailsUseCase));
+            this, authUseCase, searchEmails.searchContentEmailUseCase(), markEmailUseCase));
+    promptMap.put(
+        "Date After",
+        new SearchEmailCLIPrompt(
+            this,
+            authUseCase,
+            searchEmails.searchAfterDateEmailService(),
+            markEmailUseCase,
+            HelperParsing.DATE_FORMAT));
+    promptMap.put(
+        "Date Before",
+        new SearchEmailCLIPrompt(
+            this,
+            authUseCase,
+            searchEmails.searchBeforeDateEmailService(),
+            markEmailUseCase,
+            HelperParsing.DATE_FORMAT));
+    promptMap.put(
+        "Exact Date",
+        new SearchEmailCLIPrompt(
+            this,
+            authUseCase,
+            searchEmails.searchEqualDateEmailService(),
+            markEmailUseCase,
+            HelperParsing.DATE_FORMAT));
+    promptMap.put(
+        "Sender",
+        new SearchEmailCLIPrompt(
+            this, authUseCase, searchEmails.searchSenderEmailService(), markEmailUseCase));
+    promptMap.put(
+        "Recipients",
+        new SearchEmailCLIPrompt(
+            this, authUseCase, searchEmails.searchRecipientEmailService(), markEmailUseCase));
 
     return readUserInputWithOptions(promptMap);
   }

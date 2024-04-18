@@ -5,13 +5,12 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.parsing.FileMailboxRepository;
 import java.util.List;
 
-public class SearchContentEmailService implements SearchEmailUseCase{
+public class SearchContentEmailService implements SearchEmailUseCase {
   private final ProvideEmailsUseCase provideEmailsUseCase;
 
-  public SearchContentEmailService(ProvideEmailsUseCase provideEmailsUseCase){
+  public SearchContentEmailService(ProvideEmailsUseCase provideEmailsUseCase) {
     this.provideEmailsUseCase = provideEmailsUseCase;
   }
 

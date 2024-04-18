@@ -65,7 +65,10 @@ public final class MainCLIPrompt extends BaseCLIPrompt {
     promptMap.put(
         "Organize E-Mails",
         new OrganizeEmailsCLIPrompt(this, authUseCase, provideEmails, organizeEmails));
-    promptMap.put("Search E-Mails", new SearchEmailTypesCLIPrompt(this, authUseCase, searchEmails, provideEmails.provideDeletedEmailsUseCase()));
+    promptMap.put(
+        "Search E-Mails",
+        new SearchEmailTypesCLIPrompt(
+            this, authUseCase, searchEmails, organizeEmails.markAsReadService()));
     return readUserInputWithOptions(promptMap);
   }
 

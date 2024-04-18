@@ -18,10 +18,6 @@ public class ProvideAllEmailService implements ProvideEmailsUseCase {
   }
 
   @Override
-  public void markEmailAsRead(Email email, Address address)
-      throws MailboxSavingException, MailboxLoadingException {}
-
-  @Override
   public List<Email> provideEmails(Address sessionUserAddress)
       throws MailboxSavingException, MailboxLoadingException {
     List<Email> emailList = new ArrayList<>();

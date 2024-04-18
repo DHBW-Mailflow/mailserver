@@ -39,7 +39,7 @@ public class App {
         UCCollectionProvideEmails.init(mailboxRepository);
     final UCCollectionOrganizeEmails organizeEmails =
         UCCollectionOrganizeEmails.init(mailboxRepository);
-    final UCCollectionSearchEmail searchEmails = UCCollectionSearchEmail.init(mailboxRepository);
+    final UCCollectionSearchEmail searchEmails = UCCollectionSearchEmail.init(provideEmails.provideAllEmailService());
 
     /// Start
     Server server =

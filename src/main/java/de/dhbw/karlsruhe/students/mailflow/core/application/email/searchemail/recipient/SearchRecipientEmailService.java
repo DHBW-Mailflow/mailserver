@@ -20,9 +20,7 @@ public class SearchRecipientEmailService implements SearchEmailUseCase {
   public List<Email> searchEmails(String content, Address address)
       throws MailboxSavingException, MailboxLoadingException {
     List<Email> emailList = provideEmailsUseCase.provideEmails(address);
-    return emailList.stream().filter(email -> getAllRecipients(email)
-        .contains(content))
-        .toList();
+    return emailList.stream().filter(email -> getAllRecipients(email).contains(content)).toList();
   }
 
   String getAllRecipients(Email email) {
