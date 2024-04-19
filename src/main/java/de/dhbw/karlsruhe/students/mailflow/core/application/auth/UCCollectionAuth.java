@@ -14,14 +14,14 @@ public record UCCollectionAuth(
     RegisterUseCase registerUseCase) {
 
   public static UCCollectionAuth init(
-      AuthSessionUseCase authSessionUseCase,
+      AuthSessionUseCase authSession,
       UserRepository userRepository,
       PasswordChecker passwordChecker,
       UserCreator userCreator) {
     return new UCCollectionAuth(
-        authSessionUseCase,
-        new LoginService(authSessionUseCase, userRepository, passwordChecker),
-        new LogoutService(authSessionUseCase),
+        authSession,
+        new LoginService(authSession, userRepository, passwordChecker),
+        new LogoutService(authSession),
         new RegistrationService(userRepository, userCreator));
   }
 }

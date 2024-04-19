@@ -20,7 +20,7 @@ import java.util.stream.Stream;
  * @author jens1o
  */
 public class EmailSendService implements EmailSendUseCase {
-  private final AuthSessionUseCase authSessionUseCase;
+  private final AuthSessionUseCase authSession;
   private final MailboxRepository mailboxRepository;
   private List<Address> bccAddresses;
   private List<Address> ccAddresses;
@@ -28,9 +28,8 @@ public class EmailSendService implements EmailSendUseCase {
   private String message;
   private Subject subject;
 
-  public EmailSendService(
-      AuthSessionUseCase authSessionUseCase, MailboxRepository mailboxRepository) {
-    this.authSessionUseCase = authSessionUseCase;
+  public EmailSendService(AuthSessionUseCase authSession, MailboxRepository mailboxRepository) {
+    this.authSession = authSession;
     this.mailboxRepository = mailboxRepository;
   }
 
@@ -61,7 +60,7 @@ public class EmailSendService implements EmailSendUseCase {
   public void sendPreparedEmail() throws MailboxLoadingException, MailboxSavingException {
     Email email =
         new EmailBuilder()
-            .withSender(authSessionUseCase.getSessionUserAddress())
+            .withSender(authSession.getSessionUserAddress())
             .withSubject(subject)
             .withRecipientsTo(toAddresses)
             .withRecipientsBCC(bccAddresses)

@@ -17,8 +17,8 @@ import java.util.List;
 public class ProvideAllUnreadEmailsService extends AbstractProvideEmailsService {
 
   public ProvideAllUnreadEmailsService(
-      AuthSessionUseCase authSessionUseCase, FileMailboxRepository mailboxRepository) {
-    super(authSessionUseCase, mailboxRepository);
+      AuthSessionUseCase authSession, FileMailboxRepository mailboxRepository) {
+    super(authSession, mailboxRepository);
   }
 
   @Override
