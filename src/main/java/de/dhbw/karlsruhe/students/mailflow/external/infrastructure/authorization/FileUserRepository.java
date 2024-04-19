@@ -21,6 +21,9 @@ import java.util.logging.Logger;
 import org.fest.util.VisibleForTesting;
 
 /**
+ * is allowed to use User object because it is only called in a service and not in the external
+ * layer
+ *
  * @author seiferla
  */
 public class FileUserRepository implements UserRepository {

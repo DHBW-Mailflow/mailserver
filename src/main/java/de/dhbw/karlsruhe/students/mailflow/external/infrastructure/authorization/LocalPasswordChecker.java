@@ -9,6 +9,9 @@ import java.security.MessageDigest;
 import java.util.logging.Logger;
 
 /**
+ * is allowed to use User object because it is only called in a service and not in the external
+ * layer
+ *
  * @author seiferla
  */
 public class LocalPasswordChecker implements PasswordChecker {
@@ -22,8 +25,8 @@ public class LocalPasswordChecker implements PasswordChecker {
     }
 
     try {
-      return MessageDigest.isEqual(user.password().getBytes(),
-          hashPassword(password, user.salt()).getBytes());
+      return MessageDigest.isEqual(
+          user.password().getBytes(), hashPassword(password, user.salt()).getBytes());
     } catch (HashingFailedException e) {
       Logger.getLogger(PasswordHasher.class.getName()).warning("Could not hash password");
       return false;
