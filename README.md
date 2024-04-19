@@ -5,7 +5,7 @@ The vision is a fully functional mailserver to manage your emails.
 
 ## Run it
 
-`docker build -t mailflow .; docker run -it mailflow`
+`docker build --no-cache -t mailflow .; docker run -it mailflow`
 
 ## Functionality
 
