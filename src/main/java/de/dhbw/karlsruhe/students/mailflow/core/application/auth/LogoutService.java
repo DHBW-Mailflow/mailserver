@@ -13,9 +13,9 @@ public class LogoutService implements LogoutUseCase {
   }
 
   @Override
-  public Address logout() {
+  public String logout() {
     Address loggedOutUser = authSession.getSessionUserAddress();
     authSession.removeSessionUser();
-    return loggedOutUser;
+    return loggedOutUser.toString();
   }
 }

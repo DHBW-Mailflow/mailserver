@@ -1,7 +1,6 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases;
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.LogoutUseCase;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
 
 /**
@@ -20,7 +19,7 @@ public final class LogoutCLIPrompt extends BaseCLIPrompt {
   public void start() {
     super.start();
 
-    Address user = logoutUseCase.logout();
-    printDefault("Good bye, %s!".formatted(user));
+    String userEmail = logoutUseCase.logout();
+    printDefault("Good bye, %s!".formatted(userEmail));
   }
 }
