@@ -47,7 +47,7 @@ class RegistrationServiceTest {
         // Act
         () ->
             registerService.register(
-                notYetRegisteredUser.email(), notYetRegisteredUser.password()));
+                notYetRegisteredUser.email().toString(), notYetRegisteredUser.password()));
   }
 
   @Test
@@ -83,6 +83,6 @@ class RegistrationServiceTest {
         // Act
         () ->
             registerService.register(
-                alreadyRegisteredUser.email(), alreadyRegisteredUser.password()));
+                alreadyRegisteredUser.email().toString(), alreadyRegisteredUser.password()));
   }
 }
