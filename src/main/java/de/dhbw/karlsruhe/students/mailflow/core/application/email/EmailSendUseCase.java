@@ -6,7 +6,8 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxS
 
 public interface EmailSendUseCase {
 
-  void sendPreparedEmail() throws MailboxLoadingException, MailboxSavingException;
+  void sendPreparedEmail()
+      throws MailboxLoadingException, MailboxSavingException, InvalidRecipients;
 
   void validateRecipients() throws InvalidRecipients;
 

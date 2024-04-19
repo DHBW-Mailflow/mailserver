@@ -57,7 +57,9 @@ public class EmailSendService implements EmailSendUseCase {
   }
 
   @Override
-  public void sendPreparedEmail() throws MailboxLoadingException, MailboxSavingException {
+  public void sendPreparedEmail()
+      throws MailboxLoadingException, MailboxSavingException, InvalidRecipients {
+    validateRecipients();
     Email email =
         new EmailBuilder()
             .withSender(authSession.getSessionUserAddress())

@@ -35,6 +35,8 @@ public final class ComposeEmailCLIPrompt extends BaseCLIPrompt {
       printDefault("Email sent successfully!");
     } catch (MailboxLoadingException | MailboxSavingException e) {
       printWarning("Error sending mail, try again later.");
+    } catch (InvalidRecipients e) {
+      printWarning("You need to specify at least one valid recipient!");
     }
   }
 
@@ -57,14 +59,41 @@ public final class ComposeEmailCLIPrompt extends BaseCLIPrompt {
   }
 
   private void askRecipients() {
-    String toRecipientsString =
+    askRecipientTo();
+    askRecipientCC();
+    askRecipientBCC();
+  }
+
+  private void askRecipientTo() {
+    String recipientsString =
         simplePrompt("Please write the TO-recipients (separated by a comma):").trim();
-    emailSendUseCase.setToRecipients(toRecipientsString);
-    String ccRecipientsString =
+    try {
+      emailSendUseCase.setToRecipients(recipientsString);
+    } catch (IllegalArgumentException e) {
+      printWarning("Invalid recipient format");
+      askRecipientTo();
+    }
+  }
+
+  private void askRecipientCC() {
+    String recipientsString =
         simplePrompt("Please write the CC-recipients (separated by a comma):").trim();
-    emailSendUseCase.setCCRecipients(ccRecipientsString);
-    String bccRecipientsString =
+    try {
+      emailSendUseCase.setCCRecipients(recipientsString);
+    } catch (IllegalArgumentException e) {
+      printWarning("Invalid recipient format");
+      askRecipientCC();
+    }
+  }
+
+  private void askRecipientBCC() {
+    String recipientsString =
         simplePrompt("Please write the BCC-recipients (separated by a comma):").trim();
-    emailSendUseCase.setBCCRecipients(bccRecipientsString);
+    try {
+      emailSendUseCase.setBCCRecipients(recipientsString);
+    } catch (IllegalArgumentException e) {
+      printWarning("Invalid recipient format");
+      askRecipientBCC();
+    }
   }
 }
