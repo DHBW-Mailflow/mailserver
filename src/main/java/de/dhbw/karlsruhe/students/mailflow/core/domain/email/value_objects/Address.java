@@ -22,7 +22,8 @@ public record Address(String localPart, String domain) {
         if (index == -1) {
             throw new IllegalArgumentException("No \"@\" was provided in %s".formatted(emailString));
         }
-        return new Address(emailString.substring(0, index),
-                emailString.substring(index + 1));
+    return new Address(
+        emailString.substring(0, index).toLowerCase(),
+        emailString.substring(index + 1).toLowerCase());
     }
 }
