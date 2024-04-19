@@ -34,7 +34,12 @@ public class BaseCLIPrompt implements Server {
     if (previousPrompt == null) {
       throw new IllegalStateException("No previous prompt available");
     }
+    previousPrompt.resetAttemptCounter();
     return previousPrompt;
+  }
+
+  private void resetAttemptCounter() {
+    attemptCount = 0;
   }
 
   /** Stops the server */
@@ -124,8 +129,7 @@ public class BaseCLIPrompt implements Server {
    * @param input selected user input
    * @return the interactive CLI-Prompt for the selected option
    */
-  private BaseCLIPrompt retryOnInvalidSelection(
-      Map<String, BaseCLIPrompt> options, String input) {
+  private BaseCLIPrompt retryOnInvalidSelection(Map<String, BaseCLIPrompt> options, String input) {
     List<Map.Entry<String, BaseCLIPrompt>> entries = options.entrySet().stream().toList();
     try {
       int parsedInput = Integer.parseInt(input);
