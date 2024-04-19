@@ -8,9 +8,6 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Addre
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.User;
 
 /**
- * is allowed to use Address object because it is only called in a service and not in the external
- * layer
- *
  * @author seiferla
  */
 public class LocalUserCreator implements UserCreator {

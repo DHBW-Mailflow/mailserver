@@ -16,8 +16,6 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 
 /**
- * is allowed to use Mailbox object because it is only called in a repository and not in the
- * external layer
  *
  * @author Jonas-Karl, seiferla
  */
