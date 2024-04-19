@@ -9,8 +9,6 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.user.User;
 public class AuthSession implements AuthSessionUseCase {
   private User sessionUser;
 
-  public AuthSession() {}
-
   @Override
   public boolean isLoggedIn() {
     return sessionUser != null;
