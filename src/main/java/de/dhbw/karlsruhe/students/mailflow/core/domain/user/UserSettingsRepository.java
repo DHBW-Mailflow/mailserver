@@ -1,15 +1,13 @@
 package de.dhbw.karlsruhe.students.mailflow.core.domain.user;
 
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import java.io.FileNotFoundException;
 
 public interface UserSettingsRepository {
 
-  UserSettings getUserSettings(User user);
+  void updateUserSettings(Address address, UserSettings userSettings) throws FileNotFoundException;
 
-  void updateUserSettings(User user, UserSettings userSettings) throws FileNotFoundException;
+  void removeUserSettings(Address address);
 
-  void removeUserSettings(User user);
-
-  void createUserSettings(User user, UserSettings userSettings);
 
 }

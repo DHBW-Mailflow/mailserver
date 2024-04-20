@@ -1,5 +1,6 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization;
 
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.User;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserSettings;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserSettingsRepository;
@@ -13,29 +14,13 @@ public class FileUserSettingsRepository implements UserSettingsRepository {
   private static final File USERS_SETTINGS_FILE = new File("users.json");
 
   @Override
-  public UserSettings getUserSettings(User user) {
-    try (Scanner scanner = new Scanner(USERS_SETTINGS_FILE)) {
-      while (scanner.hasNextLine()) {
-        String data = scanner.nextLine();
-        if (data.contains(user.email().toString())) {
-          return new UserSettings(data);
-        }
-      }
-    } catch (FileNotFoundException e) {
-      throw new RuntimeException("Could not read user settings file", e);
-    }
-
-    return null;
-  }
-
-  @Override
-  public void updateUserSettings(User user, UserSettings userSettings) {
+  public void updateUserSettings(Address address, UserSettings userSettings) {
     try (Scanner scanner = new Scanner(USERS_SETTINGS_FILE)) {
       StringBuilder fileContent = new StringBuilder();
       while (scanner.hasNextLine()) {
         String line = scanner.nextLine();
-        if (line.contains(user.email().toString())) {
-          line = user.email() + ": " + userSettings.toString();
+        if (line.contains(address.toString())) {
+          line = address + ": " + userSettings.toString();
         }
         fileContent.append(line).append("\n");
       }
@@ -48,12 +33,12 @@ public class FileUserSettingsRepository implements UserSettingsRepository {
   }
 
   @Override
-  public void removeUserSettings(User user) {
+  public void removeUserSettings(Address address) {
     try (Scanner scanner = new Scanner(USERS_SETTINGS_FILE)) {
       StringBuilder fileContent = new StringBuilder();
       while (scanner.hasNextLine()) {
         String line = scanner.nextLine();
-        if (!line.contains(user.email().toString())) {
+        if (!line.contains(address.toString())) {
           fileContent.append(line).append("\n");
         }
       }
@@ -62,15 +47,6 @@ public class FileUserSettingsRepository implements UserSettingsRepository {
       }
     } catch (FileNotFoundException e) {
       throw new RuntimeException("Failed to remove user settings", e);
-    }
-  }
-
-  @Override
-  public void createUserSettings(User user, UserSettings userSettings) {
-    try (PrintWriter writer = new PrintWriter(USERS_SETTINGS_FILE)) {
-      writer.write(user.email() + ": " + userSettings.toString());
-    } catch (FileNotFoundException e) {
-      throw new RuntimeException("Failed to create user settings", e);
     }
   }
 
