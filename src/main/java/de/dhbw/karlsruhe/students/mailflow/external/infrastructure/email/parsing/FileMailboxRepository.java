@@ -40,7 +40,6 @@ public class FileMailboxRepository implements MailboxRepository {
   @Override
   public Mailbox findByAddressAndType(Address address, MailboxType type)
       throws MailboxLoadingException, MailboxSavingException {
-    System.out.println("opening " + type + " for address " + address.toString());
     File mailboxFile = getOrCreateFile(address, type);
     return mailboxSerializer.deserializeMailboxFile(mailboxFile);
   }
@@ -116,8 +115,6 @@ public class FileMailboxRepository implements MailboxRepository {
         Stream.of(allMailboxesDirectory.listFiles(File::isDirectory)).map(dir -> {
           return Address.from(dir.getName());
         }).toList();
-
-    System.out.println(Arrays.toString(addresses.toArray()));
 
     List<Mailbox> mailboxes = new ArrayList<>();
 

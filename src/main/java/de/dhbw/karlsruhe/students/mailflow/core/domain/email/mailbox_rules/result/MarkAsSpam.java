@@ -17,6 +17,7 @@ public class MarkAsSpam implements MailboxRuleResult {
   @Override
   public void execute(MailboxRepository mailbox, Address recipient, Email email)
       throws MailboxLoadingException, MailboxSavingException {
+    // TODO: Use central logger?
     System.out.println(
         email.getSubject().subject() + " was marked as spam. Reason: " + this.humanReadableReason);
 
