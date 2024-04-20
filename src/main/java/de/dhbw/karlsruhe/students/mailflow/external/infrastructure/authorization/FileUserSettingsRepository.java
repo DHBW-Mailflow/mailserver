@@ -1,6 +1,7 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization;
 
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.user.User;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserSettings;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserSettingsRepository;
 import java.io.File;
@@ -11,6 +12,7 @@ import java.util.Scanner;
 public class FileUserSettingsRepository implements UserSettingsRepository {
 
   private static final File USERS_SETTINGS_FILE = new File("users.json");
+
 
   @Override
   public void updateUserSettings(Address address, UserSettings userSettings) {

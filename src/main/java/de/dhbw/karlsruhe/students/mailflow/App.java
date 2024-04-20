@@ -8,11 +8,14 @@ import de.dhbw.karlsruhe.students.mailflow.core.application.email.EmailSendUseCa
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.organize.UCCollectionOrganizeEmails;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.UCCollectionProvideEmails;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.UCCollectionSearchEmail;
+import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.UCCollectionSettings;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.PasswordChecker;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.UserCreator;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.server.Server;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserRepository;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserSettingsRepository;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.FileUserRepository;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.FileUserSettingsRepository;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.LocalPasswordChecker;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.LocalUserCreator;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.MainCLIPrompt;
@@ -32,7 +35,7 @@ public class App {
     final UserRepository userRepository = new FileUserRepository();
     final UserCreator userCreator = new LocalUserCreator();
     final PasswordChecker passwordChecker = new LocalPasswordChecker();
-
+    final UserSettingsRepository userSettingsRepository = new FileUserSettingsRepository();
     /// UseCases / Services
     final AuthSessionUseCase authSession = new AuthSession();
 
@@ -46,10 +49,12 @@ public class App {
         UCCollectionOrganizeEmails.init(authSession, mailboxRepository);
     final UCCollectionSearchEmail searchEmails =
         UCCollectionSearchEmail.init(provideEmails.provideAllEmailsService());
+    final UCCollectionSettings collectionSettings =
+        UCCollectionSettings.init(authSession, userSettingsRepository);
 
     /// Start
     Server server =
-        new MainCLIPrompt(collectionAuth, sendEmails, provideEmails, organizeEmails, searchEmails);
+        new MainCLIPrompt(collectionAuth, sendEmails, provideEmails, organizeEmails, searchEmails, collectionSettings);
     server.start();
   }
 }

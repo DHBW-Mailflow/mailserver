@@ -3,7 +3,7 @@ package de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.change
 import java.io.FileNotFoundException;
 
 public interface ChangeSignatureUseCase {
-    void updateSignature(String newSignature) throws FileNotFoundException;
+  void updateSignature(String newSignature) throws FileNotFoundException;
 
-    void removeSignature();
+  void removeSignature();
 }

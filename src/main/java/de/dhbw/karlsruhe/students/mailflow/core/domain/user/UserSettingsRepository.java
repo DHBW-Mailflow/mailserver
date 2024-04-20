@@ -8,6 +8,4 @@ public interface UserSettingsRepository {
   void updateUserSettings(Address address, UserSettings userSettings) throws FileNotFoundException;
 
   void removeUserSettings(Address address);
-
-
 }
