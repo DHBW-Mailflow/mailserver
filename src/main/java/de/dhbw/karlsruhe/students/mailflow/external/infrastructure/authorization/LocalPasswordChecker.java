@@ -22,8 +22,8 @@ public class LocalPasswordChecker implements PasswordChecker {
     }
 
     try {
-      return MessageDigest.isEqual(user.password().getBytes(),
-          hashPassword(password, user.salt()).getBytes());
+      return MessageDigest.isEqual(
+          user.password().getBytes(), hashPassword(password, user.salt()).getBytes());
     } catch (HashingFailedException e) {
       Logger.getLogger(PasswordHasher.class.getName()).warning("Could not hash password");
       return false;

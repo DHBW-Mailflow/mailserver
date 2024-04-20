@@ -1,14 +1,15 @@
 package de.dhbw.karlsruhe.students.mailflow;
 
-import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthService;
-import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthUseCase;
-import de.dhbw.karlsruhe.students.mailflow.core.application.auth.RegisterUseCase;
-import de.dhbw.karlsruhe.students.mailflow.core.application.auth.RegistrationService;
+import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthSession;
+import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthSessionUseCase;
+import de.dhbw.karlsruhe.students.mailflow.core.application.auth.UCCollectionAuth;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.EmailSendService;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.EmailSendUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.organize.UCCollectionOrganizeEmails;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.UCCollectionProvideEmails;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.UCCollectionSearchEmail;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.PasswordChecker;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.UserCreator;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.server.Server;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserRepository;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.FileUserRepository;
@@ -29,21 +30,26 @@ public class App {
     final FileMailboxRepository mailboxRepository =
         new FileMailboxRepository(new JSONMailboxConverter());
     final UserRepository userRepository = new FileUserRepository();
+    final UserCreator userCreator = new LocalUserCreator();
+    final PasswordChecker passwordChecker = new LocalPasswordChecker();
 
     /// UseCases / Services
-    final AuthUseCase authUseCase = new AuthService(userRepository, new LocalPasswordChecker());
-    final RegisterUseCase registerUseCase =
-        new RegistrationService(userRepository, new LocalUserCreator());
-    final EmailSendUseCase sendEmails = new EmailSendService(mailboxRepository);
+    final AuthSessionUseCase authSession = new AuthSession();
+
+    final UCCollectionAuth collectionAuth =
+        UCCollectionAuth.init(authSession, userRepository, passwordChecker, userCreator);
+
+    final EmailSendUseCase sendEmails = new EmailSendService(authSession, mailboxRepository);
     final UCCollectionProvideEmails provideEmails =
-        UCCollectionProvideEmails.init(mailboxRepository);
+        UCCollectionProvideEmails.init(authSession, mailboxRepository);
     final UCCollectionOrganizeEmails organizeEmails =
-        UCCollectionOrganizeEmails.init(mailboxRepository);
-    final UCCollectionSearchEmail searchEmails = UCCollectionSearchEmail.init(provideEmails.provideAllEmailsService());
+        UCCollectionOrganizeEmails.init(authSession, mailboxRepository);
+    final UCCollectionSearchEmail searchEmails =
+        UCCollectionSearchEmail.init(provideEmails.provideAllEmailsService());
 
     /// Start
     Server server =
-        new MainCLIPrompt(authUseCase, registerUseCase, sendEmails, provideEmails, organizeEmails, searchEmails);
+        new MainCLIPrompt(collectionAuth, sendEmails, provideEmails, organizeEmails, searchEmails);
     server.start();
   }
 }

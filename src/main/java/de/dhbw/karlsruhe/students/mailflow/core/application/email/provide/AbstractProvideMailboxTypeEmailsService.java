@@ -1,12 +1,12 @@
 package de.dhbw.karlsruhe.students.mailflow.core.application.email.provide;
 
+import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthSessionUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.MailboxRepository;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.Label;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import java.util.List;
 
 /**
@@ -19,16 +19,19 @@ abstract class AbstractProvideMailboxTypeEmailsService extends AbstractProvideEm
   private final Label[] labels;
 
   protected AbstractProvideMailboxTypeEmailsService(
-      MailboxRepository mailboxRepository, MailboxType mailboxType, Label... labels) {
-    super(mailboxRepository);
+      AuthSessionUseCase authSession,
+      MailboxRepository mailboxRepository,
+      MailboxType mailboxType,
+      Label... labels) {
+    super(authSession, mailboxRepository);
     this.mailboxType = mailboxType;
     this.labels = labels;
   }
 
   @Override
-  public List<Email> provideEmails(Address sessionUserAddress)
-      throws MailboxSavingException, MailboxLoadingException {
-    var mailbox = mailboxRepository.findByAddressAndType(sessionUserAddress, mailboxType);
+  public List<Email> provideEmails() throws MailboxSavingException, MailboxLoadingException {
+    var mailbox =
+        mailboxRepository.findByAddressAndType(authSession.getSessionUserAddress(), mailboxType);
     return mailbox.getEmailsWithLabel(labels);
   }
 

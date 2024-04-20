@@ -1,12 +1,10 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases;
 
-import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.organize.MarkEmailUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.ProvideEmailsUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.AuthorizedCLIPrompt;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.showemails.ReadEmailCLIPrompt;
 import java.util.LinkedHashMap;
@@ -16,17 +14,16 @@ import java.util.Map;
 /**
  * @author Jonas-Karl
  */
-public class MarkEmailsCLIPrompt extends AuthorizedCLIPrompt {
+public class MarkEmailsCLIPrompt extends BaseCLIPrompt {
 
   private final MarkEmailUseCase markUseCase;
   private final ProvideEmailsUseCase provideEmailsUseCase;
 
   public MarkEmailsCLIPrompt(
       BaseCLIPrompt previousPrompt,
-      AuthUseCase authUseCase,
       ProvideEmailsUseCase provideEmailsUseCase,
       MarkEmailUseCase markUseCase) {
-    super(previousPrompt, authUseCase);
+    super(previousPrompt);
     this.markUseCase = markUseCase;
     this.provideEmailsUseCase = provideEmailsUseCase;
   }
@@ -35,7 +32,7 @@ public class MarkEmailsCLIPrompt extends AuthorizedCLIPrompt {
   public void start() {
     super.start();
     try {
-      var filteredEmails = provideEmailsUseCase.provideEmails(authUseCase.getSessionUserAddress());
+      var filteredEmails = provideEmailsUseCase.provideEmails();
       BaseCLIPrompt baseCLIPrompt = showActionMenuPrompt(filteredEmails);
       baseCLIPrompt.start();
     } catch (MailboxSavingException | MailboxLoadingException e) {
@@ -52,8 +49,7 @@ public class MarkEmailsCLIPrompt extends AuthorizedCLIPrompt {
         "Which email do you want to mark as %s?".formatted(provideEmailsUseCase.getMailboxName()));
     Map<String, BaseCLIPrompt> promptMap = new LinkedHashMap<>();
     for (Email email : emailList) {
-      promptMap.put(
-          formatEmail(email), new ReadEmailCLIPrompt(this, email, markUseCase, authUseCase, false));
+      promptMap.put(formatEmail(email), new ReadEmailCLIPrompt(this, email, markUseCase, false));
     }
     return readUserInputWithOptions(promptMap);
   }

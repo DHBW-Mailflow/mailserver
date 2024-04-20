@@ -8,7 +8,6 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Addre
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.User;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserRepository;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.SaveUserException;
-
 import java.util.Optional;
 
 /**
@@ -25,17 +24,17 @@ public class RegistrationService implements RegisterUseCase {
         this.userCreator = userCreator;
     }
 
-    @Override
-    public boolean register(Address email, String password)
-            throws AuthorizationException, LoadingUsersException {
-
-        Optional<User> user = userRepository.findByEmail(email);
+  @Override
+  public boolean register(String email, String password)
+      throws AuthorizationException, LoadingUsersException {
+    Address address = Address.from(email);
+    Optional<User> user = userRepository.findByEmail(address);
         if (user.isPresent()) {
             throw new AuthorizationException("User is already registered");
         }
 
         try {
-            User toRegister = userCreator.createUser(email, password);
+      User toRegister = userCreator.createUser(address, password);
             return userRepository.save(toRegister);
         } catch (SaveUserException | HashingFailedException e) {
             throw new AuthorizationException("Could not save user");
