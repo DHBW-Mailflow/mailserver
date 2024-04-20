@@ -11,7 +11,6 @@ import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPr
  */
 public final class ComposeEmailCLIPrompt extends BaseCLIPrompt {
 
-  public static final String INVALID_RECIPIENT_FORMAT = "Invalid recipient format";
   private final EmailSendUseCase emailSendUseCase;
 
   public ComposeEmailCLIPrompt(BaseCLIPrompt previousPrompt, EmailSendUseCase emailSendUseCase) {
@@ -70,8 +69,8 @@ public final class ComposeEmailCLIPrompt extends BaseCLIPrompt {
         simplePrompt("Please write the TO-recipients (separated by a comma):").trim();
     try {
       emailSendUseCase.setToRecipients(recipientsString);
-    } catch (IllegalArgumentException e) {
-      printWarning(INVALID_RECIPIENT_FORMAT);
+    } catch (InvalidRecipients e) {
+      printWarning(e.getMessage());
       askRecipientTo();
     }
   }
@@ -81,8 +80,8 @@ public final class ComposeEmailCLIPrompt extends BaseCLIPrompt {
         simplePrompt("Please write the CC-recipients (separated by a comma):").trim();
     try {
       emailSendUseCase.setCCRecipients(recipientsString);
-    } catch (IllegalArgumentException e) {
-      printWarning(INVALID_RECIPIENT_FORMAT);
+    } catch (InvalidRecipients e) {
+      printWarning(e.getMessage());
       askRecipientCC();
     }
   }
@@ -92,8 +91,8 @@ public final class ComposeEmailCLIPrompt extends BaseCLIPrompt {
         simplePrompt("Please write the BCC-recipients (separated by a comma):").trim();
     try {
       emailSendUseCase.setBCCRecipients(recipientsString);
-    } catch (IllegalArgumentException e) {
-      printWarning(INVALID_RECIPIENT_FORMAT);
+    } catch (InvalidRecipients e) {
+      printWarning(e.getMessage());
       askRecipientBCC();
     }
   }

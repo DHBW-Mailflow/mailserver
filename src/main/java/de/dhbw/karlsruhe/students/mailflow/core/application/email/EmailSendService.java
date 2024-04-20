@@ -40,7 +40,7 @@ public class EmailSendService implements EmailSendUseCase {
   }
 
   private List<Address> getAddressesFromPromptResponse(String promptResponse)
-      throws IllegalArgumentException {
+      throws InvalidRecipients {
     ArrayList<Address> result = new ArrayList<>();
 
     for (String addressCandidate : promptResponse.split(",")) {
@@ -49,8 +49,12 @@ public class EmailSendService implements EmailSendUseCase {
       if (addressCandidate.isEmpty()) {
         continue;
       }
-
-      result.add(Address.from(addressCandidate));
+      try {
+        Address.from(addressCandidate);
+        result.add(Address.from(addressCandidate));
+      } catch (IllegalArgumentException e) {
+        throw new InvalidRecipients("Could not parse address: " + addressCandidate);
+      }
     }
 
     return result;
@@ -108,17 +112,17 @@ public class EmailSendService implements EmailSendUseCase {
   }
 
   @Override
-  public void setToRecipients(String toRecipientsString) throws IllegalArgumentException {
+  public void setToRecipients(String toRecipientsString) throws InvalidRecipients {
     this.toAddresses = getAddressesFromPromptResponse(toRecipientsString);
   }
 
   @Override
-  public void setCCRecipients(String ccRecipientsString) throws IllegalArgumentException {
+  public void setCCRecipients(String ccRecipientsString) throws InvalidRecipients {
     this.ccAddresses = getAddressesFromPromptResponse(ccRecipientsString);
   }
 
   @Override
-  public void setBCCRecipients(String bccRecipientsString) throws IllegalArgumentException {
+  public void setBCCRecipients(String bccRecipientsString) throws InvalidRecipients {
     this.bccAddresses = getAddressesFromPromptResponse(bccRecipientsString);
   }
 

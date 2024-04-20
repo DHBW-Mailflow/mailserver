@@ -11,11 +11,11 @@ public interface EmailSendUseCase {
 
   void validateRecipients() throws InvalidRecipients;
 
-  void setToRecipients(String toRecipientsString) throws IllegalArgumentException;
+  void setToRecipients(String toRecipientsString) throws InvalidRecipients;
 
-  void setCCRecipients(String ccRecipientsString) throws IllegalArgumentException;
+  void setCCRecipients(String ccRecipientsString) throws InvalidRecipients;
 
-  void setBCCRecipients(String bccRecipientsString) throws IllegalArgumentException;
+  void setBCCRecipients(String bccRecipientsString) throws InvalidRecipients;
 
   void setSubject(String subject);
 

@@ -26,11 +26,10 @@ public class LoginService implements LoginUseCase {
   }
 
   @Override
-  public void login(String email, String password)
+  public void login(Address email, String password)
       throws AuthorizationException, LoadingUsersException {
     try {
-      Address address = Address.from(email);
-      authorizeUser(address, password);
+      authorizeUser(email, password);
     } catch (IllegalArgumentException e) {
       throw new AuthorizationException("Credentials are incorrect. " + e.getMessage());
     }

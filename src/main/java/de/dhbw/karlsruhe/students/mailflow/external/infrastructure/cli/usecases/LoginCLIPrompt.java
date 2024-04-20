@@ -3,6 +3,7 @@ package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.LoginUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.AuthorizationException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.LoadingUsersException;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
 
 /**
@@ -24,8 +25,8 @@ public final class LoginCLIPrompt extends BaseCLIPrompt {
     String loginPasswordInput = simplePrompt("What is your password?");
 
     try {
-      loginUseCase.login(loginEmailInput, loginPasswordInput);
-    } catch (AuthorizationException | LoadingUsersException e) {
+      loginUseCase.login(Address.from(loginEmailInput), loginPasswordInput);
+    } catch (AuthorizationException | LoadingUsersException | IllegalArgumentException e) {
       printWarning(e.getMessage());
     }
   }
