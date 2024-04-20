@@ -1,16 +1,20 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.parsing;
 
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.MailboxRepository;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.MailboxRepository;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 import org.fest.util.VisibleForTesting;
 
 /**
@@ -36,6 +40,7 @@ public class FileMailboxRepository implements MailboxRepository {
   @Override
   public Mailbox findByAddressAndType(Address address, MailboxType type)
       throws MailboxLoadingException, MailboxSavingException {
+    System.out.println("opening " + type + " for address " + address.toString());
     File mailboxFile = getOrCreateFile(address, type);
     return mailboxSerializer.deserializeMailboxFile(mailboxFile);
   }
@@ -59,8 +64,8 @@ public class FileMailboxRepository implements MailboxRepository {
     try (FileWriter writer = new FileWriter(createdMailboxFile)) {
       writer.write(mailboxContent); // override existing content
     } catch (IOException e) {
-      throw new MailboxSavingException(
-          "Could not save mailbox content to file: " + mailboxContent, e);
+      throw new MailboxSavingException("Could not save mailbox content to file: " + mailboxContent,
+          e);
     }
   }
 
@@ -103,5 +108,26 @@ public class FileMailboxRepository implements MailboxRepository {
     } catch (IOException e) {
       throw new MailboxSavingException(mailboxFile.getPath(), e);
     }
+  }
+
+  @Override
+  public List<Mailbox> findAll() throws MailboxLoadingException, MailboxSavingException {
+    List<Address> addresses =
+        Stream.of(allMailboxesDirectory.listFiles(File::isDirectory)).map(dir -> {
+          return Address.from(dir.getName());
+        }).toList();
+
+    System.out.println(Arrays.toString(addresses.toArray()));
+
+    List<Mailbox> mailboxes = new ArrayList<>();
+
+
+    for (Address address : addresses) {
+      for (MailboxType type : MailboxType.values()) {
+        mailboxes.add(this.findByAddressAndType(address, type));
+      }
+    }
+
+    return mailboxes;
   }
 }

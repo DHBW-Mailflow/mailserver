@@ -14,8 +14,8 @@ abstract class AbstractProvideEmailsService implements ProvideEmailsUseCase {
   final MailboxRepository mailboxRepository;
   final AuthSessionUseCase authSession;
 
-  AbstractProvideEmailsService(
-      AuthSessionUseCase authSession, MailboxRepository mailboxRepository) {
+  AbstractProvideEmailsService(AuthSessionUseCase authSession,
+      MailboxRepository mailboxRepository) {
     this.mailboxRepository = mailboxRepository;
     this.authSession = authSession;
   }

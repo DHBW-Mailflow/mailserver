@@ -4,6 +4,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
+import java.util.List;
 
 public interface MailboxRepository {
   /**
@@ -22,4 +23,5 @@ public interface MailboxRepository {
    */
   void save(Mailbox mailbox) throws MailboxSavingException;
 
+  List<Mailbox> findAll() throws MailboxLoadingException, MailboxSavingException;
 }

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author seifera, Jonas-Karl
+ * @author seiferla, Jonas-Karl
  */
 public class ProvideAllEmailsService extends AbstractProvideEmailsService {
 

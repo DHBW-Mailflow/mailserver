@@ -9,6 +9,9 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.MailboxRepository;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.mailbox_rules.MailboxRule;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.mailbox_rules.result.MailboxRuleResult;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.mailbox_rules.spam.DetectSpamOnIncomingMailMailboxRule;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Subject;
 import java.util.ArrayList;
@@ -35,8 +38,7 @@ public class EmailSendService implements EmailSendUseCase {
 
   private List<Address> collectRecipientAddresses(Email email) {
     return Stream.of(email.getRecipientTo(), email.getRecipientCC(), email.getRecipientBCC())
-        .flatMap(Collection::stream)
-        .toList();
+        .flatMap(Collection::stream).toList();
   }
 
   private List<Address> getAddressesFromPromptResponse(String promptResponse)
@@ -64,15 +66,9 @@ public class EmailSendService implements EmailSendUseCase {
   public void sendPreparedEmail()
       throws MailboxLoadingException, MailboxSavingException, InvalidRecipients {
     validateRecipients();
-    Email email =
-        new EmailBuilder()
-            .withSender(authSession.getSessionUserAddress())
-            .withSubject(subject)
-            .withRecipientsTo(toAddresses)
-            .withRecipientsBCC(bccAddresses)
-            .withRecipientsCC(ccAddresses)
-            .withContent(message)
-            .build();
+    Email email = new EmailBuilder().withSender(authSession.getSessionUserAddress())
+        .withSubject(subject).withRecipientsTo(toAddresses).withRecipientsBCC(bccAddresses)
+        .withRecipientsCC(ccAddresses).withContent(message).build();
 
     saveToSenderMailbox(email);
 
@@ -87,10 +83,10 @@ public class EmailSendService implements EmailSendUseCase {
       throws MailboxLoadingException, MailboxSavingException {
     // put the email into the INBOX folder of the respective recipient
     for (Address recipient : recipients) {
-      Mailbox recipientMailbox =
-          mailboxRepository.findByAddressAndType(recipient, MailboxType.INBOX);
-      recipientMailbox.deliverEmail(email, true);
-      mailboxRepository.save(recipientMailbox);
+      MailboxRule spamDetector = new DetectSpamOnIncomingMailMailboxRule();
+      MailboxRuleResult ruleResult = spamDetector.runOnEmail(mailboxRepository, email);
+
+      ruleResult.execute(mailboxRepository, recipient, email);
     }
   }
 
