@@ -7,6 +7,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.UserCreator;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.User;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserRepository;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserSettings;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.SaveUserException;
 import java.util.Optional;
 
@@ -34,7 +35,7 @@ public class RegistrationService implements RegisterUseCase {
         }
 
         try {
-      User toRegister = userCreator.createUser(address, password);
+      User toRegister = userCreator.createUser(address, password, new UserSettings("settings"));
             return userRepository.save(toRegister);
         } catch (SaveUserException | HashingFailedException e) {
             throw new AuthorizationException("Could not save user");

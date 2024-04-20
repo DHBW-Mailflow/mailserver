@@ -6,6 +6,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.UserCreator;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.User;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserRepository;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserSettings;
 import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -18,7 +19,8 @@ class RegistrationServiceTest {
   @Test
   void registerNewUser() {
     // Arrange
-    User notYetRegisteredUser = new User(new Address("test", "example.de"), "password", "salt");
+    UserSettings userSettings = new UserSettings("settings");
+    User notYetRegisteredUser = new User(new Address("test", "example.de"), "password", "salt", userSettings);
     var mockedUserRepository =
         new UserRepository() {
           @Override
@@ -35,7 +37,7 @@ class RegistrationServiceTest {
     var mockedUserAuthenticator =
         new UserCreator() {
           @Override
-          public User createUser(Address email, String password) {
+          public User createUser(Address email, String password, UserSettings userSettings1) {
             return notYetRegisteredUser;
           }
         };
@@ -53,7 +55,8 @@ class RegistrationServiceTest {
   @Test
   void registerExistingUser() {
     // Arrange
-    User alreadyRegisteredUser = new User(new Address("test", "example.de"), "password", "salt");
+    UserSettings userSettings = new UserSettings("Settings");
+    User alreadyRegisteredUser = new User(new Address("test", "example.de"), "password", "salt", userSettings);
     var mockedUserRepository =
         new UserRepository() {
           @Override
@@ -70,7 +73,7 @@ class RegistrationServiceTest {
     var mockedUserAuthenticator =
         new UserCreator() {
           @Override
-          public User createUser(Address email, String password) {
+          public User createUser(Address email, String password, UserSettings userSettings1) {
             return alreadyRegisteredUser;
           }
         };
