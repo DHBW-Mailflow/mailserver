@@ -20,11 +20,7 @@ public final class LogoutCLIPrompt extends BaseCLIPrompt {
   @Override
   public void start() {
 
-    try {
-      super.start();
-    } catch (LoadSettingsException e) {
-      printWarning("Could not load settings");
-    }
+    super.start();
 
     Address userEmail = logoutUseCase.logout();
     printDefault("Good bye, %s!".formatted(userEmail.toString()));

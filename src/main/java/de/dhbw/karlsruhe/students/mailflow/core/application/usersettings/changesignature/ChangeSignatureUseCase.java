@@ -1,12 +1,13 @@
 package de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.changesignature;
 
+import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.LoadingUsersException;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.RemoveSettingsException;
-import java.io.FileNotFoundException;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.SaveSettingsException;
 
 public interface ChangeSignatureUseCase {
-  void updateSignature(String newSignature) throws LoadSettingsException;
+  void updateSignature(String newSignature) throws LoadSettingsException, SaveSettingsException;
 
-  void resetSignature() throws RemoveSettingsException;
+  void resetSignature() throws LoadSettingsException, SaveSettingsException;
 
-  String getSignature() throws LoadSettingsException;
+  String getSignature() throws LoadSettingsException, SaveSettingsException;
 }

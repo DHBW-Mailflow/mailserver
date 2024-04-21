@@ -26,7 +26,7 @@ public class SearchEmailTypesCLIPrompt extends BaseCLIPrompt {
   }
 
   @Override
-  public void start() throws LoadSettingsException {
+  public void start() {
     super.start();
     printDefault("Which metadata do you want to search for in the mail?");
     BaseCLIPrompt action = showActionMenuPrompt();

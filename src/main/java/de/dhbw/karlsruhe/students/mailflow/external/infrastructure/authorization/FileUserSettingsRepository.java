@@ -1,98 +1,95 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.changesignature.LoadSettingsException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserSettings;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserSettingsRepository;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.util.Scanner;
-import java.util.function.Function;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class FileUserSettingsRepository implements UserSettingsRepository {
 
-  private static final File USERS_SETTINGS_FILE = new File("users.json");
+  private static final File USERS_SETTINGS_FILE = new File("settings.json");
 
-  @Override
-  public void updateUserSettings(Address address, UserSettings userSettings)
-      throws LoadSettingsException {
-    try {
-      processUserSettings(
-          fileContent -> {
-            updateFileContent(fileContent, address, userSettings);
-            return null;
-          });
-    } catch (FileNotFoundException e) {
-      throw new LoadSettingsException("Failed to update user settings");
-    }
+  private final Gson gson;
+
+  private final Set<UserSettings> usersSettings;
+
+  public FileUserSettingsRepository() {
+    this.gson = new Gson();
+    this.usersSettings = new HashSet<>();
   }
 
-  private StringBuilder readFileContent() throws FileNotFoundException {
-    StringBuilder fileContent = new StringBuilder();
-    try (Scanner scanner = new Scanner(USERS_SETTINGS_FILE)) {
-      while (scanner.hasNextLine()) {
-        fileContent.append(scanner.nextLine()).append("\n");
+  private void readUserSettings(Address address) throws LoadSettingsException, SaveSettingsException {
+    usersSettings.clear();
+    createFileIfNotExists(address);
+    try (FileReader reader = new FileReader(USERS_SETTINGS_FILE)) {
+      Type setType = new TypeToken<HashSet<UserSettings>>() {}.getType();
+      HashSet<UserSettings> parsedUsers = gson.fromJson(reader, setType);
+      if (parsedUsers == null) {
+        return;
       }
-    }
-    return fileContent;
-  }
-
-  private void updateFileContent(
-      StringBuilder fileContent, Address address, UserSettings userSettings) {
-    String fileContentString = fileContent.toString();
-    String updatedLine = address + ": " + userSettings.toString() + "\n";
-    String oldLine = address + ": .*" + "\n";
-    String updatedFileContent = fileContentString.replaceAll(oldLine, updatedLine);
-    fileContent.replace(0, fileContent.length(), updatedFileContent);
-  }
-
-  private void writeFileContent(StringBuilder fileContent) throws FileNotFoundException {
-    try (PrintWriter writer = new PrintWriter(USERS_SETTINGS_FILE)) {
-      writer.write(fileContent.toString());
+      usersSettings.addAll(parsedUsers);
+    } catch (IOException e) {
+      throw new LoadSettingsException("Could not load user settings");
     }
   }
 
-  @Override
-  public void removeUserSettings(Address address) throws RemoveSettingsException {
+  private void createFileIfNotExists(Address address) throws LoadSettingsException, SaveSettingsException {
+    if (USERS_SETTINGS_FILE.exists()) {
+      return;
+    }
     try {
-      processUserSettings(
-          fileContent -> {
-            removeUserSettingsFromFileContent(fileContent, address);
-            return null;
-          });
-    } catch (FileNotFoundException e) {
-      throw new RemoveSettingsException("Failed to remove user settings", e);
-    }
-  }
-
-  @Override
-  public String getSiginature(Address address) throws LoadSettingsException {
-    try {
-      StringBuilder fileContent = readFileContent();
-      String[] lines = fileContent.toString().split("\n");
-      for (String line : lines) {
-        if (line.startsWith(address.toString())) {
-          return line.substring(line.indexOf(":") + 1).trim();
-        }
+      if (!USERS_SETTINGS_FILE.createNewFile()) {
+        throw new LoadSettingsException("Could not find usersettings file");
       }
-      throw new LoadSettingsException("No settings found for the given address");
-    } catch (FileNotFoundException e) {
-      throw new LoadSettingsException("Failed to load user settings");
+      Set<UserSettings> userSettings = Set.of(new UserSettings(address, ""));
+      try (FileWriter writer = new FileWriter(USERS_SETTINGS_FILE)) {
+        gson.toJson(userSettings, writer);
+      }
+    } catch (IOException | SecurityException e) {
+      throw new SaveSettingsException("Could not create usersettings file", e);
     }
   }
 
-  private void processUserSettings(Function<StringBuilder, Void> fileContentProcessor)
-      throws FileNotFoundException {
-    StringBuilder fileContent = readFileContent();
-    fileContentProcessor.apply(fileContent);
-    writeFileContent(fileContent);
+  @Override
+  public boolean updateUserSettings(UserSettings userSettings)
+      throws LoadSettingsException, SaveSettingsException {
+    readUserSettings(userSettings.address());
+    usersSettings.add(userSettings);
+    return save();
   }
 
-  private void removeUserSettingsFromFileContent(StringBuilder fileContent, Address address) {
-    String fileContentString = fileContent.toString();
-    String oldLinePattern = address + ":.*\n";
-    String updatedFileContent = fileContentString.replaceAll(oldLinePattern, "");
-    fileContent.replace(0, fileContent.length(), updatedFileContent);
+  private boolean save() throws SaveSettingsException {
+    try (FileWriter writer = new FileWriter(USERS_SETTINGS_FILE)) {
+      gson.toJson(this.usersSettings, writer);
+      return true;
+    } catch (IOException e) {
+      throw new SaveSettingsException("Could not save user settings", e);
+    }
+  }
+
+  @Override
+  public void removeUserSettings(Address address)
+      throws LoadSettingsException, SaveSettingsException {
+    updateUserSettings(new UserSettings(address, ""));
+  }
+
+  @Override
+  public UserSettings getSettings(Address address)
+      throws LoadSettingsException, SaveSettingsException {
+    readUserSettings(address);
+    return usersSettings.stream()
+        .filter(userSettings -> userSettings.address().equals(address))
+        .findFirst()
+        .orElseThrow(() -> new LoadSettingsException("Could not find user settings"));
   }
 }

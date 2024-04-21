@@ -15,7 +15,7 @@ public class SettingsCLIPrompt extends BaseCLIPrompt {
   }
 
   @Override
-  public void start() throws LoadSettingsException {
+  public void start() {
     super.start();
     BaseCLIPrompt action = showActionMenuPrompt();
     action.start();

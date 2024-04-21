@@ -1,15 +1,16 @@
 package de.dhbw.karlsruhe.students.mailflow.core.domain.user;
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.changesignature.LoadSettingsException;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.LoadingUsersException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.RemoveSettingsException;
-import java.io.FileNotFoundException;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.SaveSettingsException;
 
 public interface UserSettingsRepository {
 
-  void updateUserSettings(Address address, UserSettings userSettings) throws LoadSettingsException;
+  boolean updateUserSettings(UserSettings userSettings) throws LoadSettingsException, SaveSettingsException;
 
-  void removeUserSettings(Address address) throws RemoveSettingsException;
+  void removeUserSettings(Address address) throws LoadSettingsException, SaveSettingsException;
 
-  String getSiginature(Address address) throws LoadSettingsException;
+  UserSettings getSettings(Address address) throws LoadSettingsException, SaveSettingsException;
 }

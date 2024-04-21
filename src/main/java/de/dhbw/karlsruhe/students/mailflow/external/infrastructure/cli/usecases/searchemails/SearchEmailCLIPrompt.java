@@ -46,7 +46,7 @@ public class SearchEmailCLIPrompt extends BaseCLIPrompt {
   }
 
   @Override
-  public void start() throws LoadSettingsException {
+  public void start() {
     super.start();
     try {
       String userInput = simplePrompt("Enter the content you want to search for" + placeHolder);

@@ -40,8 +40,6 @@ public class ShowEmailsCLIPrompt extends BaseCLIPrompt {
       action.start();
     } catch (MailboxSavingException | MailboxLoadingException e) {
       printWarning("Could not read %s emails".formatted(mailboxString));
-    } catch (LoadSettingsException e) {
-      printWarning("Could not load settings");
     }
   }
 

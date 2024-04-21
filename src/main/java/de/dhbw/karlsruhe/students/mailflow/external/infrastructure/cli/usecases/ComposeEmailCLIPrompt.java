@@ -6,6 +6,8 @@ import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.changes
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.InvalidRecipients;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserSettings;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.SaveSettingsException;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
 
 /**
@@ -16,7 +18,9 @@ public final class ComposeEmailCLIPrompt extends BaseCLIPrompt {
   private final EmailSendUseCase emailSendUseCase;
   private final UCCollectionSettings ucCollectionSettings;
 
-  public ComposeEmailCLIPrompt(BaseCLIPrompt previousPrompt, EmailSendUseCase emailSendUseCase,
+  public ComposeEmailCLIPrompt(
+      BaseCLIPrompt previousPrompt,
+      EmailSendUseCase emailSendUseCase,
       UCCollectionSettings ucCollectionSettings) {
     super(previousPrompt);
     this.emailSendUseCase = emailSendUseCase;
@@ -25,9 +29,6 @@ public final class ComposeEmailCLIPrompt extends BaseCLIPrompt {
 
   @Override
   public void start() {
-    try{
-      super.start();
-
     super.start();
     askRecipients();
     if (!validRecipients()) {
@@ -35,9 +36,6 @@ public final class ComposeEmailCLIPrompt extends BaseCLIPrompt {
     }
     askTextContent();
     sendEmail();
-    } catch (LoadSettingsException e) {
-      printWarning("Could not load settings");
-    }
   }
 
   private void sendEmail() {
@@ -61,13 +59,17 @@ public final class ComposeEmailCLIPrompt extends BaseCLIPrompt {
     return true;
   }
 
-  private void askTextContent() throws LoadSettingsException {
+  private void askTextContent() {
     String subject = simplePrompt("What is the subject?");
     emailSendUseCase.setSubject(subject);
     printDefault("Please write your message now: (To finish, please write :q on a new line)");
     String message = readMultilineUserInput();
-    message = appendSignature(message);
-    emailSendUseCase.setMessage(message);
+    try {
+      message = appendSignature(message);
+      emailSendUseCase.setMessage(message);
+    } catch (LoadSettingsException | SaveSettingsException e) {
+      printWarning("Could not load signature, sending mail without signature.");
+    }
   }
 
   private void askRecipients() {
@@ -76,9 +78,10 @@ public final class ComposeEmailCLIPrompt extends BaseCLIPrompt {
     askRecipientBCC();
   }
 
-  private String appendSignature(String message) throws LoadSettingsException {
-    String signature = ucCollectionSettings.changeSignatureService().getSignature();
-    return message + "\n\n" + signature;
+  private String appendSignature(String message)
+      throws LoadSettingsException, SaveSettingsException {
+    String userSettings = ucCollectionSettings.changeSignatureService().getSignature();
+    return message + "\n\n" + userSettings;
   }
 
   private void askRecipientTo() {

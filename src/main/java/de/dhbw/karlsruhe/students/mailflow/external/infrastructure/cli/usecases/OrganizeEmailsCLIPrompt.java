@@ -26,14 +26,11 @@ public class OrganizeEmailsCLIPrompt extends BaseCLIPrompt {
 
   @Override
   public void start() {
-    try {
-      super.start();
-      printDefault("Organize Emails");
-      BaseCLIPrompt action = showActionMenuPrompt();
-      action.start();
-    } catch (LoadSettingsException e) {
-      printWarning("Could not load settings");
-    }
+
+    super.start();
+    printDefault("Organize Emails");
+    BaseCLIPrompt action = showActionMenuPrompt();
+    action.start();
   }
 
   private BaseCLIPrompt showActionMenuPrompt() {

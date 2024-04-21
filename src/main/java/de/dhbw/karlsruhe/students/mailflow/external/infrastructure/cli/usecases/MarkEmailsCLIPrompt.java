@@ -39,8 +39,6 @@ public class MarkEmailsCLIPrompt extends BaseCLIPrompt {
       baseCLIPrompt.start();
     } catch (MailboxSavingException | MailboxLoadingException e) {
       printWarning("Could not load emails");
-    } catch (LoadSettingsException e) {
-      printWarning("Could not load settings");
     }
   }
 

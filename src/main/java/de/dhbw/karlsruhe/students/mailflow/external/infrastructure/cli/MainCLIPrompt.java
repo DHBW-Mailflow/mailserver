@@ -75,7 +75,7 @@ public final class MainCLIPrompt extends BaseCLIPrompt {
   }
 
   @Override
-  public void start() throws LoadSettingsException {
+  public void start() {
     super.start();
     while (true) {
 

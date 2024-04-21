@@ -29,8 +29,6 @@ public final class LoginCLIPrompt extends BaseCLIPrompt {
       loginUseCase.login(Address.from(loginEmailInput), loginPasswordInput);
     } catch (AuthorizationException | LoadingUsersException | IllegalArgumentException e) {
       printWarning(e.getMessage());
-    } catch (LoadSettingsException e) {
-      printWarning("Could not load settings");
     }
   }
 }

@@ -1,7 +1,9 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli;
+
 import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.changesignature.ChangeSignatureUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.changesignature.LoadSettingsException;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.RemoveSettingsException;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.SaveSettingsException;
 
 public class ResetSignatureCLIPrompt extends BaseCLIPrompt {
 
@@ -21,10 +23,8 @@ public class ResetSignatureCLIPrompt extends BaseCLIPrompt {
       changeSignatureUseCase.resetSignature();
       printDefault("Signature removed successfully");
       getPreviousPrompt().start();
-    } catch (RemoveSettingsException e) {
+    } catch (LoadSettingsException | SaveSettingsException e) {
       printWarning("Failed to remove signature");
-    } catch (LoadSettingsException e) {
-      throw new RuntimeException(e);
     }
   }
 }
