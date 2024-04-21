@@ -2,13 +2,13 @@ package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorizatio
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.changesignature.LoadSettingsException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.user.User;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserSettings;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserSettingsRepository;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.Scanner;
+import java.util.function.Function;
 
 public class FileUserSettingsRepository implements UserSettingsRepository {
 
@@ -18,9 +18,11 @@ public class FileUserSettingsRepository implements UserSettingsRepository {
   public void updateUserSettings(Address address, UserSettings userSettings)
       throws LoadSettingsException {
     try {
-      StringBuilder fileContent = readFileContent();
-      updateFileContent(fileContent, address, userSettings);
-      writeFileContent(fileContent);
+      processUserSettings(
+          fileContent -> {
+            updateFileContent(fileContent, address, userSettings);
+            return null;
+          });
     } catch (FileNotFoundException e) {
       throw new LoadSettingsException("Failed to update user settings", e);
     }
@@ -37,9 +39,7 @@ public class FileUserSettingsRepository implements UserSettingsRepository {
   }
 
   private void updateFileContent(
-      StringBuilder fileContent, Address address, UserSettings userSettings)
-      throws FileNotFoundException {
-
+      StringBuilder fileContent, Address address, UserSettings userSettings) {
     String fileContentString = fileContent.toString();
     String updatedLine = address + ": " + userSettings.toString() + "\n";
     String oldLine = address + ": .*" + "\n";
@@ -54,20 +54,29 @@ public class FileUserSettingsRepository implements UserSettingsRepository {
   }
 
   @Override
-  public void removeUserSettings(Address address) {
-    try (Scanner scanner = new Scanner(USERS_SETTINGS_FILE)) {
-      StringBuilder fileContent = new StringBuilder();
-      while (scanner.hasNextLine()) {
-        String line = scanner.nextLine();
-        if (!line.contains(address.toString())) {
-          fileContent.append(line).append("\n");
-        }
-      }
-      try (PrintWriter writer = new PrintWriter(USERS_SETTINGS_FILE)) {
-        writer.write(fileContent.toString());
-      }
+  public void removeUserSettings(Address address) throws RemoveSettingsException {
+    try {
+      processUserSettings(
+          fileContent -> {
+            removeUserSettingsFromFileContent(fileContent, address);
+            return null;
+          });
     } catch (FileNotFoundException e) {
-      throw new RuntimeException("Failed to remove user settings", e);
+      throw new RemoveSettingsException("Failed to remove user settings", e);
     }
+  }
+
+  private void processUserSettings(Function<StringBuilder, Void> fileContentProcessor)
+      throws FileNotFoundException {
+    StringBuilder fileContent = readFileContent();
+    fileContentProcessor.apply(fileContent);
+    writeFileContent(fileContent);
+  }
+
+  private void removeUserSettingsFromFileContent(StringBuilder fileContent, Address address) {
+    String fileContentString = fileContent.toString();
+    String oldLinePattern = address + ":.*\n";
+    String updatedFileContent = fileContentString.replaceAll(oldLinePattern, "");
+    fileContent.replace(0, fileContent.length(), updatedFileContent);
   }
 }

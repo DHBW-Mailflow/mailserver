@@ -2,7 +2,6 @@ package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli;
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.changesignature.ChangeSignatureUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.changesignature.LoadSettingsException;
-import java.io.FileNotFoundException;
 
 public class ChangeSignatureCLIPrompt extends BaseCLIPrompt {
 
@@ -26,9 +25,5 @@ public class ChangeSignatureCLIPrompt extends BaseCLIPrompt {
     } catch (LoadSettingsException e) {
       printWarning("Failed to update signature");
     }
-  }
-
-  private BaseCLIPrompt showActionMenuPrompt() {
-    return getPreviousPrompt();
   }
 }

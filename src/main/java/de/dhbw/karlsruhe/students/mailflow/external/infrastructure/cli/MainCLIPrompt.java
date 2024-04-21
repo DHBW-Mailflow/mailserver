@@ -69,7 +69,7 @@ public final class MainCLIPrompt extends BaseCLIPrompt {
         "Search E-Mails",
         new SearchEmailTypesCLIPrompt(this, searchEmails, organizeEmails.markAsReadService()));
     promptMap.put(
-        "User Settings", new SettingsCLIPrompt(this, collectionSettings));
+        "Preferences", new SettingsCLIPrompt(this, collectionSettings));
     return readUserInputWithOptions(promptMap);
   }
 
