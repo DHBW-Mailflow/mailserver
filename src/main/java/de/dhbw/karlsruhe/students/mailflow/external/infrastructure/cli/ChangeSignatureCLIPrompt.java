@@ -1,6 +1,7 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli;
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.changesignature.ChangeSignatureUseCase;
+import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.changesignature.LoadSettingsException;
 import java.io.FileNotFoundException;
 
 public class ChangeSignatureCLIPrompt extends BaseCLIPrompt {
@@ -8,8 +9,8 @@ public class ChangeSignatureCLIPrompt extends BaseCLIPrompt {
   private final ChangeSignatureUseCase changeSignatureUseCase;
 
   public ChangeSignatureCLIPrompt(
-      SettingsCLIPrompt settingsCLIPrompt, ChangeSignatureUseCase changeSignatureUseCase) {
-    super(settingsCLIPrompt);
+      BaseCLIPrompt baseCLIPrompt, ChangeSignatureUseCase changeSignatureUseCase) {
+    super(baseCLIPrompt);
     this.changeSignatureUseCase = changeSignatureUseCase;
   }
 
@@ -17,12 +18,13 @@ public class ChangeSignatureCLIPrompt extends BaseCLIPrompt {
   public void start() {
     super.start();
     try {
-      String newSignature = simplePrompt("Enter your new signature");
+      printDefault("Enter new signature:");
+      String newSignature = readMultilineUserInput();
       changeSignatureUseCase.updateSignature(newSignature);
-      BaseCLIPrompt baseCLIPrompt = showActionMenuPrompt();
-      baseCLIPrompt.start();
-    } catch (FileNotFoundException e) {
-      throw new RuntimeException(e);
+      printDefault("Signature updated successfully");
+      getPreviousPrompt().start();
+    } catch (LoadSettingsException e) {
+      printWarning("Failed to update signature");
     }
   }
 

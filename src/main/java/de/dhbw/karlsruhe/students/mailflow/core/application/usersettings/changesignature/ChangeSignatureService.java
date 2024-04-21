@@ -17,7 +17,7 @@ public class ChangeSignatureService implements ChangeSignatureUseCase {
   }
 
   @Override
-  public void updateSignature(String newSignature) throws FileNotFoundException {
+  public void updateSignature(String newSignature) throws LoadSettingsException {
 
     String signature = new SignatureBuilder().signature(newSignature).build();
     UserSettings userSettings = new UserSettings(signature);
@@ -25,7 +25,7 @@ public class ChangeSignatureService implements ChangeSignatureUseCase {
   }
 
   @Override
-  public void removeSignature() {
+  public void resetSignature() {
     userSettingsRepository.removeUserSettings(authSession.getSessionUserAddress());
   }
 }

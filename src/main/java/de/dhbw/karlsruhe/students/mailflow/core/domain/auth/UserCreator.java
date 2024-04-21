@@ -6,5 +6,5 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserSettings;
 
 public interface UserCreator {
 
-  User createUser(Address email, String password, UserSettings userSettings) throws HashingFailedException;
+  User createUser(Address email, String password) throws HashingFailedException;
 }

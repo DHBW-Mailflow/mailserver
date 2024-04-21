@@ -35,7 +35,7 @@ public class RegistrationService implements RegisterUseCase {
         }
 
         try {
-      User toRegister = userCreator.createUser(address, password, new UserSettings("settings"));
+      User toRegister = userCreator.createUser(address, password);
             return userRepository.save(toRegister);
         } catch (SaveUserException | HashingFailedException e) {
             throw new AuthorizationException("Could not save user");

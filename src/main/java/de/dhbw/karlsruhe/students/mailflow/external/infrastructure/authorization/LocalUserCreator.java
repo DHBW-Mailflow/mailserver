@@ -14,8 +14,8 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserSettings;
 public class LocalUserCreator implements UserCreator {
 
   @Override
-  public User createUser(Address email, String password, UserSettings userSettings) throws HashingFailedException {
+  public User createUser(Address email, String password) throws HashingFailedException {
     String salt = PasswordHasher.generateSalt();
-    return new User(email, hashPassword(password, salt), salt, userSettings);
+    return new User(email, hashPassword(password, salt), salt);
   }
 }

@@ -37,7 +37,7 @@ class RegistrationServiceTest {
     var mockedUserAuthenticator =
         new UserCreator() {
           @Override
-          public User createUser(Address email, String password, UserSettings userSettings1) {
+          public User createUser(Address email, String password) {
             return notYetRegisteredUser;
           }
         };
@@ -73,7 +73,7 @@ class RegistrationServiceTest {
     var mockedUserAuthenticator =
         new UserCreator() {
           @Override
-          public User createUser(Address email, String password, UserSettings userSettings1) {
+          public User createUser(Address email, String password) {
             return alreadyRegisteredUser;
           }
         };
