@@ -33,7 +33,12 @@ public class ChangeSignatureService implements ChangeSignatureUseCase {
 
   @Override
   public void resetSignature() throws LoadSettingsException, SaveSettingsException {
-    userSettingsRepository.removeUserSettings(authSession.getSessionUserAddress());
+    UserSettings currentUserSettings = userSettingsRepository.getSettings(authSession.getSessionUserAddress());
+    UserSettings updatedUserSettings = new SignatureBuilder()
+        .withSignature("")
+        .withAddress(currentUserSettings.address())
+        .build();
+    userSettingsRepository.updateUserSettings(updatedUserSettings);
   }
 
   @Override

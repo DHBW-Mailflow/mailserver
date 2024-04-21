@@ -26,7 +26,7 @@ public class BaseCLIPrompt implements Server {
 
   /** Starts the server or CLIPrompt */
   @Override
-  public void start(){
+  public void start() {
     scanner = new Scanner(System.in);
   }
 

@@ -18,47 +18,39 @@ class ChangeSignatureTest {
   UserSettingsRepository mockUserSettingsRepository =
       new UserSettingsRepository() {
         @Override
-        public void updateUserSettings(UserSettings userSettings)
-            throws LoadSettingsException, SaveSettingsException {}
+        public void updateUserSettings(UserSettings userSettings) {}
 
         @Override
-        public void removeUserSettings(Address address)
-            throws LoadSettingsException, SaveSettingsException {}
+        public void removeUserSettings(Address address) {}
 
         @Override
-        public UserSettings getSettings(Address address)
-            throws LoadSettingsException, SaveSettingsException {
+        public UserSettings getSettings(Address address) {
           Address testAddress = new Address("test", "example.com");
           return new UserSettings(testAddress, "Test Signature");
         }
       };
 
-  AuthSessionUseCase mockAuthSession = new AuthSessionUseCase() {
-    @Override
-    public boolean isLoggedIn() {
-      return false;
-    }
+  AuthSessionUseCase mockAuthSession =
+      new AuthSessionUseCase() {
+        @Override
+        public boolean isLoggedIn() {
+          return false;
+        }
 
-    @Override
-    public Address getSessionUserAddress() throws IllegalStateException {
-      return null;
-    }
+        @Override
+        public Address getSessionUserAddress() throws IllegalStateException {
+          return null;
+        }
 
-    @Override
-    public void ensureLoggedIn() {
+        @Override
+        public void ensureLoggedIn() {}
 
-    }
+        @Override
+        public void removeSessionUser() {}
 
-    @Override
-    public void removeSessionUser() {
-
-    }
-
-    @Override
-    public void setSessionUser(User user) {
-
-    }
-  };
+        @Override
+        public void setSessionUser(User user) {}
+      };
 
   ChangeSignatureService changeSignatureService =
       new ChangeSignatureService(mockUserSettingsRepository, mockAuthSession);
