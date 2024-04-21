@@ -10,4 +10,6 @@ public interface UserSettingsRepository {
   void updateUserSettings(Address address, UserSettings userSettings) throws LoadSettingsException;
 
   void removeUserSettings(Address address) throws RemoveSettingsException;
+
+  String getSiginature(Address address) throws LoadSettingsException;
 }

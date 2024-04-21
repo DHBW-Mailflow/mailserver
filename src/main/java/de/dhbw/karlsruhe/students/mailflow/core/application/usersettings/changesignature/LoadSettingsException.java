@@ -2,7 +2,7 @@ package de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.change
 
 public class LoadSettingsException extends Exception {
 
-  public LoadSettingsException(String message, Throwable cause) {
-    super(message, cause);
+  public LoadSettingsException(String message) {
+    super(message);
   }
 }

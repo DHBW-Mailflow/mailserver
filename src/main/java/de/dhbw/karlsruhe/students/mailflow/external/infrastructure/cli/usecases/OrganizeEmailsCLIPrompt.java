@@ -2,6 +2,7 @@ package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.organize.UCCollectionOrganizeEmails;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.UCCollectionProvideEmails;
+import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.changesignature.LoadSettingsException;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -25,10 +26,14 @@ public class OrganizeEmailsCLIPrompt extends BaseCLIPrompt {
 
   @Override
   public void start() {
-    super.start();
-    printDefault("Organize Emails");
-    BaseCLIPrompt action = showActionMenuPrompt();
-    action.start();
+    try {
+      super.start();
+      printDefault("Organize Emails");
+      BaseCLIPrompt action = showActionMenuPrompt();
+      action.start();
+    } catch (LoadSettingsException e) {
+      printWarning("Could not load settings");
+    }
   }
 
   private BaseCLIPrompt showActionMenuPrompt() {

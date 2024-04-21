@@ -24,7 +24,7 @@ public class FileUserSettingsRepository implements UserSettingsRepository {
             return null;
           });
     } catch (FileNotFoundException e) {
-      throw new LoadSettingsException("Failed to update user settings", e);
+      throw new LoadSettingsException("Failed to update user settings");
     }
   }
 
@@ -63,6 +63,22 @@ public class FileUserSettingsRepository implements UserSettingsRepository {
           });
     } catch (FileNotFoundException e) {
       throw new RemoveSettingsException("Failed to remove user settings", e);
+    }
+  }
+
+  @Override
+  public String getSiginature(Address address) throws LoadSettingsException {
+    try {
+      StringBuilder fileContent = readFileContent();
+      String[] lines = fileContent.toString().split("\n");
+      for (String line : lines) {
+        if (line.startsWith(address.toString())) {
+          return line.substring(line.indexOf(":") + 1).trim();
+        }
+      }
+      throw new LoadSettingsException("No settings found for the given address");
+    } catch (FileNotFoundException e) {
+      throw new LoadSettingsException("Failed to load user settings");
     }
   }
 

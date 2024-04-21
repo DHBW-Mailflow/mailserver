@@ -20,7 +20,7 @@ class RegistrationServiceTest {
   void registerNewUser() {
     // Arrange
     UserSettings userSettings = new UserSettings("settings");
-    User notYetRegisteredUser = new User(new Address("test", "example.de"), "password", "salt", userSettings);
+    User notYetRegisteredUser = new User(new Address("test", "example.de"), "password", "salt");
     var mockedUserRepository =
         new UserRepository() {
           @Override
@@ -56,7 +56,7 @@ class RegistrationServiceTest {
   void registerExistingUser() {
     // Arrange
     UserSettings userSettings = new UserSettings("Settings");
-    User alreadyRegisteredUser = new User(new Address("test", "example.de"), "password", "salt", userSettings);
+    User alreadyRegisteredUser = new User(new Address("test", "example.de"), "password", "salt");
     var mockedUserRepository =
         new UserRepository() {
           @Override

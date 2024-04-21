@@ -3,6 +3,7 @@ package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.organize.MarkEmailUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.UCCollectionSearchEmail;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.date.HelperParsing;
+import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.changesignature.LoadSettingsException;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -25,7 +26,7 @@ public class SearchEmailTypesCLIPrompt extends BaseCLIPrompt {
   }
 
   @Override
-  public void start() {
+  public void start() throws LoadSettingsException {
     super.start();
     printDefault("Which metadata do you want to search for in the mail?");
     BaseCLIPrompt action = showActionMenuPrompt();

@@ -6,6 +6,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.application.email.organize.UCCol
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.UCCollectionProvideEmails;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.UCCollectionSearchEmail;
 import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.UCCollectionSettings;
+import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.changesignature.LoadSettingsException;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.ComposeEmailCLIPrompt;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.LoginCLIPrompt;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.LogoutCLIPrompt;
@@ -59,7 +60,7 @@ public final class MainCLIPrompt extends BaseCLIPrompt {
     printDefault("What do you want to do?");
     Map<String, BaseCLIPrompt> promptMap = new LinkedHashMap<>();
     promptMap.put("Logout", new LogoutCLIPrompt(this, collectionAuth.logoutUseCase()));
-    promptMap.put("Send E-Mail", new ComposeEmailCLIPrompt(this, emailSendUseCase));
+    promptMap.put("Send E-Mail", new ComposeEmailCLIPrompt(this, emailSendUseCase, collectionSettings));
     promptMap.put(
         "Show E-Mails (%s)".formatted(allEmails),
         new ShowEmailTypesCLIPrompt(this, provideEmails, organizeEmails.markAsReadService()));
@@ -74,7 +75,7 @@ public final class MainCLIPrompt extends BaseCLIPrompt {
   }
 
   @Override
-  public void start() {
+  public void start() throws LoadSettingsException {
     super.start();
     while (true) {
 

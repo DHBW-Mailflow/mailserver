@@ -15,9 +15,10 @@ public class ChangeSignatureCLIPrompt extends BaseCLIPrompt {
 
   @Override
   public void start() {
-    super.start();
+
     try {
-      printDefault("Enter new signature:");
+      super.start();
+      printDefault("Enter new signature:  (To finish, please write :q on a new line)");
       String newSignature = readMultilineUserInput();
       changeSignatureUseCase.updateSignature(newSignature);
       printDefault("Signature updated successfully");

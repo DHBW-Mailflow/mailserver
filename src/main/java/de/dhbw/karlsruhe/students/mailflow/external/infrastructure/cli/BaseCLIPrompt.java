@@ -1,5 +1,6 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli;
 
+import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.changesignature.LoadSettingsException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.server.Server;
 import java.util.LinkedHashMap;
@@ -26,7 +27,7 @@ public class BaseCLIPrompt implements Server {
 
   /** Starts the server or CLIPrompt */
   @Override
-  public void start() {
+  public void start() throws LoadSettingsException {
     scanner = new Scanner(System.in);
   }
 

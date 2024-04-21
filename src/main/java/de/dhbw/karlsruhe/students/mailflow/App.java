@@ -9,6 +9,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.application.email.organize.UCCol
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.UCCollectionProvideEmails;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.UCCollectionSearchEmail;
 import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.UCCollectionSettings;
+import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.changesignature.LoadSettingsException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.PasswordChecker;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.UserCreator;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.server.Server;
@@ -28,7 +29,7 @@ import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.parsing
  * @author jens1o, Jonas-Karl, seiferla
  */
 public class App {
-  public static void main(String[] args) {
+  public static void main(String[] args) throws LoadSettingsException {
     /// Repositories
     final FileMailboxRepository mailboxRepository =
         new FileMailboxRepository(new JSONMailboxConverter());

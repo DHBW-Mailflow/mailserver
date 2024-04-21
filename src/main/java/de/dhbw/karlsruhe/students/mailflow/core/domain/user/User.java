@@ -8,7 +8,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.InvalidSa
 /**
  * @author seiferla
  */
-public record User(Address email, String password, String salt, UserSettings userSettings) {
+public record User(Address email, String password, String salt) {
 
   public User {
     if (email == null || email.toString().isBlank()) {

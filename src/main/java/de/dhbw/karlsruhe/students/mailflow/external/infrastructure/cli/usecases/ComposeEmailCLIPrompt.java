@@ -1,6 +1,8 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases;
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.EmailSendUseCase;
+import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.UCCollectionSettings;
+import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.changesignature.LoadSettingsException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.InvalidRecipients;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
@@ -12,14 +14,20 @@ import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPr
 public final class ComposeEmailCLIPrompt extends BaseCLIPrompt {
 
   private final EmailSendUseCase emailSendUseCase;
+  private final UCCollectionSettings ucCollectionSettings;
 
-  public ComposeEmailCLIPrompt(BaseCLIPrompt previousPrompt, EmailSendUseCase emailSendUseCase) {
+  public ComposeEmailCLIPrompt(BaseCLIPrompt previousPrompt, EmailSendUseCase emailSendUseCase,
+      UCCollectionSettings ucCollectionSettings) {
     super(previousPrompt);
     this.emailSendUseCase = emailSendUseCase;
+    this.ucCollectionSettings = ucCollectionSettings;
   }
 
   @Override
   public void start() {
+    try{
+      super.start();
+
     super.start();
     askRecipients();
     if (!validRecipients()) {
@@ -27,6 +35,9 @@ public final class ComposeEmailCLIPrompt extends BaseCLIPrompt {
     }
     askTextContent();
     sendEmail();
+    } catch (LoadSettingsException e) {
+      printWarning("Could not load settings");
+    }
   }
 
   private void sendEmail() {
@@ -50,11 +61,12 @@ public final class ComposeEmailCLIPrompt extends BaseCLIPrompt {
     return true;
   }
 
-  private void askTextContent() {
+  private void askTextContent() throws LoadSettingsException {
     String subject = simplePrompt("What is the subject?");
     emailSendUseCase.setSubject(subject);
     printDefault("Please write your message now: (To finish, please write :q on a new line)");
     String message = readMultilineUserInput();
+    message = appendSignature(message);
     emailSendUseCase.setMessage(message);
   }
 
@@ -62,6 +74,11 @@ public final class ComposeEmailCLIPrompt extends BaseCLIPrompt {
     askRecipientTo();
     askRecipientCC();
     askRecipientBCC();
+  }
+
+  private String appendSignature(String message) throws LoadSettingsException {
+    String signature = ucCollectionSettings.changeSignatureService().getSignature();
+    return message + "\n\n" + signature;
   }
 
   private void askRecipientTo() {

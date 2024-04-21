@@ -2,6 +2,7 @@ package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.organize.MarkEmailUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.ProvideEmailsUseCase;
+import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.changesignature.LoadSettingsException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
@@ -29,16 +30,18 @@ public class ShowEmailsCLIPrompt extends BaseCLIPrompt {
 
   @Override
   public void start() {
-    super.start();
-    String mailboxString = provideEmailsUseCase.getMailboxName();
-    printDefault("This are your %s emails:".formatted(mailboxString));
-
+    String mailboxString = null;
     try {
+    super.start();
+      mailboxString = provideEmailsUseCase.getMailboxName();
+      printDefault("This are your %s emails:".formatted(mailboxString));
       List<Email> emailList = provideEmailsUseCase.provideEmails();
       BaseCLIPrompt action = showActionMenuPrompt(emailList);
       action.start();
     } catch (MailboxSavingException | MailboxLoadingException e) {
       printWarning("Could not read %s emails".formatted(mailboxString));
+    } catch (LoadSettingsException e) {
+      printWarning("Could not load settings");
     }
   }
 

@@ -2,6 +2,7 @@ package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.organize.MarkEmailUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.ProvideEmailsUseCase;
+import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.changesignature.LoadSettingsException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
@@ -29,14 +30,17 @@ public class MarkEmailsCLIPrompt extends BaseCLIPrompt {
   }
 
   @Override
-  public void start() {
-    super.start();
+  public void start(){
     try {
+    super.start();
+
       var filteredEmails = provideEmailsUseCase.provideEmails();
       BaseCLIPrompt baseCLIPrompt = showActionMenuPrompt(filteredEmails);
       baseCLIPrompt.start();
     } catch (MailboxSavingException | MailboxLoadingException e) {
       printWarning("Could not load emails");
+    } catch (LoadSettingsException e) {
+      printWarning("Could not load settings");
     }
   }
 
