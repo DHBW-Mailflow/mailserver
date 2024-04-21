@@ -12,7 +12,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class FileUserSettingsRepository implements UserSettingsRepository {
@@ -64,6 +63,7 @@ public class FileUserSettingsRepository implements UserSettingsRepository {
   public boolean updateUserSettings(UserSettings userSettings)
       throws LoadSettingsException, SaveSettingsException {
     readUserSettings(userSettings.address());
+    usersSettings.removeIf(settings -> settings.address().equals(userSettings.address()));
     usersSettings.add(userSettings);
     return save();
   }

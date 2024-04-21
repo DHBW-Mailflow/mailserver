@@ -1,10 +1,8 @@
 package de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.changesignature;
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthSessionUseCase;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.LoadingUsersException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserSettings;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserSettingsRepository;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.RemoveSettingsException;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.SaveSettingsException;
 
 public class ChangeSignatureService implements ChangeSignatureUseCase {
@@ -22,7 +20,11 @@ public class ChangeSignatureService implements ChangeSignatureUseCase {
   public void updateSignature(String newSignature)
       throws LoadSettingsException, SaveSettingsException {
 
-    UserSettings userSettings = new SignatureBuilder().withSignature(newSignature).withAddress(authSession.getSessionUserAddress()).build();
+    UserSettings userSettings =
+        new SignatureBuilder()
+            .withSignature(newSignature)
+            .withAddress(authSession.getSessionUserAddress())
+            .build();
     userSettingsRepository.updateUserSettings(userSettings);
   }
 
