@@ -25,7 +25,7 @@ public class SettingsCLIPrompt extends BaseCLIPrompt {
     Map<String, BaseCLIPrompt> promptMap = new LinkedHashMap<>();
     promptMap.put(
         "Change signature",
-        new ChangeSignatureCLIPrompt(this, collectionSettings.changeSignatureUseCase()));
+        new ChangeSignatureCLIPrompt(this, collectionSettings.changeSignatureService()));
     return readUserInputWithOptions(promptMap);
   }
 }

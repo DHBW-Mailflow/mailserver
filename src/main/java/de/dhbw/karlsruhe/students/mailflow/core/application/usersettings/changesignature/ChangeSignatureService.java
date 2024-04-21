@@ -19,7 +19,8 @@ public class ChangeSignatureService implements ChangeSignatureUseCase {
   @Override
   public void updateSignature(String newSignature) throws FileNotFoundException {
 
-    UserSettings userSettings = new UserSettings(newSignature);
+    String signature = new SignatureBuilder().signature(newSignature).build();
+    UserSettings userSettings = new UserSettings(signature);
     userSettingsRepository.updateUserSettings(authSession.getSessionUserAddress(), userSettings);
   }
 
