@@ -60,12 +60,12 @@ public class FileUserSettingsRepository implements UserSettingsRepository {
   }
 
   @Override
-  public boolean updateUserSettings(UserSettings userSettings)
+  public void updateUserSettings(UserSettings userSettings)
       throws LoadSettingsException, SaveSettingsException {
     readUserSettings(userSettings.address());
     usersSettings.removeIf(settings -> settings.address().equals(userSettings.address()));
     usersSettings.add(userSettings);
-    return save();
+    save();
   }
 
   private boolean save() throws SaveSettingsException {

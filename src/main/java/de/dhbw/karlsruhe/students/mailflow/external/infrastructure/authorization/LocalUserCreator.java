@@ -6,7 +6,6 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.HashingFailedExcepti
 import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.UserCreator;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.User;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserSettings;
 
 /**
  * @author seiferla
