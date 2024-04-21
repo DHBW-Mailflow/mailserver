@@ -27,6 +27,7 @@ public class SettingsCLIPrompt extends BaseCLIPrompt {
     promptMap.put(
         "Change signature",
         new ChangeSignatureCLIPrompt(this, collectionSettings.changeSignatureService()));
+    promptMap.put("Reset signature", new ResetSignatureCLIPrompt(this, collectionSettings.changeSignatureService()));
     return readUserInputWithOptions(promptMap);
   }
 }
