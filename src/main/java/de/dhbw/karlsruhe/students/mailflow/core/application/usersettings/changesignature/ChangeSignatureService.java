@@ -5,6 +5,9 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserSettings;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserSettingsRepository;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.SaveSettingsException;
 
+/**
+ * @author seiferla
+ */
 public class ChangeSignatureService implements ChangeSignatureUseCase {
 
   private final UserSettingsRepository userSettingsRepository;

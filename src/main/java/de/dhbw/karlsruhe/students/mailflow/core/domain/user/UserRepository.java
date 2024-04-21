@@ -7,5 +7,6 @@ import java.util.Optional;
 
 public interface UserRepository {
   Optional<User> findByEmail(Address email) throws LoadingUsersException;
+
   boolean save(User user) throws SaveUserException, LoadingUsersException;
 }

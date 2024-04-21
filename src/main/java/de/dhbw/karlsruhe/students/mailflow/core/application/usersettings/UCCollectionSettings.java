@@ -4,6 +4,9 @@ import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthSessionUseC
 import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.changesignature.ChangeSignatureService;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserSettingsRepository;
 
+/**
+ * @author seiferla
+ */
 public record UCCollectionSettings(ChangeSignatureService changeSignatureService) {
 
   public static UCCollectionSettings init(

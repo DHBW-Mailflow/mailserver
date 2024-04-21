@@ -14,6 +14,9 @@ import java.lang.reflect.Type;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * @author seiferla
+ */
 public class FileUserSettingsRepository implements UserSettingsRepository {
 
   private static final File USERS_SETTINGS_FILE = new File("settings.json");
@@ -27,7 +30,8 @@ public class FileUserSettingsRepository implements UserSettingsRepository {
     this.usersSettings = new HashSet<>();
   }
 
-  private void readUserSettings(Address address) throws LoadSettingsException, SaveSettingsException {
+  private void readUserSettings(Address address)
+      throws LoadSettingsException, SaveSettingsException {
     usersSettings.clear();
     createFileIfNotExists(address);
     try (FileReader reader = new FileReader(USERS_SETTINGS_FILE)) {
@@ -42,7 +46,8 @@ public class FileUserSettingsRepository implements UserSettingsRepository {
     }
   }
 
-  private void createFileIfNotExists(Address address) throws LoadSettingsException, SaveSettingsException {
+  private void createFileIfNotExists(Address address)
+      throws LoadSettingsException, SaveSettingsException {
     if (USERS_SETTINGS_FILE.exists()) {
       return;
     }
@@ -63,15 +68,15 @@ public class FileUserSettingsRepository implements UserSettingsRepository {
   public void updateUserSettings(UserSettings userSettings)
       throws LoadSettingsException, SaveSettingsException {
     readUserSettings(userSettings.address());
-    usersSettings.removeIf(settings -> settings.address().equals(userSettings.address()));
+    usersSettings.removeIf(settings -> settings.address()
+        .equals(userSettings.address()));
     usersSettings.add(userSettings);
     save();
   }
 
-  private boolean save() throws SaveSettingsException {
+  private void save() throws SaveSettingsException {
     try (FileWriter writer = new FileWriter(USERS_SETTINGS_FILE)) {
       gson.toJson(this.usersSettings, writer);
-      return true;
     } catch (IOException e) {
       throw new SaveSettingsException("Could not save user settings", e);
     }

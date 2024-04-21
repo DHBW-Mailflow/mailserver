@@ -6,7 +6,8 @@ import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization
 
 public interface UserSettingsRepository {
 
-  void updateUserSettings(UserSettings userSettings) throws LoadSettingsException, SaveSettingsException;
+  void updateUserSettings(UserSettings userSettings)
+      throws LoadSettingsException, SaveSettingsException;
 
   void removeUserSettings(Address address) throws LoadSettingsException, SaveSettingsException;
 
