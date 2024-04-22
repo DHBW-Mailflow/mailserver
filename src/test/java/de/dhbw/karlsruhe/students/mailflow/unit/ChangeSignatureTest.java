@@ -21,9 +21,6 @@ class ChangeSignatureTest {
         public void updateUserSettings(UserSettings userSettings) {}
 
         @Override
-        public void removeUserSettings(Address address) {}
-
-        @Override
         public UserSettings getSettings(Address address) {
           Address testAddress = new Address("test", "example.com");
           return new UserSettings(testAddress, "Test Signature");
@@ -34,12 +31,12 @@ class ChangeSignatureTest {
       new AuthSessionUseCase() {
         @Override
         public boolean isLoggedIn() {
-          return false;
+          return true;
         }
 
         @Override
         public Address getSessionUserAddress() throws IllegalStateException {
-          return null;
+          return new Address("test", "example.com");
         }
 
         @Override

@@ -1,6 +1,7 @@
 package de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.changesignature;
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthSessionUseCase;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserSettings;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserSettingsRepository;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.SaveSettingsException;
@@ -22,7 +23,6 @@ public class ChangeSignatureService implements ChangeSignatureUseCase {
   @Override
   public void updateSignature(String newSignature)
       throws LoadSettingsException, SaveSettingsException {
-
     UserSettings userSettings =
         new SettingsBuilder()
             .withSignature(newSignature)
@@ -31,17 +31,26 @@ public class ChangeSignatureService implements ChangeSignatureUseCase {
     userSettingsRepository.updateUserSettings(userSettings);
   }
 
+  private void checkIfLoggedIn() throws LoadSettingsException {
+    Address sessionUserAddress = authSession.getSessionUserAddress();
+    if (sessionUserAddress == null) {
+      throw new LoadSettingsException("User is not logged in");
+    }
+  }
+
   @Override
   public void resetSignature() throws LoadSettingsException, SaveSettingsException {
-    UserSettings currentUserSettings = userSettingsRepository.getSettings(authSession.getSessionUserAddress());
-    UserSettings updatedUserSettings = new SettingsBuilder(currentUserSettings)
-        .withSignature("")
-            .build();
+    checkIfLoggedIn();
+    UserSettings currentUserSettings =
+        userSettingsRepository.getSettings(authSession.getSessionUserAddress());
+    UserSettings updatedUserSettings =
+        new SettingsBuilder(currentUserSettings).withSignature("").build();
     userSettingsRepository.updateUserSettings(updatedUserSettings);
   }
 
   @Override
   public String getSignature() throws LoadSettingsException, SaveSettingsException {
+    checkIfLoggedIn();
     return userSettingsRepository.getSettings(authSession.getSessionUserAddress()).signature();
   }
 }
