@@ -22,33 +22,34 @@ import org.junit.jupiter.api.Test;
 class ProvideUnreadEmailsTest {
   private final Address address = new Address("test", "test");
 
-  private final AuthSessionUseCase mockedAuth = new AuthSessionUseCase() {
-    @Override
-    public boolean isLoggedIn() {
-      return true;
-    }
+  private final AuthSessionUseCase mockedAuth =
+      new AuthSessionUseCase() {
+        @Override
+        public boolean isLoggedIn() {
+          return true;
+        }
 
-    @Override
-    public Address getSessionUserAddress() throws IllegalStateException {
-      return address;
-    }
+        @Override
+        public Address getSessionUserAddress() throws IllegalStateException {
+          return address;
+        }
 
-    @Override
-    public void ensureLoggedIn() {
-      // skip
-    }
+        @Override
+        public void ensureLoggedIn() {
+          // skip
+        }
 
-    @Override
-    public void removeSessionUser() {
-      // skip
-    }
+        @Override
+        public void removeSessionUser() {
+          // skip
+        }
 
-    @Override
-    public void setSessionUser(User user) {
-      // skip
+        @Override
+        public void setSessionUser(User user) {
+          // skip
 
-    }
-  };
+        }
+      };
 
   @Test
   void provideUnreadEmailsTest() throws MailboxSavingException, MailboxLoadingException {
@@ -60,22 +61,23 @@ class ProvideUnreadEmailsTest {
 
     Map<Email, Set<Label>> mailboxMap = Map.of(email, Set.of(Label.UNREAD));
     Mailbox mailbox = Mailbox.create(address, mailboxMap, mailboxType);
-    MailboxRepository mailboxRepository = new MailboxRepository() {
-      @Override
-      public Mailbox findByAddressAndType(Address address, MailboxType type) {
-        return mailbox;
-      }
+    MailboxRepository mailboxRepository =
+        new MailboxRepository() {
+          @Override
+          public Mailbox findByAddressAndType(Address address, MailboxType type) {
+            return mailbox;
+          }
 
-      @Override
-      public void save(Mailbox mailbox) {
-        // not tested
-      }
+          @Override
+          public void save(Mailbox mailbox) {
+            // not tested
+          }
 
-      @Override
-      public List<Mailbox> findAll() throws MailboxLoadingException, MailboxSavingException {
-        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
-      }
-    };
+          @Override
+          public List<Mailbox> findAll() throws MailboxLoadingException, MailboxSavingException {
+            throw new UnsupportedOperationException("Unimplemented method 'findAll'");
+          }
+        };
 
     ProvideEmailsUseCase provideEmailsService =
         new ProvideInboxUnreadEmailsService(mockedAuth, mailboxRepository);

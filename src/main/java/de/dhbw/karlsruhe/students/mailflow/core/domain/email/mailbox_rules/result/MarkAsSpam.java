@@ -18,8 +18,8 @@ public class MarkAsSpam implements MailboxRuleResult {
   public void execute(MailboxRepository mailbox, Address recipient, Email email)
       throws MailboxLoadingException, MailboxSavingException {
     // TODO: Use central logger?
-    System.out.println(
-        email.getSubject().subject() + " was marked as spam. Reason: " + this.humanReadableReason);
+    System.out.printf("%s was marked as spam. Reason: %s%n",
+        email.getSubject().subject(), this.humanReadableReason);
 
     new DeliverIntoFolder().setFolder(MailboxType.SPAM).execute(mailbox, recipient, email);
   }

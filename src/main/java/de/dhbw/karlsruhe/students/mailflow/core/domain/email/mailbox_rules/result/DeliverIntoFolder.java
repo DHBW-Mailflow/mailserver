@@ -14,7 +14,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Addre
 public class DeliverIntoFolder implements MailboxRuleResult {
 
   private MailboxType folder;
-  private boolean isUnread = true;
+  private boolean isRead = false;
 
   public DeliverIntoFolder setFolder(MailboxType folder) {
     this.folder = folder;
@@ -22,8 +22,8 @@ public class DeliverIntoFolder implements MailboxRuleResult {
     return this;
   }
 
-  public DeliverIntoFolder setIsUnread(boolean isUnread) {
-    this.isUnread = isUnread;
+  public DeliverIntoFolder setIsRead(boolean isUnread) {
+    this.isRead = isUnread;
 
     return this;
   }
@@ -32,7 +32,7 @@ public class DeliverIntoFolder implements MailboxRuleResult {
   public void execute(MailboxRepository mailboxRepository, Address recipient, Email email)
       throws MailboxLoadingException, MailboxSavingException {
     Mailbox mailbox = mailboxRepository.findByAddressAndType(recipient, folder);
-    mailbox.deliverEmail(email, this.isUnread);
+    mailbox.deliverEmail(email, !this.isRead);
 
     mailboxRepository.save(mailbox);
   }

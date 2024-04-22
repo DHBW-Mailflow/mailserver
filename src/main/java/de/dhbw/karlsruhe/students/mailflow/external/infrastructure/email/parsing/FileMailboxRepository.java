@@ -63,8 +63,9 @@ public class FileMailboxRepository implements MailboxRepository {
     try (FileWriter writer = new FileWriter(createdMailboxFile)) {
       writer.write(mailboxContent); // override existing content
     } catch (IOException e) {
-      throw new MailboxSavingException("Could not save mailbox content to file: " + mailboxContent,
-          e);
+      // @formatter:off
+      throw new MailboxSavingException("Could not save mailbox content to file: " + mailboxContent, e);
+      // @formatter:on
     }
   }
 

@@ -66,9 +66,14 @@ public class EmailSendService implements EmailSendUseCase {
   public void sendPreparedEmail()
       throws MailboxLoadingException, MailboxSavingException, InvalidRecipients {
     validateRecipients();
-    Email email = new EmailBuilder().withSender(authSession.getSessionUserAddress())
-        .withSubject(subject).withRecipientsTo(toAddresses).withRecipientsBCC(bccAddresses)
-        .withRecipientsCC(ccAddresses).withContent(message).build();
+    Email email = new EmailBuilder()
+        .withSender(authSession.getSessionUserAddress())
+        .withSubject(subject)
+        .withRecipientsTo(toAddresses)
+        .withRecipientsBCC(bccAddresses)
+        .withRecipientsCC(ccAddresses)
+        .withContent(message)
+        .build();
 
     saveToSenderMailbox(email);
 
