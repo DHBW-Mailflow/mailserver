@@ -6,6 +6,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.PasswordChecker;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.User;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserRepository;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.SaveUserException;
 import java.util.Optional;
 
 /**
@@ -27,7 +28,7 @@ public class LoginService implements LoginUseCase {
 
   @Override
   public void login(Address email, String password)
-      throws AuthorizationException, LoadingUsersException {
+      throws AuthorizationException, LoadingUsersException, SaveUserException {
     try {
       authorizeUser(email, password);
     } catch (IllegalArgumentException e) {
@@ -36,7 +37,7 @@ public class LoginService implements LoginUseCase {
   }
 
   private void authorizeUser(Address address, String password)
-      throws LoadingUsersException, AuthorizationException {
+      throws LoadingUsersException, AuthorizationException, SaveUserException {
     Optional<User> foundUser = userRepository.findByEmail(address);
 
     if (foundUser.isEmpty()) {

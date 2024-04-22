@@ -1,15 +1,12 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.changesignature.LoadSettingsException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserSettings;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserSettingsRepository;
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.HashSet;
@@ -26,42 +23,42 @@ public class FileUserSettingsRepository implements UserSettingsRepository {
 
   private final Set<UserSettings> usersSettings;
 
+  private final FileHelper fileHelper;
+  private String defaultFileContent;
+  private final Type setType = new TypeToken<HashSet<UserSettings>>() {}.getType();
+
   public FileUserSettingsRepository() {
     this.gson = new Gson();
     this.usersSettings = new HashSet<>();
+    fileHelper = new FileHelper();
+  }
+
+  private void initFile(Address address) throws IOException {
+    if (USERS_SETTINGS_FILE.exists()) {
+      return;
+    }
+    Set<UserSettings> userSettings = Set.of(new UserSettings(address, ""));
+    defaultFileContent = gson.toJson(userSettings);
+    fileHelper.saveToFile(USERS_SETTINGS_FILE, defaultFileContent);
   }
 
   private void readUserSettings(Address address)
       throws LoadSettingsException, SaveSettingsException {
     usersSettings.clear();
-    createFileIfNotExists(address);
-    try (FileReader reader = new FileReader(USERS_SETTINGS_FILE)) {
-      Type setType = new TypeToken<HashSet<UserSettings>>() {}.getType();
-      HashSet<UserSettings> parsedUsers = gson.fromJson(reader, setType);
+    try {
+      initFile(address);
+    } catch (IOException e) {
+      throw new SaveSettingsException("Could not initialize File", e);
+    }
+    try {
+      String content = fileHelper.readFileContent(USERS_SETTINGS_FILE, defaultFileContent);
+      HashSet<UserSettings> parsedUsers = gson.fromJson(content, setType);
       if (parsedUsers == null) {
         return;
       }
       usersSettings.addAll(parsedUsers);
     } catch (IOException e) {
-      throw new LoadSettingsException("Could not load user settings");
-    } catch (JsonSyntaxException e) {
       throw new LoadSettingsException("Could not parse user settings");
-    }
-  }
-
-  private void createFileIfNotExists(Address address)
-      throws LoadSettingsException, SaveSettingsException {
-    if (USERS_SETTINGS_FILE.exists()) {
-      return;
-    }
-    try (FileWriter writer = new FileWriter(USERS_SETTINGS_FILE)) {
-      if (!USERS_SETTINGS_FILE.createNewFile()) {
-        throw new LoadSettingsException("Could not find usersettings file");
-      }
-      Set<UserSettings> userSettings = Set.of(new UserSettings(address, ""));
-      gson.toJson(userSettings, writer);
-    } catch (IOException | SecurityException e) {
-      throw new SaveSettingsException("Could not create usersettings file", e);
     }
   }
 
@@ -75,8 +72,8 @@ public class FileUserSettingsRepository implements UserSettingsRepository {
   }
 
   private void save() throws SaveSettingsException {
-    try (FileWriter writer = new FileWriter(USERS_SETTINGS_FILE)) {
-      gson.toJson(this.usersSettings, writer);
+    try {
+      fileHelper.saveToFile(USERS_SETTINGS_FILE, gson.toJson(this.usersSettings));
     } catch (IOException e) {
       throw new SaveSettingsException("Could not save user settings", e);
     }
