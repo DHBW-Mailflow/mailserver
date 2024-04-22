@@ -23,12 +23,12 @@ public class ChangeSignatureService implements ChangeSignatureUseCase {
   @Override
   public void updateSignature(String newSignature)
       throws LoadSettingsException, SaveSettingsException {
-    UserSettings userSettings =
-        new SettingsBuilder()
-            .withSignature(newSignature)
-            .withAddress(authSession.getSessionUserAddress())
-            .build();
-    userSettingsRepository.updateUserSettings(userSettings);
+    checkIfLoggedIn();
+    UserSettings currentUserSettings =
+        userSettingsRepository.getSettings(authSession.getSessionUserAddress());
+    UserSettings updatedUserSettings =
+        new SettingsBuilder(currentUserSettings).withSignature(newSignature).build();
+    userSettingsRepository.updateUserSettings(updatedUserSettings);
   }
 
   private void checkIfLoggedIn() throws LoadSettingsException {
@@ -40,12 +40,7 @@ public class ChangeSignatureService implements ChangeSignatureUseCase {
 
   @Override
   public void resetSignature() throws LoadSettingsException, SaveSettingsException {
-    checkIfLoggedIn();
-    UserSettings currentUserSettings =
-        userSettingsRepository.getSettings(authSession.getSessionUserAddress());
-    UserSettings updatedUserSettings =
-        new SettingsBuilder(currentUserSettings).withSignature("").build();
-    userSettingsRepository.updateUserSettings(updatedUserSettings);
+    updateSignature("");
   }
 
   @Override
