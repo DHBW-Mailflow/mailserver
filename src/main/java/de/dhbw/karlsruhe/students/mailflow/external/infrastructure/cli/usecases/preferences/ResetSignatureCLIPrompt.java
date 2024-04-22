@@ -2,7 +2,7 @@ package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.changesignature.ChangeSignatureUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.changesignature.LoadSettingsException;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.SaveSettingsException;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.preferences.SaveSettingsException;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
 
 /**

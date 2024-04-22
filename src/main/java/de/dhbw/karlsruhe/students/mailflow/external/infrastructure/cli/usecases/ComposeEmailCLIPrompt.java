@@ -6,7 +6,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.changes
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.InvalidRecipients;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.SaveSettingsException;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.preferences.SaveSettingsException;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
 
 /**

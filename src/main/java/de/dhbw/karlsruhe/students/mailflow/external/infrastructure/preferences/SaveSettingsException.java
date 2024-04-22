@@ -1,4 +1,4 @@
-package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization;
+package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.preferences;
 
 /**
  * @author seiferla

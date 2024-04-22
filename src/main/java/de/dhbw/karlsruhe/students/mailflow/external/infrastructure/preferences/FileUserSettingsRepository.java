@@ -1,4 +1,4 @@
-package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization;
+package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.preferences;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
