@@ -31,7 +31,7 @@ class ChangeSignatureTest {
       new AuthSessionUseCase() {
         @Override
         public boolean isLoggedIn() {
-          return true;
+          return false;
         }
 
         @Override
