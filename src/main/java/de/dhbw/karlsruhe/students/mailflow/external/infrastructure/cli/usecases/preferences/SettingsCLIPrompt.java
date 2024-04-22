@@ -2,7 +2,6 @@ package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.UCCollectionSettings;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.MainCLIPrompt;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -34,6 +33,9 @@ public class SettingsCLIPrompt extends BaseCLIPrompt {
     promptMap.put(
         "Reset signature",
         new ResetSignatureCLIPrompt(this, collectionSettings.changeSignatureService()));
+    promptMap.put(
+        "Print signature",
+        new PrintSignatureCLIPrompt(this, collectionSettings.changeSignatureService()));
     return readUserInputWithOptions(promptMap);
   }
 }
