@@ -9,7 +9,5 @@ public interface UserSettingsRepository {
   void updateUserSettings(UserSettings userSettings)
       throws LoadSettingsException, SaveSettingsException;
 
-  void removeUserSettings(Address address) throws LoadSettingsException, SaveSettingsException;
-
   UserSettings getSettings(Address address) throws LoadSettingsException, SaveSettingsException;
 }

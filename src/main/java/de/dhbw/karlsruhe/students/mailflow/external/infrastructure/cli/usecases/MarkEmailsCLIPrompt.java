@@ -29,10 +29,10 @@ public class MarkEmailsCLIPrompt extends BaseCLIPrompt {
   }
 
   @Override
-  public void start(){
-    try {
-    super.start();
+  public void start() {
 
+    super.start();
+    try {
       var filteredEmails = provideEmailsUseCase.provideEmails();
       BaseCLIPrompt baseCLIPrompt = showActionMenuPrompt(filteredEmails);
       baseCLIPrompt.start();

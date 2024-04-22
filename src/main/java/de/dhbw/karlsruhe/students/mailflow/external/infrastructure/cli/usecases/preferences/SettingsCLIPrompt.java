@@ -13,8 +13,8 @@ public class SettingsCLIPrompt extends BaseCLIPrompt {
 
   private final UCCollectionSettings collectionSettings;
 
-  public SettingsCLIPrompt(MainCLIPrompt mainCLIPrompt, UCCollectionSettings collectionSettings) {
-    super(mainCLIPrompt);
+  public SettingsCLIPrompt(BaseCLIPrompt previousPrompt, UCCollectionSettings collectionSettings) {
+    super(previousPrompt);
     this.collectionSettings = collectionSettings;
   }
 

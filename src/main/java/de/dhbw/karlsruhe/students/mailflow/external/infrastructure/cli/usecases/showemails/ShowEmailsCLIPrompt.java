@@ -29,11 +29,10 @@ public class ShowEmailsCLIPrompt extends BaseCLIPrompt {
 
   @Override
   public void start() {
-    String mailboxString = null;
-    try {
     super.start();
-      mailboxString = provideEmailsUseCase.getMailboxName();
-      printDefault("This are your %s emails:".formatted(mailboxString));
+    String mailboxString = provideEmailsUseCase.getMailboxName();
+    printDefault("This are your %s emails:".formatted(mailboxString));
+    try {
       List<Email> emailList = provideEmailsUseCase.provideEmails();
       BaseCLIPrompt action = showActionMenuPrompt(emailList);
       action.start();

@@ -1,6 +1,7 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.changesignature.LoadSettingsException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
@@ -43,6 +44,8 @@ public class FileUserSettingsRepository implements UserSettingsRepository {
       usersSettings.addAll(parsedUsers);
     } catch (IOException e) {
       throw new LoadSettingsException("Could not load user settings");
+    } catch (JsonSyntaxException e) {
+      throw new LoadSettingsException("Could not parse user settings");
     }
   }
 
@@ -51,14 +54,12 @@ public class FileUserSettingsRepository implements UserSettingsRepository {
     if (USERS_SETTINGS_FILE.exists()) {
       return;
     }
-    try {
+    try (FileWriter writer = new FileWriter(USERS_SETTINGS_FILE)) {
       if (!USERS_SETTINGS_FILE.createNewFile()) {
         throw new LoadSettingsException("Could not find usersettings file");
       }
       Set<UserSettings> userSettings = Set.of(new UserSettings(address, ""));
-      try (FileWriter writer = new FileWriter(USERS_SETTINGS_FILE)) {
-        gson.toJson(userSettings, writer);
-      }
+      gson.toJson(userSettings, writer);
     } catch (IOException | SecurityException e) {
       throw new SaveSettingsException("Could not create usersettings file", e);
     }
@@ -68,8 +69,7 @@ public class FileUserSettingsRepository implements UserSettingsRepository {
   public void updateUserSettings(UserSettings userSettings)
       throws LoadSettingsException, SaveSettingsException {
     readUserSettings(userSettings.address());
-    usersSettings.removeIf(settings -> settings.address()
-        .equals(userSettings.address()));
+    usersSettings.removeIf(settings -> settings.address().equals(userSettings.address()));
     usersSettings.add(userSettings);
     save();
   }
@@ -80,12 +80,6 @@ public class FileUserSettingsRepository implements UserSettingsRepository {
     } catch (IOException e) {
       throw new SaveSettingsException("Could not save user settings", e);
     }
-  }
-
-  @Override
-  public void removeUserSettings(Address address)
-      throws LoadSettingsException, SaveSettingsException {
-    updateUserSettings(new UserSettings(address, ""));
   }
 
   @Override

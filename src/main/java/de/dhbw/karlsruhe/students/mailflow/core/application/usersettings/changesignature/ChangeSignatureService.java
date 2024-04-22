@@ -24,7 +24,7 @@ public class ChangeSignatureService implements ChangeSignatureUseCase {
       throws LoadSettingsException, SaveSettingsException {
 
     UserSettings userSettings =
-        new SignatureBuilder()
+        new SettingsBuilder()
             .withSignature(newSignature)
             .withAddress(authSession.getSessionUserAddress())
             .build();
@@ -34,10 +34,9 @@ public class ChangeSignatureService implements ChangeSignatureUseCase {
   @Override
   public void resetSignature() throws LoadSettingsException, SaveSettingsException {
     UserSettings currentUserSettings = userSettingsRepository.getSettings(authSession.getSessionUserAddress());
-    UserSettings updatedUserSettings = new SignatureBuilder()
+    UserSettings updatedUserSettings = new SettingsBuilder(currentUserSettings)
         .withSignature("")
-        .withAddress(currentUserSettings.address())
-        .build();
+            .build();
     userSettingsRepository.updateUserSettings(updatedUserSettings);
   }
 

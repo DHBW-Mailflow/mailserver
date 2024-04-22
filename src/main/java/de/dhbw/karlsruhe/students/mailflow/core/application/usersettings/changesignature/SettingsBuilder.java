@@ -6,18 +6,25 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserSettings;
 /**
  * @author seiferla
  */
-public class SignatureBuilder {
+public class SettingsBuilder {
 
   private String signature;
 
   private Address address;
 
-  public SignatureBuilder withAddress(Address address) {
+  public SettingsBuilder(UserSettings currentUserSettings) {
+    this.address = currentUserSettings.address();
+    this.signature = currentUserSettings.signature();
+  }
+
+  public SettingsBuilder() {}
+
+  public SettingsBuilder withAddress(Address address) {
     this.address = address;
     return this;
   }
 
-  public SignatureBuilder withSignature(String signature) {
+  public SettingsBuilder withSignature(String signature) {
     this.signature = signature;
     return this;
   }

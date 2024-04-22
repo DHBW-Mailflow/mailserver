@@ -19,12 +19,12 @@ public final class LoginCLIPrompt extends BaseCLIPrompt {
 
   @Override
   public void start() {
+    super.start();
+
+    String loginEmailInput = simplePrompt("What is your email?");
+    String loginPasswordInput = simplePrompt("What is your password?");
+
     try {
-      super.start();
-
-      String loginEmailInput = simplePrompt("What is your email?");
-      String loginPasswordInput = simplePrompt("What is your password?");
-
       loginUseCase.login(Address.from(loginEmailInput), loginPasswordInput);
     } catch (AuthorizationException | LoadingUsersException | IllegalArgumentException e) {
       printWarning(e.getMessage());

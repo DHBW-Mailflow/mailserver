@@ -18,13 +18,11 @@ public final class RegisterCLIPrompt extends BaseCLIPrompt {
 
   @Override
   public void start() {
+    super.start();
 
+    String email = simplePrompt("What's your new email?");
+    String password = simplePrompt("What's your new password?");
     try {
-      super.start();
-
-      String email = simplePrompt("What's your new email?");
-      String password = simplePrompt("What's your new password?");
-
       registerUseCase.register(email, password);
     } catch (AuthorizationException | LoadingUsersException e) {
       printWarning(e.getMessage());

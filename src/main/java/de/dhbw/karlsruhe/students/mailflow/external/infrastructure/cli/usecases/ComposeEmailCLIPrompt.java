@@ -80,7 +80,7 @@ public final class ComposeEmailCLIPrompt extends BaseCLIPrompt {
   private String appendSignature(String message)
       throws LoadSettingsException, SaveSettingsException {
     String userSettings = ucCollectionSettings.changeSignatureService().getSignature();
-    return message + "\n\n" + userSettings;
+    return message + "\n" + userSettings;
   }
 
   private void askRecipientTo() {

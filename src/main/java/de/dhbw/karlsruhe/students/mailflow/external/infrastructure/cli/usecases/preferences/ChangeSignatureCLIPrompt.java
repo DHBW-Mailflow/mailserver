@@ -17,13 +17,18 @@ public class ChangeSignatureCLIPrompt extends BaseCLIPrompt {
 
   @Override
   public void start() {
-
+    super.start();
     try {
-      super.start();
+
       String currentSignature = changeSignatureUseCase.getSignature();
-      printDefault("Current signature:\n"+currentSignature);
-      printDefault("Enter new signature:  (To finish, please write :q on a new line)");
-      String newSignature = readMultilineUserInput();
+      printDefault("Current signature:\n" + currentSignature);
+
+    } catch (LoadSettingsException | SaveSettingsException e) {
+      printWarning("Failed to get signature");
+    }
+    printDefault("Enter new signature:  (To finish, please write :q on a new line)");
+    String newSignature = readMultilineUserInput();
+    try {
       changeSignatureUseCase.updateSignature(newSignature);
       printDefault("Signature updated successfully");
       getPreviousPrompt().start();
