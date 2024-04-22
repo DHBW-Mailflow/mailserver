@@ -9,6 +9,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Addre
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.User;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserRepository;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.SaveUserException;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.FileHelper;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
