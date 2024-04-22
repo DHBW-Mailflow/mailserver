@@ -6,7 +6,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.changes
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserSettings;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserSettingsRepository;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.FileHelper;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.utils.FileHelper;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
