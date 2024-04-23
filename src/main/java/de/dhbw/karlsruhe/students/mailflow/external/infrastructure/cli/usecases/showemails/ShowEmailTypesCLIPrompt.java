@@ -25,10 +25,11 @@ public class ShowEmailTypesCLIPrompt extends BaseCLIPrompt {
 
   @Override
   public void start() {
-    super.start();
-    printDefault("What type of emails do you want to see?");
-    BaseCLIPrompt action = showActionMenuPrompt();
-    action.start();
+      super.start();
+      printDefault("What type of emails do you want to see?");
+      BaseCLIPrompt action = showActionMenuPrompt();
+      action.start();
+
   }
 
   private BaseCLIPrompt showActionMenuPrompt() {

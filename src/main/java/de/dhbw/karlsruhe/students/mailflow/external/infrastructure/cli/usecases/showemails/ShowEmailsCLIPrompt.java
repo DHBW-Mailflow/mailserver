@@ -32,7 +32,6 @@ public class ShowEmailsCLIPrompt extends BaseCLIPrompt {
     super.start();
     String mailboxString = provideEmailsUseCase.getMailboxName();
     printDefault("This are your %s emails:".formatted(mailboxString));
-
     try {
       List<Email> emailList = provideEmailsUseCase.provideEmails();
       BaseCLIPrompt action = showActionMenuPrompt(emailList);

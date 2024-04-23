@@ -4,6 +4,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.application.auth.LoginUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.AuthorizationException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.LoadingUsersException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.SaveUserException;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
 
 /**
@@ -26,7 +27,10 @@ public final class LoginCLIPrompt extends BaseCLIPrompt {
 
     try {
       loginUseCase.login(Address.from(loginEmailInput), loginPasswordInput);
-    } catch (AuthorizationException | LoadingUsersException | IllegalArgumentException e) {
+    } catch (AuthorizationException
+        | SaveUserException
+        | LoadingUsersException
+        | IllegalArgumentException e) {
       printWarning(e.getMessage());
     }
   }
