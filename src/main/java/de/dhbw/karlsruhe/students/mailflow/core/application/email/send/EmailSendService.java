@@ -1,7 +1,7 @@
 package de.dhbw.karlsruhe.students.mailflow.core.application.email.send;
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthSessionUseCase;
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.deliver_services.DeliverInInboxService;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.deliver_services.DeliverInSentService;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.deliver_services.DeliverUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.rules.MailboxRule;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
@@ -100,7 +100,7 @@ public class EmailSendService implements EmailSendUseCase {
 
   private void saveToSenderMailbox(Email email)
       throws MailboxLoadingException, MailboxSavingException {
-    DeliverUseCase deliverUseCase = new DeliverInInboxService(mailboxRepository);
+    DeliverUseCase deliverUseCase = new DeliverInSentService(mailboxRepository);
     deliverUseCase.deliverEmailTo(email.getSender(), email);
   }
 

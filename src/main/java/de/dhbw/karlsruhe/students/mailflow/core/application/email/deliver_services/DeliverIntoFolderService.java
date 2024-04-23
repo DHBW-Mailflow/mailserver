@@ -15,17 +15,25 @@ public class DeliverIntoFolderService implements DeliverUseCase {
 
   private final MailboxType folder;
   private final MailboxRepository mailboxRepository;
+  private final boolean isRead;
 
   public DeliverIntoFolderService(MailboxType folder, MailboxRepository mailboxRepository) {
     this.folder = folder;
     this.mailboxRepository = mailboxRepository;
+    this.isRead = false;
+  }
+
+  public DeliverIntoFolderService(
+      MailboxType folder, MailboxRepository mailboxRepository, boolean isRead) {
+    this.folder = folder;
+    this.mailboxRepository = mailboxRepository;
+    this.isRead = isRead;
   }
 
   @Override
   public void deliverEmailTo(Address recipient, Email email)
       throws MailboxLoadingException, MailboxSavingException {
     Mailbox mailbox = mailboxRepository.findByAddressAndType(recipient, folder);
-    boolean isRead = false;
     mailbox.deliverEmail(email, !isRead);
     mailboxRepository.save(mailbox);
   }
