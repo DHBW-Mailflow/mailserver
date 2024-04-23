@@ -56,8 +56,12 @@ class ProvideUnreadEmailsTest {
 
     // Arrange
     MailboxType mailboxType = MailboxType.INBOX;
-    Email email = new EmailBuilder().withSubject("test").withSender(address)
-        .withContent("test message").build();
+    Email email =
+        new EmailBuilder()
+            .withSubject("test")
+            .withSender(address)
+            .withContent("test message")
+            .build();
 
     Map<Email, Set<Label>> mailboxMap = Map.of(email, Set.of(Label.UNREAD));
     Mailbox mailbox = Mailbox.create(address, mailboxMap, mailboxType);
