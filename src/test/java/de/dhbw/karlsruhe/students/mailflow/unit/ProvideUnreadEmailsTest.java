@@ -74,7 +74,7 @@ class ProvideUnreadEmailsTest {
           }
 
           @Override
-          public List<Mailbox> findAll() throws MailboxLoadingException, MailboxSavingException {
+          public List<Mailbox> findAllOtherInboxes(Address sender) {
             throw new UnsupportedOperationException("Unimplemented method 'findAll'");
           }
         };

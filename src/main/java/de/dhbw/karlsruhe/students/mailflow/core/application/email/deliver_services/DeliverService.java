@@ -1,20 +1,19 @@
-package de.dhbw.karlsruhe.students.mailflow.core.application.email.rules;
+package de.dhbw.karlsruhe.students.mailflow.core.application.email.deliver_services;
 
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 
-public interface MailboxRuleResult {
+public interface DeliverService {
   /**
    * applies the matching rule that should be applied according to the MailboxRule
    *
-   * @param mailbox
    * @param recipient
    * @param email
    * @throws MailboxLoadingException
    * @throws MailboxSavingException
    */
-  void execute(Address recipient, Email email)
+  void deliverEmailTo(Address recipient, Email email)
       throws MailboxLoadingException, MailboxSavingException;
 }

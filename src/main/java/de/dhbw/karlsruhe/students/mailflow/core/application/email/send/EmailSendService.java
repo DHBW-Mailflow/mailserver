@@ -1,14 +1,13 @@
-package de.dhbw.karlsruhe.students.mailflow.core.application.email;
+package de.dhbw.karlsruhe.students.mailflow.core.application.email.send;
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthSessionUseCase;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.deliver_services.DeliverInInboxService;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.deliver_services.DeliverService;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.rules.MailboxRule;
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.rules.MailboxRuleResult;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.EmailBuilder;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.InvalidRecipients;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.MailboxRepository;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
@@ -93,20 +92,16 @@ public class EmailSendService implements EmailSendUseCase {
   private void sendToRecipients(List<Address> recipients, Email email)
       throws MailboxLoadingException, MailboxSavingException {
     // put the email into the INBOX folder of the respective recipient
-    MailboxRuleResult ruleResult = spamDetector.runOnEmail(email);
+    DeliverService deliverService = spamDetector.runOnEmail(email);
     for (Address recipient : recipients) {
-      ruleResult.execute(recipient, email);
+      deliverService.deliverEmailTo(recipient, email);
     }
   }
 
   private void saveToSenderMailbox(Email email)
       throws MailboxLoadingException, MailboxSavingException {
-    // SENT Folder of the current session user
-    Mailbox mailbox = mailboxRepository.findByAddressAndType(email.getSender(), MailboxType.SENT);
-    // sent emails do not need to be read again by the sender
-    mailbox.deliverEmail(email, false);
-
-    mailboxRepository.save(mailbox);
+    DeliverService deliverService = new DeliverInInboxService(mailboxRepository);
+    deliverService.deliverEmailTo(email.getSender(), email);
   }
 
   @Override

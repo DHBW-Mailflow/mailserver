@@ -1,4 +1,4 @@
-package de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.changesignature;
+package de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions;
 
 /**
  * @author seiferla

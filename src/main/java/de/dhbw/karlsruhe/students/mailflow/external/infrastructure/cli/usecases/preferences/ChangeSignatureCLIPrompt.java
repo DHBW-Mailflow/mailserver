@@ -1,8 +1,8 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.preferences;
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.changesignature.ChangeSignatureUseCase;
-import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.changesignature.LoadSettingsException;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.preferences.SaveSettingsException;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.LoadSettingsException;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.SaveSettingsException;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
 
 public class ChangeSignatureCLIPrompt extends BaseCLIPrompt {

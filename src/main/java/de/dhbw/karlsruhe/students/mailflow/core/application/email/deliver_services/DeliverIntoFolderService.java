@@ -1,6 +1,5 @@
-package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.mailbox_rules.result;
+package de.dhbw.karlsruhe.students.mailflow.core.application.email.deliver_services;
 
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.rules.MailboxRuleResult;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.MailboxRepository;
@@ -12,18 +11,18 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Addre
 /**
  * @author jens1o
  */
-public class DeliverIntoFolder implements MailboxRuleResult {
+public class DeliverIntoFolderService implements DeliverService {
 
   private final MailboxType folder;
   private final MailboxRepository mailboxRepository;
 
-  public DeliverIntoFolder(MailboxType folder, MailboxRepository mailboxRepository) {
+  public DeliverIntoFolderService(MailboxType folder, MailboxRepository mailboxRepository) {
     this.folder = folder;
     this.mailboxRepository = mailboxRepository;
   }
 
   @Override
-  public void execute(Address recipient, Email email)
+  public void deliverEmailTo(Address recipient, Email email)
       throws MailboxLoadingException, MailboxSavingException {
     Mailbox mailbox = mailboxRepository.findByAddressAndType(recipient, folder);
     boolean isRead = false;

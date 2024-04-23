@@ -1,13 +1,13 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases;
 
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.EmailSendUseCase;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.send.EmailSendUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.UCCollectionSettings;
-import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.changesignature.LoadSettingsException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.InvalidRecipients;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.LoadSettingsException;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.SaveSettingsException;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.preferences.SaveSettingsException;
 
 /**
  * @author jens1o

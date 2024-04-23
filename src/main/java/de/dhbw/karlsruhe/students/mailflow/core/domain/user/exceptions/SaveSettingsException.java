@@ -1,4 +1,4 @@
-package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.preferences;
+package de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions;
 
 /**
  * @author seiferla

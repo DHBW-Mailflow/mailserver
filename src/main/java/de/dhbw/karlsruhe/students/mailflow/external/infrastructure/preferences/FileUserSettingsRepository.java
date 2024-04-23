@@ -2,10 +2,11 @@ package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.preferences;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.changesignature.LoadSettingsException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserSettings;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserSettingsRepository;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.LoadSettingsException;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.SaveSettingsException;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.utils.FileHelper;
 import java.io.File;
 import java.io.IOException;

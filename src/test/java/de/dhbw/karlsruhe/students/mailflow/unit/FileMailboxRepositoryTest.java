@@ -37,9 +37,6 @@ class FileMailboxRepositoryTest {
     // Arrange
     Address mailboxOwner = new Address("someOwner", "someDomain.de");
     Mailbox searchingMailbox = Mailbox.create(mailboxOwner, Map.of(), mailboxType);
-    File userDirectory = new File(allMailboxesDirectory, mailboxOwner.toString());
-    File mailboxFile = new File(userDirectory, mailboxType.getStoringName() + ".json");
-    mailboxFile.mkdirs();
 
     MailboxConverter mockedMailboxConverter = new MailboxConverter() {
       @Override

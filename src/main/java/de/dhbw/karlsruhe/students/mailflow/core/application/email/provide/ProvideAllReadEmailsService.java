@@ -3,11 +3,11 @@ package de.dhbw.karlsruhe.students.mailflow.core.application.email.provide;
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthSessionUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.MailboxRepository;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.Label;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.parsing.FileMailboxRepository;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +17,7 @@ import java.util.List;
 public class ProvideAllReadEmailsService extends AbstractProvideEmailsService {
 
   public ProvideAllReadEmailsService(
-      AuthSessionUseCase authSession, FileMailboxRepository mailboxRepository) {
+      AuthSessionUseCase authSession, MailboxRepository mailboxRepository) {
     super(authSession, mailboxRepository);
   }
 
