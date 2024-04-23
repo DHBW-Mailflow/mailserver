@@ -23,5 +23,6 @@ public interface MailboxRepository {
    */
   void save(Mailbox mailbox) throws MailboxSavingException;
 
-  List<Mailbox> findAll() throws MailboxLoadingException, MailboxSavingException;
+  List<Mailbox> findAllOtherInboxes(Address sender)
+      throws MailboxLoadingException, MailboxSavingException;
 }

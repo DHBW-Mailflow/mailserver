@@ -1,7 +1,8 @@
 package de.dhbw.karlsruhe.students.mailflow.core.application.email;
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthSessionUseCase;
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.spam.DetectSpamOnIncomingMailMailboxRule;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.rules.MailboxRule;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.rules.MailboxRuleResult;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.EmailBuilder;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.InvalidRecipients;
@@ -10,8 +11,6 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.MailboxRepository;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.mailbox_rules.MailboxRule;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.mailbox_rules.result.MailboxRuleResult;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Subject;
 import java.util.ArrayList;
@@ -25,20 +24,26 @@ import java.util.stream.Stream;
 public class EmailSendService implements EmailSendUseCase {
   private final AuthSessionUseCase authSession;
   private final MailboxRepository mailboxRepository;
+  private final MailboxRule spamDetector;
   private List<Address> bccAddresses;
   private List<Address> ccAddresses;
   private List<Address> toAddresses;
   private String message;
   private Subject subject;
 
-  public EmailSendService(AuthSessionUseCase authSession, MailboxRepository mailboxRepository) {
+  public EmailSendService(
+      AuthSessionUseCase authSession,
+      MailboxRepository mailboxRepository,
+      MailboxRule spamDetector) {
     this.authSession = authSession;
     this.mailboxRepository = mailboxRepository;
+    this.spamDetector = spamDetector;
   }
 
   private List<Address> collectRecipientAddresses(Email email) {
     return Stream.of(email.getRecipientTo(), email.getRecipientCC(), email.getRecipientBCC())
-        .flatMap(Collection::stream).toList();
+        .flatMap(Collection::stream)
+        .toList();
   }
 
   private List<Address> getAddressesFromPromptResponse(String promptResponse)
@@ -66,14 +71,15 @@ public class EmailSendService implements EmailSendUseCase {
   public void sendPreparedEmail()
       throws MailboxLoadingException, MailboxSavingException, InvalidRecipients {
     validateRecipients();
-    Email email = new EmailBuilder()
-        .withSender(authSession.getSessionUserAddress())
-        .withSubject(subject)
-        .withRecipientsTo(toAddresses)
-        .withRecipientsBCC(bccAddresses)
-        .withRecipientsCC(ccAddresses)
-        .withContent(message)
-        .build();
+    Email email =
+        new EmailBuilder()
+            .withSender(authSession.getSessionUserAddress())
+            .withSubject(subject)
+            .withRecipientsTo(toAddresses)
+            .withRecipientsBCC(bccAddresses)
+            .withRecipientsCC(ccAddresses)
+            .withContent(message)
+            .build();
 
     saveToSenderMailbox(email);
 
@@ -87,11 +93,9 @@ public class EmailSendService implements EmailSendUseCase {
   private void sendToRecipients(List<Address> recipients, Email email)
       throws MailboxLoadingException, MailboxSavingException {
     // put the email into the INBOX folder of the respective recipient
+    MailboxRuleResult ruleResult = spamDetector.runOnEmail(email);
     for (Address recipient : recipients) {
-      MailboxRule spamDetector = new DetectSpamOnIncomingMailMailboxRule();
-      MailboxRuleResult ruleResult = spamDetector.runOnEmail(mailboxRepository, email);
-
-      ruleResult.execute(mailboxRepository, recipient, email);
+      ruleResult.execute(recipient, email);
     }
   }
 

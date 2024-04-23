@@ -1,7 +1,6 @@
-package de.dhbw.karlsruhe.students.mailflow.core.domain.email.mailbox_rules.result;
+package de.dhbw.karlsruhe.students.mailflow.core.application.email.rules;
 
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.MailboxRepository;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
@@ -16,6 +15,6 @@ public interface MailboxRuleResult {
    * @throws MailboxLoadingException
    * @throws MailboxSavingException
    */
-  public void execute(MailboxRepository mailbox, Address recipient, Email email)
+  void execute(Address recipient, Email email)
       throws MailboxLoadingException, MailboxSavingException;
 }

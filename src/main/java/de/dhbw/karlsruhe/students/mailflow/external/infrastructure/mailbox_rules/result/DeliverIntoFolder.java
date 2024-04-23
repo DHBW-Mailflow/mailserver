@@ -1,5 +1,6 @@
-package de.dhbw.karlsruhe.students.mailflow.core.domain.email.mailbox_rules.result;
+package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.mailbox_rules.result;
 
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.rules.MailboxRuleResult;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.MailboxRepository;
@@ -13,28 +14,20 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Addre
  */
 public class DeliverIntoFolder implements MailboxRuleResult {
 
-  private MailboxType folder;
-  private boolean isRead = false;
+  private final MailboxType folder;
+  private final MailboxRepository mailboxRepository;
 
-  public DeliverIntoFolder setFolder(MailboxType folder) {
+  public DeliverIntoFolder(MailboxType folder, MailboxRepository mailboxRepository) {
     this.folder = folder;
-
-    return this;
-  }
-
-  public DeliverIntoFolder setIsRead(boolean isUnread) {
-    this.isRead = isUnread;
-
-    return this;
+    this.mailboxRepository = mailboxRepository;
   }
 
   @Override
-  public void execute(MailboxRepository mailboxRepository, Address recipient, Email email)
+  public void execute(Address recipient, Email email)
       throws MailboxLoadingException, MailboxSavingException {
     Mailbox mailbox = mailboxRepository.findByAddressAndType(recipient, folder);
-    mailbox.deliverEmail(email, !this.isRead);
-
+    boolean isRead = false;
+    mailbox.deliverEmail(email, !isRead);
     mailboxRepository.save(mailbox);
   }
-
 }

@@ -35,7 +35,8 @@ public class FileUserSettingsRepository implements UserSettingsRepository {
   }
 
   private void initFile(Address address) throws IOException {
-    if (USERS_SETTINGS_FILE.exists()) {
+
+    if (fileHelper.existsFile(USERS_SETTINGS_FILE)) {
       return;
     }
     Set<UserSettings> userSettings = Set.of(new UserSettings(address, ""));

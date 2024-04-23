@@ -6,8 +6,8 @@ import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.changes
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.InvalidRecipients;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.preferences.SaveSettingsException;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.preferences.SaveSettingsException;
 
 /**
  * @author jens1o
@@ -65,10 +65,10 @@ public final class ComposeEmailCLIPrompt extends BaseCLIPrompt {
     String message = readMultilineUserInput();
     try {
       message = appendSignature(message);
-      emailSendUseCase.setMessage(message);
     } catch (LoadSettingsException | SaveSettingsException e) {
       printWarning("Could not load signature, sending mail without signature.");
     }
+    emailSendUseCase.setMessage(message);
   }
 
   private void askRecipients() {

@@ -27,7 +27,7 @@ class FileMailboxRepositoryTest {
 
   @BeforeEach
   void setUp(@TempDir File tempDir) {
-    allMailboxesDirectory = tempDir;
+    allMailboxesDirectory = new File(tempDir, "mailboxes");
   }
 
   @ParameterizedTest(name = "should retrieve correct mailboxType {0}")

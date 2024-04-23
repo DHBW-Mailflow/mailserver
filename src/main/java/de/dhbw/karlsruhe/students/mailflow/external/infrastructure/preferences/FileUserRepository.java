@@ -51,7 +51,7 @@ public class FileUserRepository implements UserRepository {
   }
 
   private void initFile() throws IOException {
-    if (filePath.exists()) {
+    if (fileHelper.existsFile(filePath)) {
       return;
     }
     Set<User> defaultUsers = Set.of();
