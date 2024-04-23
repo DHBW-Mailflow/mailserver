@@ -10,6 +10,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.PasswordChecker;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.User;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserRepository;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.SaveUserException;
 import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -20,7 +21,8 @@ import org.junit.jupiter.api.Test;
 class LoginServiceTest {
 
   @Test
-  void shouldLoginSuccessfully() throws AuthorizationException, LoadingUsersException {
+  void shouldLoginSuccessfully()
+      throws AuthorizationException, LoadingUsersException, SaveUserException {
     // Arrange
     final User userToLogin = new User(new Address("test", "example.de"), "password", "salt");
     final UserRepository mockedUserRepository =

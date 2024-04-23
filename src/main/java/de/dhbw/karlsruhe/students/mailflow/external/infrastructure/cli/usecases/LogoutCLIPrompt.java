@@ -18,6 +18,7 @@ public final class LogoutCLIPrompt extends BaseCLIPrompt {
 
   @Override
   public void start() {
+
     super.start();
 
     Address userEmail = logoutUseCase.logout();

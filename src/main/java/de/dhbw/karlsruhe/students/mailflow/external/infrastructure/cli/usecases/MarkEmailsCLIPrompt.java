@@ -30,6 +30,7 @@ public class MarkEmailsCLIPrompt extends BaseCLIPrompt {
 
   @Override
   public void start() {
+
     super.start();
     try {
       var filteredEmails = provideEmailsUseCase.provideEmails();

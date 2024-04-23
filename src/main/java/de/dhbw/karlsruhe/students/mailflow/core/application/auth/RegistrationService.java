@@ -26,7 +26,7 @@ public class RegistrationService implements RegisterUseCase {
 
   @Override
   public boolean register(String email, String password)
-      throws AuthorizationException, LoadingUsersException {
+      throws AuthorizationException, LoadingUsersException, SaveUserException {
     Address address = Address.from(email);
     Optional<User> user = userRepository.findByEmail(address);
         if (user.isPresent()) {

@@ -3,6 +3,7 @@ package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.RegisterUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.AuthorizationException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.LoadingUsersException;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.SaveUserException;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
 
 /**
@@ -24,7 +25,7 @@ public final class RegisterCLIPrompt extends BaseCLIPrompt {
     String password = simplePrompt("What's your new password?");
     try {
       registerUseCase.register(email, password);
-    } catch (AuthorizationException | LoadingUsersException e) {
+    } catch (AuthorizationException | LoadingUsersException | SaveUserException e) {
       printWarning(e.getMessage());
     }
   }

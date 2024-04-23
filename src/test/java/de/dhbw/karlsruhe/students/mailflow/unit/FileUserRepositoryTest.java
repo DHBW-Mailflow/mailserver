@@ -7,7 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.LoadingUsersException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.User;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.FileUserRepository;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.SaveUserException;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.preferences.FileUserRepository;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -33,7 +34,7 @@ class FileUserRepositoryTest {
   }
 
   @Test
-  void nonExistentFileShouldBeCreated() throws LoadingUsersException {
+  void nonExistentFileShouldBeCreated() throws LoadingUsersException, SaveUserException {
     // Arrange
     // overwrite setUp method for this test
     File file = new File(registeredUsersFile.getParentFile(), "nonExistentFile.json");
@@ -103,7 +104,7 @@ class FileUserRepositoryTest {
   }
 
   @Test
-  void testFindByEmail() throws IOException, LoadingUsersException {
+  void testFindByEmail() throws IOException, LoadingUsersException, SaveUserException {
     // Arrange
     User user = new User(new Address("test2", "test.de"), "password", "salt");
     Files.writeString(
