@@ -9,10 +9,10 @@ public interface DeliverService {
   /**
    * applies the matching rule that should be applied according to the MailboxRule
    *
-   * @param recipient
-   * @param email
-   * @throws MailboxLoadingException
-   * @throws MailboxSavingException
+   * @param recipient the recipient of the email
+   * @param email the email to deliver
+   * @throws MailboxLoadingException when an error occurred during the load process
+   * @throws MailboxSavingException when an error occurred during the save process
    */
   void deliverEmailTo(Address recipient, Email email)
       throws MailboxLoadingException, MailboxSavingException;
