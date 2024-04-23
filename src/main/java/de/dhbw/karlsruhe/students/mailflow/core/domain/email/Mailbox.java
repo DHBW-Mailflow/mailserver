@@ -45,11 +45,20 @@ public final class Mailbox extends AggregateRoot<MailboxId> {
     this.emails.put(email, Set.of(isUnread ? Label.UNREAD : Label.READ));
   }
 
+  /**
+   * @param labels
+   * @return returns all emails that have at least one of the supplied labels
+   */
   public List<Email> getEmailsWithLabel(Label... labels) {
-    return emails.entrySet().stream()
-        .filter(entry -> entry.getValue().containsAll(Set.of(labels)))
-        .map(Map.Entry::getKey)
-        .toList();
+    return emails.entrySet().stream().filter(entry -> {
+      for (Label label : labels) {
+        if (entry.getValue().contains(label)) {
+          return true;
+        }
+      }
+
+      return false;
+    }).map(Map.Entry::getKey).toList();
   }
 
   @Override

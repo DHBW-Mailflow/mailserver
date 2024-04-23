@@ -1,12 +1,13 @@
-package de.dhbw.karlsruhe.students.mailflow.core.application.email;
+package de.dhbw.karlsruhe.students.mailflow.core.application.email.send;
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthSessionUseCase;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.deliver_services.DeliverInSentService;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.deliver_services.DeliverUseCase;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.rules.MailboxRule;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.EmailBuilder;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.InvalidRecipients;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.MailboxRepository;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
@@ -22,15 +23,20 @@ import java.util.stream.Stream;
 public class EmailSendService implements EmailSendUseCase {
   private final AuthSessionUseCase authSession;
   private final MailboxRepository mailboxRepository;
+  private final MailboxRule spamDetector;
   private List<Address> bccAddresses;
   private List<Address> ccAddresses;
   private List<Address> toAddresses;
   private String message;
   private Subject subject;
 
-  public EmailSendService(AuthSessionUseCase authSession, MailboxRepository mailboxRepository) {
+  public EmailSendService(
+      AuthSessionUseCase authSession,
+      MailboxRepository mailboxRepository,
+      MailboxRule spamDetector) {
     this.authSession = authSession;
     this.mailboxRepository = mailboxRepository;
+    this.spamDetector = spamDetector;
   }
 
   private List<Address> collectRecipientAddresses(Email email) {
@@ -86,22 +92,16 @@ public class EmailSendService implements EmailSendUseCase {
   private void sendToRecipients(List<Address> recipients, Email email)
       throws MailboxLoadingException, MailboxSavingException {
     // put the email into the INBOX folder of the respective recipient
+    DeliverUseCase deliverUseCase = spamDetector.runOnEmail(email);
     for (Address recipient : recipients) {
-      Mailbox recipientMailbox =
-          mailboxRepository.findByAddressAndType(recipient, MailboxType.INBOX);
-      recipientMailbox.deliverEmail(email, true);
-      mailboxRepository.save(recipientMailbox);
+      deliverUseCase.deliverEmailTo(recipient, email);
     }
   }
 
   private void saveToSenderMailbox(Email email)
       throws MailboxLoadingException, MailboxSavingException {
-    // SENT Folder of the current session user
-    Mailbox mailbox = mailboxRepository.findByAddressAndType(email.getSender(), MailboxType.SENT);
-    // sent emails do not need to be read again by the sender
-    mailbox.deliverEmail(email, false);
-
-    mailboxRepository.save(mailbox);
+    DeliverUseCase deliverUseCase = new DeliverInSentService(mailboxRepository);
+    deliverUseCase.deliverEmailTo(email.getSender(), email);
   }
 
   @Override

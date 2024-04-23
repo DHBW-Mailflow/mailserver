@@ -57,4 +57,8 @@ public class FileHelper {
   private void writeContentToFile(File filePath, String content) throws IOException {
     Files.writeString(filePath.toPath(), content);
   }
+
+  public boolean existsFile(File mailboxFile) throws IOException {
+    return mailboxFile.exists() && Files.readAllBytes(mailboxFile.toPath()).length != 0;
+  }
 }

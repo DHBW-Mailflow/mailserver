@@ -4,7 +4,8 @@ import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthSessionUseC
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserSettings;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserSettingsRepository;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.preferences.SaveSettingsException;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.LoadSettingsException;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.SaveSettingsException;
 
 /**
  * @author seiferla

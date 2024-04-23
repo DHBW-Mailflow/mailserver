@@ -1,10 +1,10 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli;
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.UCCollectionAuth;
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.EmailSendUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.organize.UCCollectionOrganizeEmails;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.UCCollectionProvideEmails;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.UCCollectionSearchEmail;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.send.EmailSendUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.UCCollectionSettings;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.ComposeEmailCLIPrompt;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.LoginCLIPrompt;

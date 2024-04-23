@@ -9,7 +9,10 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Addre
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.utils.FileHelper;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Logger;
 import org.fest.util.VisibleForTesting;
 
@@ -39,7 +42,8 @@ public class FileMailboxRepository implements MailboxRepository {
 
   private void initFile(Mailbox mailbox) throws IOException {
     File mailboxFile = getFilePath(mailbox);
-    if (mailboxFile.exists()) {
+
+    if (fileHelper.existsFile(mailboxFile)) {
       return;
     }
 
@@ -74,6 +78,31 @@ public class FileMailboxRepository implements MailboxRepository {
     } catch (IOException e) {
       throw new MailboxSavingException("Could not save mailbox file", e);
     }
+  }
+
+  @Override
+  public List<Mailbox> findAllOtherInboxes(Address sender)
+      throws MailboxLoadingException, MailboxSavingException {
+    List<Address> addresses = filterOtherAddresses(sender);
+    List<Mailbox> mailboxes = new ArrayList<>();
+
+    for (Address address : addresses) {
+      mailboxes.add(this.findByAddressAndType(address, MailboxType.INBOX));
+    }
+
+    return mailboxes;
+  }
+
+  private List<Address> filterOtherAddresses(Address sender) {
+    File[] allMailboxDirs = allMailboxesDirectory.listFiles(File::isDirectory);
+    if (allMailboxDirs == null || allMailboxDirs.length == 0) {
+      return new ArrayList<>();
+    }
+
+    return Arrays.stream(allMailboxDirs)
+        .filter(dir -> !dir.getName().equals(sender.toString()))
+        .map(dir -> Address.from(dir.getName()))
+        .toList();
   }
 
   private File getFilePath(Address mailboxOwner, MailboxType mailboxType) {

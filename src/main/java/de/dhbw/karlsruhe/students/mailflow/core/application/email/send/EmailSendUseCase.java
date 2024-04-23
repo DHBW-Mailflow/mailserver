@@ -1,4 +1,4 @@
-package de.dhbw.karlsruhe.students.mailflow.core.application.email;
+package de.dhbw.karlsruhe.students.mailflow.core.application.email.send;
 
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.InvalidRecipients;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
