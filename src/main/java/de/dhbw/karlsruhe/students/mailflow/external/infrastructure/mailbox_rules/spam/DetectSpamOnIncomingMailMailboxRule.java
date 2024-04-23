@@ -2,7 +2,7 @@ package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.mailbox_rule
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.deliver_services.DeliverInInboxService;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.deliver_services.DeliverIntoSpamService;
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.deliver_services.DeliverService;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.deliver_services.DeliverUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.rules.MailboxRule;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.rules.SpamDetectionStrategy;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
@@ -32,7 +32,7 @@ public class DetectSpamOnIncomingMailMailboxRule implements MailboxRule {
   }
 
   @Override
-  public DeliverService runOnEmail(Email email)
+  public DeliverUseCase runOnEmail(Email email)
       throws MailboxSavingException, MailboxLoadingException {
 
     for (SpamDetectionStrategy strategy : strategies) {

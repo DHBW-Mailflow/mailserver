@@ -11,7 +11,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Addre
 /**
  * @author jens1o
  */
-public class DeliverIntoFolderService implements DeliverService {
+public class DeliverIntoFolderService implements DeliverUseCase {
 
   private final MailboxType folder;
   private final MailboxRepository mailboxRepository;

@@ -2,7 +2,7 @@ package de.dhbw.karlsruhe.students.mailflow.core.application.email.send;
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthSessionUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.deliver_services.DeliverInInboxService;
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.deliver_services.DeliverService;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.deliver_services.DeliverUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.rules.MailboxRule;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.EmailBuilder;
@@ -92,16 +92,16 @@ public class EmailSendService implements EmailSendUseCase {
   private void sendToRecipients(List<Address> recipients, Email email)
       throws MailboxLoadingException, MailboxSavingException {
     // put the email into the INBOX folder of the respective recipient
-    DeliverService deliverService = spamDetector.runOnEmail(email);
+    DeliverUseCase deliverUseCase = spamDetector.runOnEmail(email);
     for (Address recipient : recipients) {
-      deliverService.deliverEmailTo(recipient, email);
+      deliverUseCase.deliverEmailTo(recipient, email);
     }
   }
 
   private void saveToSenderMailbox(Email email)
       throws MailboxLoadingException, MailboxSavingException {
-    DeliverService deliverService = new DeliverInInboxService(mailboxRepository);
-    deliverService.deliverEmailTo(email.getSender(), email);
+    DeliverUseCase deliverUseCase = new DeliverInInboxService(mailboxRepository);
+    deliverUseCase.deliverEmailTo(email.getSender(), email);
   }
 
   @Override

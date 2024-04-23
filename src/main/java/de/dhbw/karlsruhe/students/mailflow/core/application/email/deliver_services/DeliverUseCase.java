@@ -5,7 +5,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxL
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 
-public interface DeliverService {
+public interface DeliverUseCase {
   /**
    * applies the matching rule that should be applied according to the MailboxRule
    *
