@@ -1,4 +1,4 @@
-package de.dhbw.karlsruhe.students.mailflow.core.domain.email.mailbox_rules.spam.strategies;
+package de.dhbw.karlsruhe.students.mailflow.core.application.email.spam.strategies;
 
 import java.util.regex.Pattern;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;

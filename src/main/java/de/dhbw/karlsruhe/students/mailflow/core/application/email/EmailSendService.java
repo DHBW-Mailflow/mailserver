@@ -1,6 +1,7 @@
 package de.dhbw.karlsruhe.students.mailflow.core.application.email;
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthSessionUseCase;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.spam.DetectSpamOnIncomingMailMailboxRule;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.EmailBuilder;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.InvalidRecipients;
@@ -11,7 +12,6 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxL
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.mailbox_rules.MailboxRule;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.mailbox_rules.result.MailboxRuleResult;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.mailbox_rules.spam.DetectSpamOnIncomingMailMailboxRule;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Subject;
 import java.util.ArrayList;

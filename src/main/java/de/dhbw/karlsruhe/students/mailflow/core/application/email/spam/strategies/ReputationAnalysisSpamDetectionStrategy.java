@@ -1,8 +1,6 @@
-package de.dhbw.karlsruhe.students.mailflow.core.domain.email.mailbox_rules.spam.strategies;
+package de.dhbw.karlsruhe.students.mailflow.core.application.email.spam.strategies;
 
-import java.io.File;
 import java.util.List;
-import java.util.stream.Stream;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.MailboxRepository;

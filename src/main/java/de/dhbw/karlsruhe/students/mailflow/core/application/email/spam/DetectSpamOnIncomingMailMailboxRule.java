@@ -1,15 +1,15 @@
-package de.dhbw.karlsruhe.students.mailflow.core.domain.email.mailbox_rules.spam;
+package de.dhbw.karlsruhe.students.mailflow.core.application.email.spam;
 
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.spam.strategies.ContentAnalysisSpamDetectionStrategy;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.spam.strategies.ReputationAnalysisSpamDetectionStrategy;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.spam.strategies.SpamDetectionStrategy;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.spam.strategies.UnusualSenderSpamDetectionStrategy;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.MailboxRepository;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.mailbox_rules.MailboxRule;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.mailbox_rules.result.DeliverInInbox;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.mailbox_rules.result.MailboxRuleResult;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.mailbox_rules.result.MarkAsSpam;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.mailbox_rules.spam.strategies.ContentAnalysisSpamDetectionStrategy;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.mailbox_rules.spam.strategies.ReputationAnalysisSpamDetectionStrategy;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.mailbox_rules.spam.strategies.SpamDetectionStrategy;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.mailbox_rules.spam.strategies.UnusualSenderSpamDetectionStrategy;
 
 /**
  * @author jens1o

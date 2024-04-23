@@ -1,4 +1,4 @@
-package de.dhbw.karlsruhe.students.mailflow.core.domain.email.mailbox_rules.spam.strategies;
+package de.dhbw.karlsruhe.students.mailflow.core.application.email.spam.strategies;
 
 import com.google.common.net.InternetDomainName;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
@@ -14,9 +14,7 @@ public class UnusualSenderSpamDetectionStrategy implements SpamDetectionStrategy
   public boolean isSpam(MailboxRepository mailboxRepository, Email email) {
     Address sender = email.getSender();
 
-    boolean isIPAddress = !InternetDomainName.isValid(sender.domain());
-
-    return isIPAddress;
+    return !InternetDomainName.isValid(sender.domain());
   }
 
   @Override

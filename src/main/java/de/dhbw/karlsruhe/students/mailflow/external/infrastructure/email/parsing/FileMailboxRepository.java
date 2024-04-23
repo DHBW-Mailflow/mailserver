@@ -1,16 +1,15 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.parsing;
 
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.MailboxRepository;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.MailboxRepository;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.utils.FileHelper;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
@@ -80,16 +79,6 @@ public class FileMailboxRepository implements MailboxRepository {
     }
   }
 
-  private File getFilePath(Address mailboxOwner, MailboxType mailboxType) {
-    File directoryOfUser = new File(allMailboxesDirectory, mailboxOwner.toString());
-    return new File(directoryOfUser, mailboxType.getStoringName() + ".json");
-  }
-
-  private File getFilePath(Mailbox mailbox) {
-    File directoryOfUser = new File(allMailboxesDirectory, mailbox.getOwner().toString());
-    return new File(directoryOfUser, mailbox.getType().getStoringName() + ".json");
-  }
-
   @Override
   public List<Mailbox> findAll() throws MailboxLoadingException, MailboxSavingException {
     List<Address> addresses =
@@ -107,5 +96,15 @@ public class FileMailboxRepository implements MailboxRepository {
     }
 
     return mailboxes;
+  }
+
+  private File getFilePath(Address mailboxOwner, MailboxType mailboxType) {
+    File directoryOfUser = new File(allMailboxesDirectory, mailboxOwner.toString());
+    return new File(directoryOfUser, mailboxType.getStoringName() + ".json");
+  }
+
+  private File getFilePath(Mailbox mailbox) {
+    File directoryOfUser = new File(allMailboxesDirectory, mailbox.getOwner().toString());
+    return new File(directoryOfUser, mailbox.getType().getStoringName() + ".json");
   }
 }
