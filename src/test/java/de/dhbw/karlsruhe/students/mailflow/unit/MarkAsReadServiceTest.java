@@ -20,9 +20,9 @@ import java.util.Set;
 import org.fest.assertions.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class MarkAsReadServiceTest {
+class MarkAsReadServiceTest {
   @Test
-  public void testMarkAsRead() throws MailboxSavingException, MailboxLoadingException {
+  void testMarkAsRead() throws MailboxSavingException, MailboxLoadingException {
     // Arrange
     Address loggedInUser = new Address("some", "domain.de");
     EmailMetadata emailMetadata =

@@ -59,7 +59,7 @@ class ProvideAllEmailsServiceTest {
 
     String name = service.getMailboxName();
 
-    assertEquals(name, "all");
+    assertEquals("all", name);
   }
 
   private static ProvideAllEmailsService getProvideAllEmailsService(

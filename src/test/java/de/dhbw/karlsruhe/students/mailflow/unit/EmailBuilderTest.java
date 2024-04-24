@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 class EmailBuilderTest {
 
   @Test
-  public void testMinimalBuild() {
+  void testMinimalBuild() {
     EmailBuilder emailBuilder = new EmailBuilder();
     Email email = emailBuilder.build();
 
@@ -30,7 +30,7 @@ class EmailBuilderTest {
   }
 
   @Test
-  public void testMinimalBuildWithSender() {
+  void testMinimalBuildWithSender() {
     EmailBuilder emailBuilder = new EmailBuilder();
     Address sender = new Address("some", "domain.de");
     Email email = emailBuilder.withSender(sender).build();
@@ -48,7 +48,7 @@ class EmailBuilderTest {
   }
 
   @Test
-  public void testOverwritingMetadata() {
+  void testOverwritingMetadata() {
     EmailBuilder emailBuilder = new EmailBuilder();
     Address metadataSender = new Address("some", "domain.de");
     Recipients metadataRecipients = new Recipients(List.of(), List.of(metadataSender), List.of());

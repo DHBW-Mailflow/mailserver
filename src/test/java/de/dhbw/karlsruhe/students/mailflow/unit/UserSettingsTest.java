@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 class UserSettingsTest {
   @Test
-  public void testEquals() {
+  void testEquals() {
     // Arrange
     Address address = new Address("some", "domain.de");
     String previousSignature = "Signature1";
@@ -22,7 +22,7 @@ class UserSettingsTest {
     userSettingsSet.add(otherUserSettings);
 
     // Assert
-    Assertions.assertEquals(userSettingsSet.size(), 1);
+    Assertions.assertEquals(1, userSettingsSet.size());
     Assertions.assertEquals(userSettings, otherUserSettings);
     Assertions.assertEquals(userSettings.hashCode(), otherUserSettings.hashCode());
   }

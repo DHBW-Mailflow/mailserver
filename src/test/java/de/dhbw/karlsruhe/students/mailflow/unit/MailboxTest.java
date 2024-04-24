@@ -22,7 +22,7 @@ import org.junit.jupiter.params.provider.EnumSource;
 
 class MailboxTest {
   @Test
-  public void testGetEmailsWithLabel() {
+  void testGetEmailsWithLabel() {
     // Arrange
     Address owner = new Address("owner", "domain.de");
     Address emailSender = new Address("sender", "otherDomain.de");
@@ -47,7 +47,7 @@ class MailboxTest {
   }
 
   @Test
-  public void testGetEmailsLabel() {
+  void testGetEmailsLabel() {
     // Arrange
     Address owner = new Address("owner", "domain.de");
     Address emailSender = new Address("sender", "otherDomain.de");
@@ -72,7 +72,7 @@ class MailboxTest {
   }
 
   @Test
-  public void testDeliverEmail() {
+  void testDeliverEmail() {
     // Arrange
     Address owner = new Address("owner", "domain.de");
     Address emailSender = new Address("sender", "otherDomain.de");
@@ -99,7 +99,7 @@ class MailboxTest {
 
   @ParameterizedTest(name = "should create correct mailbox with type {0}")
   @EnumSource(MailboxType.class)
-  public void testGetType(MailboxType mailboxType) {
+  void testGetType(MailboxType mailboxType) {
     // Arrange
     Address owner = new Address("owner", "domain.de");
 
@@ -112,7 +112,7 @@ class MailboxTest {
 
   @ParameterizedTest(name = "should create correct mailbox with type {0}")
   @EnumSource(MailboxType.class)
-  public void testGetOwner(MailboxType mailboxType) {
+  void testGetOwner(MailboxType mailboxType) {
     // Arrange
     Address owner = new Address("owner", "domain.de");
 
@@ -124,7 +124,7 @@ class MailboxTest {
   }
 
   @Test
-  public void testMarkWithLabel() {
+  void testMarkWithLabel() {
     // Arrange
     Address owner = new Address("owner", "domain.de");
     Address emailSender = new Address("sender", "otherDomain.de");
