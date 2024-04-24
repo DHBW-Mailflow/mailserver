@@ -15,7 +15,8 @@ import java.util.List;
  */
 public class ProvideAllEmailsService extends AbstractProvideEmailsService {
 
-  ProvideAllEmailsService(AuthSessionUseCase authSession, MailboxRepository mailboxRepository) {
+  public ProvideAllEmailsService(
+      AuthSessionUseCase authSession, MailboxRepository mailboxRepository) {
     super(authSession, mailboxRepository);
   }
 
