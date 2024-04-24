@@ -1,4 +1,4 @@
-package de.dhbw.karlsruhe.students.mailflow.core.application.email.organize;
+package de.dhbw.karlsruhe.students.mailflow.core.application.email.organize.mark;
 
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;

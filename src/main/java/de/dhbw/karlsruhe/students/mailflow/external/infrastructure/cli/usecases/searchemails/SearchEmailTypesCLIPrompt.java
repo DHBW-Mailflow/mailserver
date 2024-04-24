@@ -1,6 +1,6 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.searchemails;
 
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.organize.MarkEmailUseCase;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.organize.mark.MarkEmailUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.UCCollectionSearchEmail;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.date.HelperParsing;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
