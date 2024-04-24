@@ -26,6 +26,29 @@ class ProvideAllEmailsServiceTest {
 
   final Address mailboxOwner = new Address("some", "domain.de");
 
+  private static ProvideAllEmailsService getProvideAllEmailsService(
+      Map<MailboxType, Mailbox> allMailboxes, AuthSessionUseCase mockedAuth) {
+    final MailboxRepository mockedMailboxRepository =
+        new MailboxRepository() {
+          @Override
+          public Mailbox findByAddressAndType(Address address, MailboxType type) {
+            return allMailboxes.get(type);
+          }
+
+          @Override
+          public void save(Mailbox mailbox) {
+            // not tested
+          }
+
+          @Override
+          public List<Mailbox> findAllOtherInboxes(Address sender) {
+            // not tested
+            return List.of();
+          }
+        };
+    return new ProvideAllEmailsService(mockedAuth, mockedMailboxRepository);
+  }
+
   @Test
   void provideEmails() throws MailboxSavingException, MailboxLoadingException {
     final AuthSessionUseCase mockedAuth = new MockedAuthorizedSession(mailboxOwner);
@@ -60,28 +83,5 @@ class ProvideAllEmailsServiceTest {
     String name = service.getMailboxName();
 
     assertEquals("all", name);
-  }
-
-  private static ProvideAllEmailsService getProvideAllEmailsService(
-      Map<MailboxType, Mailbox> allMailboxes, AuthSessionUseCase mockedAuth) {
-    final MailboxRepository mockedMailboxRepository =
-        new MailboxRepository() {
-          @Override
-          public Mailbox findByAddressAndType(Address address, MailboxType type) {
-            return allMailboxes.get(type);
-          }
-
-          @Override
-          public void save(Mailbox mailbox) {
-            // not tested
-          }
-
-          @Override
-          public List<Mailbox> findAllOtherInboxes(Address sender) {
-            // not tested
-            return List.of();
-          }
-        };
-    return new ProvideAllEmailsService(mockedAuth, mockedMailboxRepository);
   }
 }

@@ -21,28 +21,6 @@ import org.fest.assertions.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class MarkAsReadServiceTest {
-  @Test
-  void testMarkAsRead() throws MailboxSavingException, MailboxLoadingException {
-    // Arrange
-    Address loggedInUser = new Address("some", "domain.de");
-    EmailMetadata emailMetadata =
-        new EmailMetadata(
-            new Subject("someSubject"), loggedInUser, List.of(), null, SentDate.ofNow());
-    Email emailToMark = Email.create("content", emailMetadata);
-    Map<Email, Set<Label>> mailboxEmails = new HashMap<>();
-    mailboxEmails.put(emailToMark, Set.of(Label.UNREAD));
-    Mailbox mailboxOfUser = Mailbox.create(loggedInUser, mailboxEmails, MailboxType.INBOX);
-
-    MarkAsReadService markAsReadService = getMarkAsReadService(loggedInUser, mailboxOfUser);
-
-    // Act
-    markAsReadService.mark(emailToMark);
-    List<Email> readEmails = mailboxOfUser.getEmailsWithLabel(Label.READ);
-
-    // Assert
-    Assertions.assertThat(readEmails).contains(emailToMark);
-  }
-
   private static MarkAsReadService getMarkAsReadService(
       Address loggedInUser, Mailbox mailboxOfUser) {
     AuthSessionUseCase mockedAuthSession = new MockedAuthorizedSession(loggedInUser);
@@ -64,5 +42,27 @@ class MarkAsReadServiceTest {
         };
 
     return new MarkAsReadService(mockedAuthSession, mockedMailboxRepository);
+  }
+
+  @Test
+  void testMarkAsRead() throws MailboxSavingException, MailboxLoadingException {
+    // Arrange
+    Address loggedInUser = new Address("some", "domain.de");
+    EmailMetadata emailMetadata =
+        new EmailMetadata(
+            new Subject("someSubject"), loggedInUser, List.of(), null, SentDate.ofNow());
+    Email emailToMark = Email.create("content", emailMetadata);
+    Map<Email, Set<Label>> mailboxEmails = new HashMap<>();
+    mailboxEmails.put(emailToMark, Set.of(Label.UNREAD));
+    Mailbox mailboxOfUser = Mailbox.create(loggedInUser, mailboxEmails, MailboxType.INBOX);
+
+    MarkAsReadService markAsReadService = getMarkAsReadService(loggedInUser, mailboxOfUser);
+
+    // Act
+    markAsReadService.mark(emailToMark);
+    List<Email> readEmails = mailboxOfUser.getEmailsWithLabel(Label.READ);
+
+    // Assert
+    Assertions.assertThat(readEmails).contains(emailToMark);
   }
 }
