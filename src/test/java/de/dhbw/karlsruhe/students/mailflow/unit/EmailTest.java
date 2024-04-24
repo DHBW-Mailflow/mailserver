@@ -1,7 +1,5 @@
 package de.dhbw.karlsruhe.students.mailflow.unit;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.EmailMetadata;
