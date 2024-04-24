@@ -47,6 +47,10 @@ public class OrganizeEmailsCLIPrompt extends BaseCLIPrompt {
             this,
             provideEmails.provideAllReadEmailsService(),
             organizeUseCases.markAsUnreadService()));
+    promptMap.put(
+        "Delete Emails",
+        new DeleteEmailsCLIPrompt(
+            this, provideEmails.provideAllEmailsService(), organizeUseCases.deleteEmailService()));
     return readUserInputWithOptions(promptMap);
   }
 }

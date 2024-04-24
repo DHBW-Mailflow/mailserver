@@ -34,21 +34,25 @@ public class DeleteEmailService implements DeleteEmailsUseCase {
 
     List<Email> emailList = providePossibleEmailsToDelete();
 
-    if (emailList.contains(email)) {
-      emailList.remove(email);
-      deletedEmails.add(email);
-      shiftDeletedEmail();
-    }
+    emailList.remove(email);
+    deletedEmails.add(email);
+    shiftDeletedEmail();
   }
 
   @Override
   public List<Email> providePossibleEmailsToDelete()
       throws MailboxSavingException, MailboxLoadingException {
 
-    Mailbox mailbox =
-        mailboxRepository.findByAddressAndType(
-            authSession.getSessionUserAddress(), MailboxType.INBOX);
-    return mailbox.getEmailList();
+    List<Email> allEmails = new ArrayList<>();
+    for (MailboxType type : MailboxType.values()) {
+      if (type.equals(MailboxType.DELETED)) {
+        continue;
+      }
+      Mailbox mailbox =
+          mailboxRepository.findByAddressAndType(authSession.getSessionUserAddress(), type);
+      allEmails.addAll(mailbox.getEmailList());
+    }
+    return allEmails;
   }
 
   private void shiftDeletedEmail() {
