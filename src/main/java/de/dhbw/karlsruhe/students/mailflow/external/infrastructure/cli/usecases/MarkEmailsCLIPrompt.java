@@ -1,5 +1,6 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases;
 
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.answer.UCCollectionAnswerEmails;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.organize.MarkEmailUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.ProvideEmailsUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
@@ -18,14 +19,17 @@ public class MarkEmailsCLIPrompt extends BaseCLIPrompt {
 
   private final MarkEmailUseCase markUseCase;
   private final ProvideEmailsUseCase provideEmailsUseCase;
+  private final UCCollectionAnswerEmails answerEmails;
 
   public MarkEmailsCLIPrompt(
       BaseCLIPrompt previousPrompt,
       ProvideEmailsUseCase provideEmailsUseCase,
-      MarkEmailUseCase markUseCase) {
+      MarkEmailUseCase markUseCase,
+      UCCollectionAnswerEmails answerEmails) {
     super(previousPrompt);
     this.markUseCase = markUseCase;
     this.provideEmailsUseCase = provideEmailsUseCase;
+    this.answerEmails = answerEmails;
   }
 
   @Override
@@ -50,7 +54,9 @@ public class MarkEmailsCLIPrompt extends BaseCLIPrompt {
         "Which email do you want to mark as %s?".formatted(provideEmailsUseCase.getMailboxName()));
     Map<String, BaseCLIPrompt> promptMap = new LinkedHashMap<>();
     for (Email email : emailList) {
-      promptMap.put(formatEmail(email), new ReadEmailCLIPrompt(this, email, markUseCase, false));
+      promptMap.put(
+          formatEmailListing(email),
+          new ReadEmailCLIPrompt(this, email, markUseCase, answerEmails, false));
     }
     return readUserInputWithOptions(promptMap);
   }

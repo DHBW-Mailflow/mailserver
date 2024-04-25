@@ -1,5 +1,6 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases;
 
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.answer.UCCollectionAnswerEmails;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.organize.UCCollectionOrganizeEmails;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.UCCollectionProvideEmails;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
@@ -13,14 +14,17 @@ public class OrganizeEmailsCLIPrompt extends BaseCLIPrompt {
 
   private final UCCollectionOrganizeEmails organizeUseCases;
   private final UCCollectionProvideEmails provideEmails;
+  private final UCCollectionAnswerEmails answerEmails;
 
   public OrganizeEmailsCLIPrompt(
       BaseCLIPrompt previousPrompt,
       UCCollectionProvideEmails provideEmails,
-      UCCollectionOrganizeEmails organizeUseCases) {
+      UCCollectionOrganizeEmails organizeUseCases,
+      UCCollectionAnswerEmails answerEmails) {
     super(previousPrompt);
     this.provideEmails = provideEmails;
     this.organizeUseCases = organizeUseCases;
+    this.answerEmails = answerEmails;
   }
 
   @Override
@@ -40,13 +44,15 @@ public class OrganizeEmailsCLIPrompt extends BaseCLIPrompt {
         new MarkEmailsCLIPrompt(
             this,
             provideEmails.provideAllUnreadEmailsService(),
-            organizeUseCases.markAsReadService()));
+            organizeUseCases.markAsReadService(),
+            answerEmails));
     promptMap.put(
         "Mark as unread",
         new MarkEmailsCLIPrompt(
             this,
             provideEmails.provideAllReadEmailsService(),
-            organizeUseCases.markAsUnreadService()));
+            organizeUseCases.markAsUnreadService(),
+            answerEmails));
     return readUserInputWithOptions(promptMap);
   }
 }
