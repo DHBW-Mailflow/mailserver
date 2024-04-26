@@ -5,6 +5,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
+import java.io.FileNotFoundException;
 
 public class DeleteEmailCLIPrompt extends BaseCLIPrompt {
 
@@ -24,7 +25,7 @@ public class DeleteEmailCLIPrompt extends BaseCLIPrompt {
     try {
       deleteEmailsUseCase.delete(email);
       printDefault("Email deleted");
-    } catch (MailboxSavingException | MailboxLoadingException e) {
+    } catch (MailboxSavingException | MailboxLoadingException | FileNotFoundException e) {
       printWarning("Could not delete email");
     }
   }

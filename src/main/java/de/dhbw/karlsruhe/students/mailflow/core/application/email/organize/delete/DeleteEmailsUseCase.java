@@ -1,12 +1,13 @@
 package de.dhbw.karlsruhe.students.mailflow.core.application.email.organize.delete;
 
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
-import java.util.List;
+import java.io.FileNotFoundException;
 
 public interface DeleteEmailsUseCase {
-  void delete(Email email) throws MailboxSavingException, MailboxLoadingException;
+  void delete(Email email) throws MailboxSavingException, MailboxLoadingException, FileNotFoundException;
 
-  List<Email> providePossibleEmailsToDelete() throws MailboxSavingException, MailboxLoadingException;
+  Mailbox providePossibleEmailsToDelete() throws MailboxSavingException, MailboxLoadingException;
 }

@@ -88,4 +88,9 @@ public final class Mailbox extends AggregateRoot<MailboxId> {
   public void markWithLabel(Email email, Label... label) {
     emails.put(email, Set.of(label));
   }
+
+  public Mailbox deleteEmail(Email email) {
+    emails.remove(email);
+    return this;
+  }
 }
