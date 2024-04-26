@@ -25,10 +25,10 @@ public class ShowEmailTypesCLIPrompt extends BaseCLIPrompt {
 
   @Override
   public void start() {
-      super.start();
-      printDefault("What type of emails do you want to see?");
-      BaseCLIPrompt action = showActionMenuPrompt();
-      action.start();
+    super.start();
+    printDefault("What type of emails do you want to see?");
+    BaseCLIPrompt action = showActionMenuPrompt();
+    action.start();
 
   }
 
@@ -36,7 +36,7 @@ public class ShowEmailTypesCLIPrompt extends BaseCLIPrompt {
     int unreadEmails = provideEmails.provideInboxUnreadEmailsUseCase().getEmailCount();
     int readEmails = provideEmails.provideInboxReadEmailsUseCase().getEmailCount();
     int sentEmails = provideEmails.provideSentEmailsUseCase().getEmailCount();
-    int spamEmails = provideEmails.provideSpamEmailsUseCase().getEmailCount();
+    int spamEmails = provideEmails.provideSpamEmailsService().getEmailCount();
     int deletedEmails = provideEmails.provideDeletedEmailsUseCase().getEmailCount();
 
     Map<String, BaseCLIPrompt> promptMap = new LinkedHashMap<>();
@@ -45,7 +45,7 @@ public class ShowEmailTypesCLIPrompt extends BaseCLIPrompt {
         new ShowEmailsCLIPrompt(this, provideEmails.provideSentEmailsUseCase(), markEmailUseCase));
     promptMap.put(
         "Spam (%s)".formatted(spamEmails),
-        new ShowEmailsCLIPrompt(this, provideEmails.provideSpamEmailsUseCase(), markEmailUseCase));
+        new ShowEmailsCLIPrompt(this, provideEmails.provideSpamEmailsService(), markEmailUseCase));
     promptMap.put(
         "Deleted (%s)".formatted(deletedEmails),
         new ShowEmailsCLIPrompt(

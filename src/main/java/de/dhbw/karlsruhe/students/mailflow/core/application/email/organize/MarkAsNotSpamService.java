@@ -1,5 +1,6 @@
 package de.dhbw.karlsruhe.students.mailflow.core.application.email.organize;
 
+import java.util.Set;
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthSessionUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
@@ -10,33 +11,37 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxL
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
 
 /**
- * @author Jonas-Karl
+ * @author jens1o
  */
-public class MarkAsReadService implements MarkEmailUseCase {
+public class MarkAsNotSpamService implements MarkEmailUseCase {
 
-  private final AuthSessionUseCase authSession;
-  private final MailboxRepository mailboxRepository;
+  private AuthSessionUseCase authSession;
+  private MailboxRepository mailboxRepository;
 
-  public MarkAsReadService(AuthSessionUseCase authSession, MailboxRepository mailboxRepository) {
+  public MarkAsNotSpamService(AuthSessionUseCase authSession, MailboxRepository mailboxRepository) {
     this.authSession = authSession;
     this.mailboxRepository = mailboxRepository;
   }
 
   @Override
   public void mark(Email email) throws MailboxSavingException, MailboxLoadingException {
-    for (MailboxType type : MailboxType.values()) {
-      Mailbox mailbox =
-          mailboxRepository.findByAddressAndType(authSession.getSessionUserAddress(), type);
-      if (!mailbox.getEmailList().contains(email)) {
-        continue;
-      }
-      mailbox.markWithLabel(email, Label.READ);
-      mailboxRepository.save(mailbox);
-    }
+    Mailbox mailbox = this.mailboxRepository
+        .findByAddressAndType(this.authSession.getSessionUserAddress(), MailboxType.SPAM);
+
+    // throws an exception when we try to not mark as spam in case it wasn't in the spam folder
+    Set<Label> labels = mailbox.deleteEmail(email).get();
+
+    mailboxRepository.save(mailbox);
+
+    mailbox = this.mailboxRepository.findByAddressAndType(this.authSession.getSessionUserAddress(),
+        MailboxType.INBOX);
+    mailbox.markWithLabel(email, labels.toArray(new Label[] {}));
+    mailboxRepository.save(mailbox);
   }
 
   @Override
   public String getActionName() {
-    return "read";
+    return "not spam";
   }
+
 }
