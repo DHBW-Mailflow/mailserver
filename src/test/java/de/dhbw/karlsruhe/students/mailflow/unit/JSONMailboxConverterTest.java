@@ -56,7 +56,7 @@ class JSONMailboxConverterTest {
     String emailContent = "someContent";
 
     Mailbox expectedMailbox = Mailbox.create(owner, Map.of(), MailboxType.INBOX);
-    Email expectedEmail = Email.create(emailContent, emailMetadata);
+    Email expectedEmail = Email.create(emailContent, emailMetadata, null);
     String jsonString =
         """
         {
@@ -121,7 +121,7 @@ class JSONMailboxConverterTest {
             "id": "646c6639-6af6-49a8-aa51-a5faff4a4a09"
           }
         }
-                  """;
+        """;
     Files.writeString(fileToParse.toPath(), jsonString);
 
     // Act
@@ -133,7 +133,7 @@ class JSONMailboxConverterTest {
         .isNotNull()
         .isLenientEqualsToByIgnoringFields(expectedMailbox, "id", "emails");
     assertThat(mailbox.getEmailList()).hasSize(1);
-    assertThat(mailbox.getEmailList().get(0))
+    assertThat(mailbox.getEmailList().getFirst())
         .isLenientEqualsToByIgnoringFields(expectedEmail, "id");
   }
 
@@ -183,7 +183,7 @@ class JSONMailboxConverterTest {
             new Recipients(List.of(toRecipient), List.of(ccRecipient), List.of(bccRecipient)),
             SentDate.ofFormattedString("2024-03-21T00:30:38.8095474Z"));
     String emailContent = "someContent";
-    Email expectedEmail = Email.create(emailContent, emailMetadata);
+    Email expectedEmail = Email.create(emailContent, emailMetadata, null);
 
     Label label = Label.UNREAD;
     Mailbox expectedMailbox =
