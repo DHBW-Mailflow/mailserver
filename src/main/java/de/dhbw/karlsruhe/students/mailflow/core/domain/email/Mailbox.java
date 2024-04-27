@@ -7,6 +7,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Addre
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.MailboxId;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -89,8 +90,21 @@ public final class Mailbox extends AggregateRoot<MailboxId> {
     emails.put(email, Set.of(label));
   }
 
-  public Mailbox deleteEmail(Email email) {
-    emails.remove(email);
-    return this;
+
+  /**
+   * Deletes this e-mail from this mailbox. This action is idempotent.
+   *
+   * @param email
+   * @return {@link Optional#empty()} when the e-mail was not in this inbox, otherwise returns the
+   *         Set
+   */
+  public Optional<Set<Label>> deleteEmail(Email email) {
+    Set<Label> labels = this.emails.remove(email);
+
+    if (labels == null) {
+      return Optional.empty();
+    }
+
+    return Optional.of(labels);
   }
 }
