@@ -57,7 +57,7 @@ public final class Mailbox extends AggregateRoot<MailboxId> {
    *
    * @param email
    * @return {@link Optional#empty()} when the e-mail was not in this inbox, otherwise returns the
-   *         Set
+   *         Set of labels the email had assigned
    */
   public Optional<Set<Label>> deleteEmail(Email email) {
     Set<Label> labels = this.emails.remove(email);
