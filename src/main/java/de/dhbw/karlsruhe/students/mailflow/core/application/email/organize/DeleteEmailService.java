@@ -1,4 +1,4 @@
-package de.dhbw.karlsruhe.students.mailflow.core.application.email.organize.delete;
+package de.dhbw.karlsruhe.students.mailflow.core.application.email.organize;
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthSessionUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;

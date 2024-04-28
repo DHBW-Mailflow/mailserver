@@ -1,6 +1,6 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.delete;
 
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.organize.delete.DeleteEmailsUseCase;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.organize.DeleteEmailsUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
