@@ -1,5 +1,6 @@
 package de.dhbw.karlsruhe.students.mailflow.core.application.email.organize;
 
+import java.util.Optional;
 import java.util.Set;
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthSessionUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
@@ -28,8 +29,12 @@ public class MarkAsNotSpamService implements MarkEmailUseCase {
     Mailbox mailbox = this.mailboxRepository
         .findByAddressAndType(this.authSession.getSessionUserAddress(), MailboxType.SPAM);
 
-    // throws an exception when we try to not mark as spam in case it wasn't in the spam folder
-    Set<Label> labels = mailbox.deleteEmail(email).get();
+    Optional<Set<Label>> optionalLabels = mailbox.deleteEmail(email);
+
+    if (optionalLabels.isEmpty()) {
+      throw new IllegalStateException("e-mail is not marked as spam!");
+    }
+    Set<Label> labels = optionalLabels.get();
 
     mailboxRepository.save(mailbox);
 

@@ -26,34 +26,22 @@ public class MarkAsSpamService implements MarkEmailUseCase {
 
   @Override
   public void mark(Email email) throws MailboxSavingException, MailboxLoadingException {
-    boolean didFindEmail = false;
+    Mailbox mailbox = mailboxRepository.findByAddressAndType(authSession.getSessionUserAddress(),
+        MailboxType.INBOX);
 
-    for (MailboxType type : MailboxType.values()) {
-      Mailbox mailbox =
-          mailboxRepository.findByAddressAndType(authSession.getSessionUserAddress(), type);
+    Optional<Set<Label>> deletionResult = mailbox.deleteEmail(email);
 
-      Optional<Set<Label>> deletionResult = mailbox.deleteEmail(email);
-
-      if (deletionResult.isEmpty()) {
-        // e-mail was not in this mailbox, try next
-        continue;
-      }
-
-      // found and deleted the mail from the original mailbox,
-      // now move it to the spam mailbox
-      moveToSpam(email, deletionResult.get());
-
-      // we successfully found and marked the e-mail as spam upon reaching here,
-      // so there is nothing left to do
-
-      didFindEmail = true;
-      mailboxRepository.save(mailbox);
-      break;
+    if (deletionResult.isEmpty()) {
+      throw new IllegalStateException("e-mail to mark as spam could not be found in inbox");
     }
 
-    if (!didFindEmail) {
-      throw new IllegalStateException("e-mail to mark as spam was not found in user inbox");
-    }
+    // found and deleted the mail from the original mailbox,
+    // now move it to the spam mailbox
+    moveToSpam(email, deletionResult.get());
+
+    // we successfully found and marked the e-mail as spam upon reaching here,
+    // so there is nothing left to do except to persist our changes
+    mailboxRepository.save(mailbox);
   }
 
   private void moveToSpam(Email email, Set<Label> labels)
