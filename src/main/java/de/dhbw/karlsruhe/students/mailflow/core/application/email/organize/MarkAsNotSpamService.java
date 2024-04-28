@@ -17,8 +17,8 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxS
  */
 public class MarkAsNotSpamService implements MarkEmailUseCase {
 
-  private AuthSessionUseCase authSession;
-  private MailboxRepository mailboxRepository;
+  private final AuthSessionUseCase authSession;
+  private final MailboxRepository mailboxRepository;
 
   public MarkAsNotSpamService(AuthSessionUseCase authSession, MailboxRepository mailboxRepository) {
     this.authSession = authSession;
