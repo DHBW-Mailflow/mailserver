@@ -10,15 +10,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @author seiferla
- */
-public class DeleteEmailsCLIPrompt extends BaseCLIPrompt {
+public class ShowDeleteEmailsCLIPrompt extends BaseCLIPrompt {
 
   private final DeleteEmailsUseCase deleteEmailsUseCase;
   private final ProvideEmailsUseCase provideEmailsUseCase;
 
-  public DeleteEmailsCLIPrompt(
+  public ShowDeleteEmailsCLIPrompt(
       BaseCLIPrompt previousPrompt,
       ProvideEmailsUseCase provideEmailsUseCase,
       DeleteEmailsUseCase deleteEmailsUseCase) {
