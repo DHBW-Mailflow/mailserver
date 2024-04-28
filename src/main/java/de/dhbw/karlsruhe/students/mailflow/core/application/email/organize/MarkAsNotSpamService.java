@@ -1,5 +1,6 @@
 package de.dhbw.karlsruhe.students.mailflow.core.application.email.organize;
 
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.organize.mark.MarkEmailUseCase;
 import java.util.Optional;
 import java.util.Set;
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthSessionUseCase;

@@ -30,28 +30,28 @@ public class DeleteEmailService implements DeleteEmailsUseCase {
       Mailbox mailbox =
           mailboxRepository.findByAddressAndType(authSession.getSessionUserAddress(), type);
 
-      Optional<Set<Label>> deletionResult = mailbox.deleteEmail(email);
+      didFindEmail = tryDeleteEmailFromMailbox(email, mailbox);
 
-      if (deletionResult.isEmpty()) {
-        // e-mail was not in this mailbox, try next
-        continue;
+      if (didFindEmail) {
+        break;
       }
-
-      // found and deleted the mail from the original mailbox,
-      // now move it to the deleted mailbox
-      moveToDeleted(email, deletionResult.get());
-
-      // we successfully found and marked the e-mail as deleted upon reaching here,
-      // so there is nothing left to do
-
-      didFindEmail = true;
-      mailboxRepository.save(mailbox);
-      break;
     }
-
     if (!didFindEmail) {
       throw new IllegalStateException("email not found in any mailbox");
     }
+  }
+
+  private boolean tryDeleteEmailFromMailbox(Email email, Mailbox mailbox)
+      throws MailboxSavingException, MailboxLoadingException {
+    Optional<Set<Label>> deletionResult = mailbox.deleteEmail(email);
+
+    if (deletionResult.isEmpty()) {
+      // e-mail was not in this mailbox, try next
+      return false;
+    }
+    moveToDeleted(email, deletionResult.get());
+    mailboxRepository.save(mailbox);
+    return true;
   }
 
   private void moveToDeleted(Email email, Set<Label> labels)
