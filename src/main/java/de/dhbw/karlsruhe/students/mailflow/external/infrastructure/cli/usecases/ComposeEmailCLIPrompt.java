@@ -1,5 +1,9 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.send.EmailSendUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.UCCollectionSettings;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.InvalidRecipients;
@@ -34,7 +38,41 @@ public final class ComposeEmailCLIPrompt extends BaseCLIPrompt {
       return;
     }
     askTextContent();
+    askScheduledSend();
     sendEmail();
+  }
+
+  private void askScheduledSend() {
+    DateTimeFormatter formatter =
+        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").withZone(ZoneId.systemDefault());
+    ZonedDateTime scheduledDate = ZonedDateTime.now();
+
+    while (true) {
+      String userResponse = simplePrompt(
+          "In case you want to schedule sending the e-mail at a later time,"
+              + " please now specify the time to send the mail [leave empty for immediate sending, pattern YYYY-MM-DD HH:mm]:");
+
+      userResponse = userResponse.trim();
+
+      if (userResponse.isEmpty()) {
+        break;
+      }
+
+      try {
+        scheduledDate = formatter.parse(userResponse, ZonedDateTime::from);
+      } catch (DateTimeParseException e) {
+        printWarning("Syntax error while parsing the scheduled time specified, please try again.");
+        continue;
+      }
+
+      if (scheduledDate.isBefore(ZonedDateTime.now())) {
+        printWarning("Please make sure that the scheduled time is in the future.");
+        continue;
+      }
+
+      emailSendUseCase.setScheduledSendDate(scheduledDate);
+      break;
+    }
   }
 
   private void sendEmail() {

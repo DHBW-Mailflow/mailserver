@@ -26,8 +26,8 @@ public class OrganizeEmailsCLIPrompt extends BaseCLIPrompt {
 
   @Override
   public void start() {
-
     super.start();
+
     printDefault("Organize Emails");
     BaseCLIPrompt action = showActionMenuPrompt();
     action.start();
