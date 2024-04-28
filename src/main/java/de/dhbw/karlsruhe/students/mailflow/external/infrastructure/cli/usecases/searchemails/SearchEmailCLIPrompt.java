@@ -7,7 +7,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.showemails.ReadEmailCLIPrompt;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.showemails.ReadEmailContentCLIPrompt;
 import java.time.DateTimeException;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -70,7 +70,7 @@ public class SearchEmailCLIPrompt extends BaseCLIPrompt {
     for (Email email : emailList) {
       promptMap.put(
           formatEmailListing(email),
-          new ReadEmailCLIPrompt(this, email, markEmailUseCase, answerEmails, true));
+          new ReadEmailContentCLIPrompt(this, email, markEmailUseCase, answerEmails));
     }
     return readUserInputWithOptions(promptMap);
   }

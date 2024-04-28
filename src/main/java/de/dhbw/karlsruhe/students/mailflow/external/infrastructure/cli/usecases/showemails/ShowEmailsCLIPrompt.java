@@ -55,7 +55,7 @@ public class ShowEmailsCLIPrompt extends BaseCLIPrompt {
     for (Email email : emailList) {
       promptMap.put(
           formatEmailListing(email),
-          new ReadEmailCLIPrompt(this, email, markEmailUseCase, answerEmailUseCase, true));
+          new ReadEmailContentCLIPrompt(this, email, markEmailUseCase, answerEmailUseCase));
     }
     return readUserInputWithOptions(promptMap);
   }

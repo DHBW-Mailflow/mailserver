@@ -25,7 +25,7 @@ public class AnswerSenderEmailService implements AnswerEmailUseCase {
     if (emailToAnswer.getPreviousMail() == null) {
       sendUseCase.setSubject("RE: " + emailToAnswer.getSubject().subject());
     } else {
-      sendUseCase.setSubject(emailToAnswer.getSubject().toString());
+      sendUseCase.setSubject(emailToAnswer.getSubject().subject());
     }
     sendUseCase.setPreviousMail(emailToAnswer);
     sendUseCase.sendPreparedEmail();

@@ -50,6 +50,10 @@ public final class Email extends AggregateRoot<EmailId> {
         EmailId.createUnique(), content, emailMetadata, Collections.emptySet(), previousMail);
   }
 
+  public static Email create(String content, EmailMetadata emailMetadata) {
+    return new Email(EmailId.createUnique(), content, emailMetadata, Collections.emptySet(), null);
+  }
+
   public String getContent() {
     return content;
   }

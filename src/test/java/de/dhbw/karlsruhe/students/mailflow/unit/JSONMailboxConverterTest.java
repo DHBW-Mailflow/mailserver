@@ -56,7 +56,7 @@ class JSONMailboxConverterTest {
     String emailContent = "someContent";
 
     Mailbox expectedMailbox = Mailbox.create(owner, Map.of(), MailboxType.INBOX);
-    Email expectedEmail = Email.create(emailContent, emailMetadata, null);
+    Email expectedEmail = Email.create(emailContent, emailMetadata);
     String jsonString =
         """
         {
@@ -183,7 +183,7 @@ class JSONMailboxConverterTest {
             new Recipients(List.of(toRecipient), List.of(ccRecipient), List.of(bccRecipient)),
             SentDate.ofFormattedString("2024-03-21T00:30:38.8095474Z"));
     String emailContent = "someContent";
-    Email expectedEmail = Email.create(emailContent, emailMetadata, null);
+    Email expectedEmail = Email.create(emailContent, emailMetadata);
 
     Label label = Label.UNREAD;
     Mailbox expectedMailbox =

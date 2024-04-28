@@ -24,9 +24,9 @@ public class EmailSendService implements EmailSendUseCase {
   private final AuthSessionUseCase authSession;
   private final MailboxRepository mailboxRepository;
   private final MailboxRule spamDetector;
-  private List<Address> bccAddresses;
-  private List<Address> ccAddresses;
-  private List<Address> toAddresses;
+  private List<Address> bccAddresses = List.of();
+  private List<Address> ccAddresses = List.of();
+  private List<Address> toAddresses = List.of();
   private String message;
   private Subject subject;
   private Email previousMail;
