@@ -32,7 +32,6 @@ public class DeliverScheduledMailJob implements Job {
   @Override
   public void perform() throws JobExecutionException {
     try {
-      System.out.println("performing job...");
       DeliverUseCase deliverUseCase = mailboxRule.runOnEmail(email);
       for (Address recipient : recipients) {
         deliverUseCase.deliverEmailTo(recipient, email);

@@ -32,9 +32,6 @@ public class WorkerQueue {
   }
 
   public void performDueJobs() {
-    System.out.println("performing due jobs...");
-    System.out.println(Arrays.toString(queue.toArray()));
-
     while (jobsAreDue()) {
       Job job = queue.poll();
 
