@@ -3,6 +3,7 @@ package de.dhbw.karlsruhe.students.mailflow.core.application.email.deliver_servi
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.MailboxRepository;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.Label;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
@@ -15,26 +16,26 @@ public class DeliverIntoFolderService implements DeliverUseCase {
 
   private final MailboxType folder;
   private final MailboxRepository mailboxRepository;
-  private final boolean isRead;
+  private final Label[] labels;
 
   public DeliverIntoFolderService(MailboxType folder, MailboxRepository mailboxRepository) {
     this.folder = folder;
     this.mailboxRepository = mailboxRepository;
-    this.isRead = false;
+    this.labels = new Label[] {Label.UNREAD};
   }
 
   public DeliverIntoFolderService(
-      MailboxType folder, MailboxRepository mailboxRepository, boolean isRead) {
+      MailboxType folder, MailboxRepository mailboxRepository, Label[] labels) {
     this.folder = folder;
     this.mailboxRepository = mailboxRepository;
-    this.isRead = isRead;
+    this.labels = labels;
   }
 
   @Override
   public void deliverEmailTo(Address recipient, Email email)
       throws MailboxLoadingException, MailboxSavingException {
     Mailbox mailbox = mailboxRepository.findByAddressAndType(recipient, folder);
-    mailbox.deliverEmail(email, !isRead);
+    mailbox.markWithLabel(email, labels);
     mailboxRepository.save(mailbox);
   }
 }

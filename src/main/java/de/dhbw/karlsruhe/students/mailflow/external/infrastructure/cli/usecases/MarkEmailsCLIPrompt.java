@@ -51,7 +51,7 @@ public class MarkEmailsCLIPrompt extends BaseCLIPrompt {
       return getPreviousPrompt();
     }
     printDefault(
-        "Which email do you want to mark as %s?".formatted(provideEmailsUseCase.getMailboxName()));
+        "Which email do you want to mark as %s?".formatted(markUseCase.getActionName()));
     Map<String, BaseCLIPrompt> promptMap = new LinkedHashMap<>();
     for (Email email : emailList) {
       promptMap.put(

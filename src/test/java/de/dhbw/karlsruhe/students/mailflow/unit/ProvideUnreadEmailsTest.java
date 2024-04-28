@@ -12,7 +12,6 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.user.User;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -22,34 +21,7 @@ import org.junit.jupiter.api.Test;
 class ProvideUnreadEmailsTest {
   private final Address address = new Address("test", "test");
 
-  private final AuthSessionUseCase mockedAuth =
-      new AuthSessionUseCase() {
-        @Override
-        public boolean isLoggedIn() {
-          return true;
-        }
-
-        @Override
-        public Address getSessionUserAddress() throws IllegalStateException {
-          return address;
-        }
-
-        @Override
-        public void ensureLoggedIn() {
-          // skip
-        }
-
-        @Override
-        public void removeSessionUser() {
-          // skip
-        }
-
-        @Override
-        public void setSessionUser(User user) {
-          // skip
-
-        }
-      };
+  private final AuthSessionUseCase mockedAuth = new MockedAuthorizedSession(address);
 
   @Test
   void provideUnreadEmailsTest() throws MailboxSavingException, MailboxLoadingException {

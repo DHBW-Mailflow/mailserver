@@ -53,6 +53,18 @@ public class OrganizeEmailsCLIPrompt extends BaseCLIPrompt {
             provideEmails.provideAllReadEmailsService(),
             organizeUseCases.markAsUnreadService(),
             answerEmails));
+    promptMap.put(
+        "Mark as spam",
+        new MarkEmailsCLIPrompt(
+            this,
+            provideEmails.provideAllInboxEmailsService(),
+            organizeUseCases.markAsSpamService()));
+    promptMap.put(
+        "Mark as not spam",
+        new MarkEmailsCLIPrompt(
+            this,
+            provideEmails.provideSpamEmailsService(),
+            organizeUseCases.markAsNotSpamService()));
     return readUserInputWithOptions(promptMap);
   }
 }

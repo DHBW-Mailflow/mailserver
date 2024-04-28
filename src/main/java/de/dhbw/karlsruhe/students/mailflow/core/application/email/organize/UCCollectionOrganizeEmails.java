@@ -7,11 +7,14 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.MailboxRepository;
  * @author Jonas-Karl
  */
 public record UCCollectionOrganizeEmails(
-    MarkAsReadService markAsReadService, MarkAsUnreadService markAsUnreadService) {
+    MarkAsReadService markAsReadService, MarkAsUnreadService markAsUnreadService,
+    MarkAsSpamService markAsSpamService, MarkAsNotSpamService markAsNotSpamService) {
   public static UCCollectionOrganizeEmails init(
       AuthSessionUseCase authSession, MailboxRepository mailboxRepository) {
     return new UCCollectionOrganizeEmails(
         new MarkAsReadService(authSession, mailboxRepository),
-        new MarkAsUnreadService(authSession, mailboxRepository));
+        new MarkAsUnreadService(authSession, mailboxRepository),
+        new MarkAsSpamService(authSession, mailboxRepository),
+        new MarkAsNotSpamService(authSession, mailboxRepository));
   }
 }

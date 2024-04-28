@@ -15,13 +15,13 @@ import java.util.List;
  */
 public class ProvideAllEmailsService extends AbstractProvideEmailsService {
 
-  ProvideAllEmailsService(AuthSessionUseCase authSession, MailboxRepository mailboxRepository) {
+  public ProvideAllEmailsService(
+      AuthSessionUseCase authSession, MailboxRepository mailboxRepository) {
     super(authSession, mailboxRepository);
   }
 
   @Override
   public List<Email> provideEmails() throws MailboxSavingException, MailboxLoadingException {
-
     List<Email> allEmails = new ArrayList<>();
     for (MailboxType type : MailboxType.values()) {
       Mailbox mailbox =
