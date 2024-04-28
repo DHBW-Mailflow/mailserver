@@ -1,7 +1,7 @@
 package de.dhbw.karlsruhe.students.mailflow.unit;
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthSessionUseCase;
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.organize.MarkAsReadService;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.organize.mark.MarkAsReadService;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.MailboxRepository;

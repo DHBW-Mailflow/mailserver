@@ -11,6 +11,9 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxS
 import java.util.Optional;
 import java.util.Set;
 
+/**
+ * @author seiferla
+ */
 public class DeleteEmailService implements DeleteEmailsUseCase {
 
   private final AuthSessionUseCase authSession;

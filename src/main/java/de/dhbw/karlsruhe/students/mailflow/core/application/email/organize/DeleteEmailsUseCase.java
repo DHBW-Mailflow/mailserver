@@ -5,7 +5,10 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxL
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
 import java.io.FileNotFoundException;
 
+/**
+ * @author seiferla
+ */
 public interface DeleteEmailsUseCase {
-  void delete(Email email) throws MailboxSavingException, MailboxLoadingException, FileNotFoundException;
-
+  void delete(Email email)
+      throws MailboxSavingException, MailboxLoadingException, FileNotFoundException;
 }

@@ -10,6 +10,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author seiferla
+ */
 public class DeleteEmailsCLIPrompt extends BaseCLIPrompt {
 
   private final DeleteEmailsUseCase deleteEmailsUseCase;

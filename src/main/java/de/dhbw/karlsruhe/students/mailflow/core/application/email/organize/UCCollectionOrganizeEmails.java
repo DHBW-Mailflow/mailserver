@@ -9,8 +9,11 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.MailboxRepository;
  * @author Jonas-Karl
  */
 public record UCCollectionOrganizeEmails(
-    MarkAsReadService markAsReadService, MarkAsUnreadService markAsUnreadService,
-    MarkAsSpamService markAsSpamService, MarkAsNotSpamService markAsNotSpamService,  DeleteEmailService deleteEmailService) {
+    MarkAsReadService markAsReadService,
+    MarkAsUnreadService markAsUnreadService,
+    MarkAsSpamService markAsSpamService,
+    MarkAsNotSpamService markAsNotSpamService,
+    DeleteEmailService deleteEmailService) {
   public static UCCollectionOrganizeEmails init(
       AuthSessionUseCase authSession, MailboxRepository mailboxRepository) {
     return new UCCollectionOrganizeEmails(

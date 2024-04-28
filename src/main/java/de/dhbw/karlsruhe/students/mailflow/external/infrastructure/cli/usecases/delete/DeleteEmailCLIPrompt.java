@@ -7,6 +7,9 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxS
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
 import java.io.FileNotFoundException;
 
+/**
+ * @author seiferla
+ */
 public class DeleteEmailCLIPrompt extends BaseCLIPrompt {
 
   private final Email email;
