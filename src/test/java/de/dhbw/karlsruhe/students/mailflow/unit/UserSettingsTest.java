@@ -17,6 +17,7 @@ class UserSettingsTest {
     UserSettings userSettings = new UserSettings(address, previousSignature);
     UserSettings otherUserSettings = new UserSettings(address, newSignature);
 
+    // Act
     Set<UserSettings> userSettingsSet = new HashSet<>();
     userSettingsSet.add(userSettings);
     userSettingsSet.add(otherUserSettings);
