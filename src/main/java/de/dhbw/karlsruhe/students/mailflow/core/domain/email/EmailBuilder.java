@@ -87,4 +87,9 @@ public final class EmailBuilder {
     this.headers = metadata.headers();
     return this;
   }
+
+  public EmailBuilder withHeaders(List<Header> headers) {
+    this.headers = headers;
+    return this;
+  }
 }

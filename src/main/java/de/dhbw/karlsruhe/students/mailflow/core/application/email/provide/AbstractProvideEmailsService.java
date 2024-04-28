@@ -20,6 +20,7 @@ abstract class AbstractProvideEmailsService implements ProvideEmailsUseCase {
     this.authSession = authSession;
   }
 
+  @Override
   public int getEmailCount() {
     try {
       return provideEmails().size();

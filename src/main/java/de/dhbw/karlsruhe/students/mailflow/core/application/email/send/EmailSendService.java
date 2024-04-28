@@ -11,6 +11,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.MailboxRepository;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Header;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Subject;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,6 +30,7 @@ public class EmailSendService implements EmailSendUseCase {
   private List<Address> toAddresses;
   private String message;
   private Subject subject;
+  private List<Header> headers;
 
   public EmailSendService(
       AuthSessionUseCase authSession,
@@ -77,6 +79,7 @@ public class EmailSendService implements EmailSendUseCase {
             .withRecipientsTo(toAddresses)
             .withRecipientsBCC(bccAddresses)
             .withRecipientsCC(ccAddresses)
+            .withHeaders(headers)
             .withContent(message)
             .build();
 
@@ -134,5 +137,10 @@ public class EmailSendService implements EmailSendUseCase {
   @Override
   public void setMessage(String message) {
     this.message = message;
+  }
+
+  @Override
+  public void setHeaders(List<Header> headers) {
+    this.headers = headers;
   }
 }

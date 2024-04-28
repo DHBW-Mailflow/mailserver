@@ -7,6 +7,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Email
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.EmailMetadata;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.SentDate;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Subject;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -24,7 +25,7 @@ public final class Email extends AggregateRoot<EmailId> {
   private Email(
       EmailId id, String content, EmailMetadata emailMetadata, Set<Attachment> attachments) {
     super(id);
-    this.emailMetadata = emailMetadata;
+    this.emailMetadata = EmailMetadata.withNewId(emailMetadata, id.id());
     this.content = content;
     this.attachments = attachments;
   }
@@ -82,5 +83,12 @@ public final class Email extends AggregateRoot<EmailId> {
 
   public Email withoutBCCRecipients() {
     return Email.create(getContent(), emailMetadata.withoutBCCRecipients());
+  }
+
+  public String[] getHeaderValues(String headerKey) {
+    return emailMetadata.headers().stream()
+        .filter(header -> header.key().equals(headerKey))
+        .flatMap(header -> Arrays.stream(header.values()))
+        .toArray(String[]::new);
   }
 }

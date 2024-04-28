@@ -1,5 +1,6 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.showemails;
 
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.answer.UCCollectionAnswerEmails;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.organize.MarkEmailUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.UCCollectionProvideEmails;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
@@ -13,14 +14,17 @@ public class ShowEmailTypesCLIPrompt extends BaseCLIPrompt {
 
   private final UCCollectionProvideEmails provideEmails;
   private final MarkEmailUseCase markEmailUseCase;
+  private final UCCollectionAnswerEmails answerEmails;
 
   public ShowEmailTypesCLIPrompt(
       BaseCLIPrompt previousPrompt,
       UCCollectionProvideEmails provideEmails,
-      MarkEmailUseCase markEmailUseCase) {
+      MarkEmailUseCase markEmailUseCase,
+      UCCollectionAnswerEmails answerEmails) {
     super(previousPrompt);
     this.provideEmails = provideEmails;
     this.markEmailUseCase = markEmailUseCase;
+    this.answerEmails = answerEmails;
   }
 
   @Override
@@ -42,22 +46,24 @@ public class ShowEmailTypesCLIPrompt extends BaseCLIPrompt {
     Map<String, BaseCLIPrompt> promptMap = new LinkedHashMap<>();
     promptMap.put(
         "Sent (%s)".formatted(sentEmails),
-        new ShowEmailsCLIPrompt(this, provideEmails.provideSentEmailsUseCase(), markEmailUseCase));
+        new ShowEmailsCLIPrompt(
+            this, provideEmails.provideSentEmailsUseCase(), markEmailUseCase, answerEmails));
     promptMap.put(
         "Spam (%s)".formatted(spamEmails),
-        new ShowEmailsCLIPrompt(this, provideEmails.provideSpamEmailsService(), markEmailUseCase));
+        new ShowEmailsCLIPrompt(
+            this, provideEmails.provideSpamEmailsService(), markEmailUseCase, answerEmails));
     promptMap.put(
         "Deleted (%s)".formatted(deletedEmails),
         new ShowEmailsCLIPrompt(
-            this, provideEmails.provideDeletedEmailsUseCase(), markEmailUseCase));
+            this, provideEmails.provideDeletedEmailsUseCase(), markEmailUseCase, answerEmails));
     promptMap.put(
         "Inbox unread (%s)".formatted(unreadEmails),
         new ShowEmailsCLIPrompt(
-            this, provideEmails.provideInboxUnreadEmailsUseCase(), markEmailUseCase));
+            this, provideEmails.provideInboxUnreadEmailsUseCase(), markEmailUseCase, answerEmails));
     promptMap.put(
         "Inbox read (%s)".formatted(readEmails),
         new ShowEmailsCLIPrompt(
-            this, provideEmails.provideInboxReadEmailsUseCase(), markEmailUseCase));
+            this, provideEmails.provideInboxReadEmailsUseCase(), markEmailUseCase, answerEmails));
     return readUserInputWithOptions(promptMap);
   }
 }

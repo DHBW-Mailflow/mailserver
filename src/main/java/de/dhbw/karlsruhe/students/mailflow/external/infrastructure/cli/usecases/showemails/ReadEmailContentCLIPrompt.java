@@ -7,6 +7,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.showemails.answer.AnswerSenderCLIPrompt;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,50 +15,60 @@ import java.util.Map;
 /**
  * @author seiferla
  */
-public class ShowEmailsCLIPrompt extends BaseCLIPrompt {
+public class ReadEmailContentCLIPrompt extends BaseCLIPrompt {
 
-  private final ProvideEmailsUseCase provideEmailsUseCase;
+  private final Email email;
+
   private final MarkEmailUseCase markEmailUseCase;
+  private final boolean printContent = true;
   private final UCCollectionAnswerEmails answerEmails;
+  private final ProvideEmailsUseCase provideEmailsUseCase;
 
-  ShowEmailsCLIPrompt(
+  public ReadEmailContentCLIPrompt(
       BaseCLIPrompt previousPrompt,
-      ProvideEmailsUseCase provideEmailsUseCase,
+      Email email,
       MarkEmailUseCase markEmailUseCase,
-      UCCollectionAnswerEmails answerEmails) {
+      UCCollectionAnswerEmails answerEmails,
+      ProvideEmailsUseCase provideEmailsUseCase) {
     super(previousPrompt);
-    this.provideEmailsUseCase = provideEmailsUseCase;
+    this.email = email;
     this.markEmailUseCase = markEmailUseCase;
     this.answerEmails = answerEmails;
+    this.provideEmailsUseCase = provideEmailsUseCase;
   }
 
   @Override
   public void start() {
     super.start();
-    String mailboxString = provideEmailsUseCase.getMailboxName();
-    printDefault("This are your %s emails:".formatted(mailboxString));
+    markAsRead();
+    final List<Email> previousEmails = getPreviousMails();
+    printDefault(formatEmailContent(email, previousEmails));
+    BaseCLIPrompt action = showActionMenuPrompt();
+    action.start();
+  }
+
+  private void markAsRead() {
     try {
-      List<Email> emailList = provideEmailsUseCase.provideEmails();
-      BaseCLIPrompt action = showActionMenuPrompt(emailList);
-      action.start();
+      markEmailUseCase.mark(email);
     } catch (MailboxSavingException | MailboxLoadingException e) {
-      printWarning("Could not read %s emails".formatted(mailboxString));
+      printWarning("Could not mark email as read");
     }
   }
 
-  private BaseCLIPrompt showActionMenuPrompt(List<Email> emailList) {
-    if (emailList.isEmpty()) {
-      printDefault("No emails found");
-      return getPreviousPrompt();
+  private List<Email> getPreviousMails() {
+    try {
+      return provideEmailsUseCase.provideEmails();
+    } catch (MailboxSavingException | MailboxLoadingException e) {
+      printWarning("could not retrieve previous emails");
     }
-    printDefault("Which email do you want to read?");
+    return List.of();
+  }
+
+  private BaseCLIPrompt showActionMenuPrompt() {
     Map<String, BaseCLIPrompt> promptMap = new LinkedHashMap<>();
-    for (Email email : emailList) {
-      promptMap.put(
-          formatEmailListing(email),
-          new ReadEmailContentCLIPrompt(
-              this, email, markEmailUseCase, answerEmails, provideEmailsUseCase));
-    }
+    promptMap.put(
+        "Answer Sender",
+        new AnswerSenderCLIPrompt(this, answerEmails.answerSenderEmailService(), email));
     return readUserInputWithOptions(promptMap);
   }
 }

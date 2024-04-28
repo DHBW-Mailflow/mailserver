@@ -1,6 +1,7 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli;
 
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.server.Server;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -162,9 +163,48 @@ public class BaseCLIPrompt implements Server {
     }
   }
 
-  public String formatEmail(Email email) {
+  public String formatEmailListing(Email email) {
     return "%s: %s - %s"
         .formatted(
             email.getSender(), email.getSubject().subject(), email.getSendDate().formattedDate());
+  }
+
+  public String formatEmailContent(Email email, List<Email> previousEmails) {
+    if (!previousEmails.isEmpty()) {
+      return formatEmailContent(previousEmails.removeLast(), previousEmails);
+    }
+
+    String recipientsTo = formatAddressList(email.getRecipientTo());
+    String recipientsCC = formatAddressList(email.getRecipientCC());
+    String recipientsBCC = formatAddressList(email.getRecipientBCC());
+
+    return """
+        Sender: %s
+        To: %s
+        CC: %s
+        BCC: %s
+        Date: %s
+        %s
+        """
+        .formatted(
+            email.getSender(),
+            recipientsTo,
+            recipientsCC,
+            recipientsBCC,
+            email.getSendDate().formattedDate(),
+            email.getContent());
+  }
+
+  private String formatAddressList(List<Address> addresses) {
+    if (addresses == null || addresses.isEmpty()) {
+      return "-";
+    }
+
+    StringBuilder builder = new StringBuilder();
+    for (Address address : addresses) {
+      builder.append(address.toString()).append(",");
+    }
+    builder.deleteCharAt(builder.length() - 1); // remove trailing ","
+    return builder.toString();
   }
 }
