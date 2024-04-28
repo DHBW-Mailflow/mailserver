@@ -22,7 +22,6 @@ public class ProvideAllEmailsService extends AbstractProvideEmailsService {
 
   @Override
   public List<Email> provideEmails() throws MailboxSavingException, MailboxLoadingException {
-
     List<Email> allEmails = new ArrayList<>();
     for (MailboxType type : MailboxType.values()) {
       Mailbox mailbox =

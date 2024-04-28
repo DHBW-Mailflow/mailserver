@@ -11,9 +11,10 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.MailboxRepository;
  */
 public record UCCollectionProvideEmails(
     ProvideDeletedEmailsService provideDeletedEmailsUseCase,
-    ProvideSpamEmailsService provideSpamEmailsUseCase,
+    ProvideSpamEmailsService provideSpamEmailsService,
     ProvideInboxReadEmailsService provideInboxReadEmailsUseCase,
     ProvideInboxUnreadEmailsService provideInboxUnreadEmailsUseCase,
+    ProvideAllInboxEmailsService provideAllInboxEmailsService,
     ProvideSentEmailsService provideSentEmailsUseCase,
     ProvideAllReadEmailsService provideAllReadEmailsService,
     ProvideAllUnreadEmailsService provideAllUnreadEmailsService,
@@ -26,6 +27,7 @@ public record UCCollectionProvideEmails(
         new ProvideSpamEmailsService(authSession, mailboxRepository),
         new ProvideInboxReadEmailsService(authSession, mailboxRepository),
         new ProvideInboxUnreadEmailsService(authSession, mailboxRepository),
+        new ProvideAllInboxEmailsService(authSession, mailboxRepository),
         new ProvideSentEmailsService(authSession, mailboxRepository),
         new ProvideAllReadEmailsService(authSession, mailboxRepository),
         new ProvideAllUnreadEmailsService(authSession, mailboxRepository),
