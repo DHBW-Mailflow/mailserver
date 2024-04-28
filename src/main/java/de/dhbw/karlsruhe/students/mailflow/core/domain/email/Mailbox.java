@@ -48,6 +48,7 @@ public final class Mailbox extends AggregateRoot<MailboxId> {
    * @param email
    * @param isUnread
    */
+  @Deprecated
   public void deliverEmail(Email email, boolean isUnread) {
     this.emails.put(email, Set.of(isUnread ? Label.UNREAD : Label.READ));
   }
