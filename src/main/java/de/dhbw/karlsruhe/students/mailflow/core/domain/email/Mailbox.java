@@ -42,8 +42,32 @@ public final class Mailbox extends AggregateRoot<MailboxId> {
     return emails.keySet().stream().toList();
   }
 
+  /**
+   * @deprecated, use {@code #markWithLabel} instead
+   *
+   * @param email
+   * @param isUnread
+   */
+  @Deprecated(forRemoval = true)
   public void deliverEmail(Email email, boolean isUnread) {
     this.emails.put(email, Set.of(isUnread ? Label.UNREAD : Label.READ));
+  }
+
+  /**
+   * Deletes this e-mail from this mailbox. This action is idempotent.
+   *
+   * @param email
+   * @return {@link Optional#empty()} when the e-mail was not in this inbox, otherwise returns the
+   *         Set of labels the email had assigned
+   */
+  public Optional<Set<Label>> deleteEmail(Email email) {
+    Set<Label> labels = this.emails.remove(email);
+
+    if (labels == null) {
+      return Optional.empty();
+    }
+
+    return Optional.of(labels);
   }
 
   /**
@@ -64,7 +88,6 @@ public final class Mailbox extends AggregateRoot<MailboxId> {
 
   @Override
   public String toString() {
-
     return this.address.toString();
   }
 

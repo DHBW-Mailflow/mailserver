@@ -2,12 +2,7 @@ package de.dhbw.karlsruhe.students.mailflow.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import java.io.File;
-import java.util.Map;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.io.TempDir;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EnumSource;
+
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
@@ -15,11 +10,17 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxS
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.parsing.FileMailboxRepository;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.parsing.JSONMailboxConverter;
+import java.io.File;
+import java.util.Map;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 /**
  * @author jens1o
  */
-public class FileMailboxRepositoryIntegrationTest {
+class FileMailboxRepositoryIntegrationTest {
     private File allMailboxesDirectory;
 
     @BeforeEach

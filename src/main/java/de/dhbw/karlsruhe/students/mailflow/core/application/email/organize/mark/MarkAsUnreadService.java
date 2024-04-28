@@ -34,4 +34,9 @@ public class MarkAsUnreadService implements MarkEmailUseCase {
       mailboxRepository.save(mailbox);
     }
   }
+
+  @Override
+  public String getActionName() {
+    return "unread";
+  }
 }

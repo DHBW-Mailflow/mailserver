@@ -34,4 +34,9 @@ public class MarkAsReadService implements MarkEmailUseCase {
       mailboxRepository.save(mailbox);
     }
   }
+
+  @Override
+  public String getActionName() {
+    return "read";
+  }
 }

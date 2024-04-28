@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthSessionUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.changesignature.ChangeSignatureService;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.user.User;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserSettings;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserSettingsRepository;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.LoadSettingsException;
@@ -14,6 +13,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.SaveSetti
 import org.junit.jupiter.api.Test;
 
 class ChangeSignatureTest {
+  Address testAddress = new Address("test", "example.com");
 
   UserSettingsRepository mockUserSettingsRepository =
       new UserSettingsRepository() {
@@ -22,32 +22,11 @@ class ChangeSignatureTest {
 
         @Override
         public UserSettings getSettings(Address address) {
-          Address testAddress = new Address("test", "example.com");
           return new UserSettings(testAddress, "Test Signature");
         }
       };
 
-  AuthSessionUseCase mockAuthSession =
-      new AuthSessionUseCase() {
-        @Override
-        public boolean isLoggedIn() {
-          return false;
-        }
-
-        @Override
-        public Address getSessionUserAddress() throws IllegalStateException {
-          return new Address("test", "example.com");
-        }
-
-        @Override
-        public void ensureLoggedIn() {}
-
-        @Override
-        public void removeSessionUser() {}
-
-        @Override
-        public void setSessionUser(User user) {}
-      };
+  AuthSessionUseCase mockAuthSession = new MockedAuthorizedSession(testAddress);
 
   ChangeSignatureService changeSignatureService =
       new ChangeSignatureService(mockUserSettingsRepository, mockAuthSession);

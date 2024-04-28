@@ -1,6 +1,7 @@
 package de.dhbw.karlsruhe.students.mailflow.core.application.email.deliver_services;
 
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.MailboxRepository;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.Label;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
 
 /**
@@ -8,6 +9,6 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
  */
 public class DeliverInSentService extends DeliverIntoFolderService {
   public DeliverInSentService(MailboxRepository mailboxRepository) {
-    super(MailboxType.SENT, mailboxRepository, true);
+    super(MailboxType.SENT, mailboxRepository, new Label[] {Label.READ});
   }
 }

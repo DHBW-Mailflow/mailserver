@@ -7,4 +7,10 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxS
 public interface MarkEmailUseCase {
 
   void mark(Email email) throws MailboxSavingException, MailboxLoadingException;
+
+  /**
+   * @return the verb that describes the action name that should fit in the following sentence:
+   *         "Which email do you want to mark as %s?"
+   */
+  String getActionName();
 }
