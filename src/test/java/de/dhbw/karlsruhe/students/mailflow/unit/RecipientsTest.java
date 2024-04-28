@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 class RecipientsTest {
 
   @Test
-  public void testNullValues() {
+  void testNullValues() {
     Recipients recipients = new Recipients(null, null, null);
     assertEquals(List.of(), recipients.to());
     assertEquals(List.of(), recipients.cc());
@@ -18,7 +18,7 @@ class RecipientsTest {
   }
 
   @Test
-  public void testWithoutBCC() {
+  void testWithoutBCC() {
     // Arrange
     Address addressTo = new Address("some", "domain.de");
     Address addressCC = new Address("another", "domain.de");
