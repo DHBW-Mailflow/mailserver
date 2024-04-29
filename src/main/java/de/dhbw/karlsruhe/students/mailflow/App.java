@@ -21,6 +21,7 @@ import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.MainCLIPrompt;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.parsing.FileMailboxRepository;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.parsing.JSONMailboxConverter;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.parsing.ScheduledSendTimeParserService;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.mailbox_rules.spam.DetectSpamOnIncomingMailMailboxRule;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.preferences.FileUserRepository;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.preferences.FileUserSettingsRepository;
@@ -54,7 +55,8 @@ public class App {
     final UCCollectionSearchEmail searchEmails =
         UCCollectionSearchEmail.init(provideEmails.provideAllEmailsService());
     final UCCollectionSettings collectionSettings =
-        UCCollectionSettings.init(authSession, userSettingsRepository);
+        UCCollectionSettings.init(authSession, userSettingsRepository,
+            new ScheduledSendTimeParserService());
     final UCCollectionAnswerEmails answerEmails = UCCollectionAnswerEmails.init(sendEmails);
 
     /// Start
