@@ -1,30 +1,26 @@
-package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases;
+package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.delete;
 
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.organize.mark.MarkEmailUseCase;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.organize.DeleteEmailsUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.ProvideEmailsUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.showemails.ReadEmailCLIPrompt;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @author Jonas-Karl
- */
-public class MarkEmailsCLIPrompt extends BaseCLIPrompt {
+public class ShowDeleteEmailsCLIPrompt extends BaseCLIPrompt {
 
-  private final MarkEmailUseCase markUseCase;
+  private final DeleteEmailsUseCase deleteEmailsUseCase;
   private final ProvideEmailsUseCase provideEmailsUseCase;
 
-  public MarkEmailsCLIPrompt(
+  public ShowDeleteEmailsCLIPrompt(
       BaseCLIPrompt previousPrompt,
       ProvideEmailsUseCase provideEmailsUseCase,
-      MarkEmailUseCase markUseCase) {
+      DeleteEmailsUseCase deleteEmailsUseCase) {
     super(previousPrompt);
-    this.markUseCase = markUseCase;
+    this.deleteEmailsUseCase = deleteEmailsUseCase;
     this.provideEmailsUseCase = provideEmailsUseCase;
   }
 
@@ -41,15 +37,15 @@ public class MarkEmailsCLIPrompt extends BaseCLIPrompt {
     }
   }
 
-  private BaseCLIPrompt showActionMenuPrompt(List<Email> emailList) {
-    if (emailList.isEmpty()) {
+  private BaseCLIPrompt showActionMenuPrompt(List<Email> filteredEmails) {
+    if (filteredEmails.isEmpty()) {
       printDefault("No emails found");
       return getPreviousPrompt();
     }
-    printDefault("Which email do you want to mark as %s?".formatted(markUseCase.getActionName()));
+    printDefault("Which email do you want to delete?");
     Map<String, BaseCLIPrompt> promptMap = new LinkedHashMap<>();
-    for (Email email : emailList) {
-      promptMap.put(formatEmailListing(email), new ReadEmailCLIPrompt(this, email, markUseCase));
+    for (Email email : filteredEmails) {
+      promptMap.put(formatEmail(email), new DeleteEmailCLIPrompt(this, email, deleteEmailsUseCase));
     }
     return readUserInputWithOptions(promptMap);
   }

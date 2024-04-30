@@ -1,7 +1,7 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.showemails;
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.answer.UCCollectionAnswerEmails;
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.organize.MarkEmailUseCase;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.organize.mark.MarkEmailUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.UCCollectionProvideEmails;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
 import java.util.LinkedHashMap;

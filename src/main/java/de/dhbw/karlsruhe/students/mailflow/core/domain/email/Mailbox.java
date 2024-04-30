@@ -112,4 +112,13 @@ public final class Mailbox extends AggregateRoot<MailboxId> {
   public void markWithLabel(Email email, Label... label) {
     emails.put(email, Set.of(label));
   }
+
+
+  /**
+   * Deletes this e-mail from this mailbox. This action is idempotent.
+   *
+   * @param email
+   * @return {@link Optional#empty()} when the e-mail was not in this inbox, otherwise returns the
+   *         Set
+   */
 }

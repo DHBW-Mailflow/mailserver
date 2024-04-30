@@ -3,6 +3,7 @@ package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.organize.UCCollectionOrganizeEmails;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.UCCollectionProvideEmails;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.delete.ShowDeleteEmailsCLIPrompt;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -59,6 +60,10 @@ public class OrganizeEmailsCLIPrompt extends BaseCLIPrompt {
             this,
             provideEmails.provideSpamEmailsService(),
             organizeUseCases.markAsNotSpamService()));
+    promptMap.put(
+        "Delete Emails",
+        new ShowDeleteEmailsCLIPrompt(
+            this, provideEmails.provideAllEmailsService(), organizeUseCases.deleteEmailService()));
     return readUserInputWithOptions(promptMap);
   }
 }
