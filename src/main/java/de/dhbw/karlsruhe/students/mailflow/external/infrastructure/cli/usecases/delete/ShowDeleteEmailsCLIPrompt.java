@@ -45,7 +45,8 @@ public class ShowDeleteEmailsCLIPrompt extends BaseCLIPrompt {
     printDefault("Which email do you want to delete?");
     Map<String, BaseCLIPrompt> promptMap = new LinkedHashMap<>();
     for (Email email : filteredEmails) {
-      promptMap.put(formatEmail(email), new DeleteEmailCLIPrompt(this, email, deleteEmailsUseCase));
+      promptMap.put(
+          formatEmailListing(email), new DeleteEmailCLIPrompt(this, email, deleteEmailsUseCase));
     }
     return readUserInputWithOptions(promptMap);
   }
