@@ -14,13 +14,13 @@ import java.util.Scanner;
  *
  * @author Jonas-Karl, jens1o
  */
-public class BaseCLIPrompt implements Server {
+public abstract class BaseCLIPrompt implements Server {
   private static final int MAX_ATTEMPTS = 3;
   private final BaseCLIPrompt previousPrompt;
   private int attemptCount;
   private Scanner scanner;
 
-  public BaseCLIPrompt(BaseCLIPrompt previousPrompt) {
+  protected BaseCLIPrompt(BaseCLIPrompt previousPrompt) {
     this.previousPrompt = previousPrompt;
   }
 

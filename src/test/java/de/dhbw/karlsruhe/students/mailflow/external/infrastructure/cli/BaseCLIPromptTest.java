@@ -18,17 +18,19 @@ class BaseCLIPromptTest {
   }
 
   @Test
-  void readUserInputWithOptions(){
+  void readUserInputWithOptions() {
     // Arrange
     System.setIn(new ByteArrayInputStream("1\n".getBytes()));
-    final BaseCLIPrompt baseCLIPrompt = new BaseCLIPrompt(null);
+    final BaseCLIPrompt baseCLIPrompt = new BaseCLIPrompt(null) {
+
+    };
     baseCLIPrompt.start();
 
     // Act
-    var expectedResult = new BaseCLIPrompt(null);
+    var expectedResult = new BaseCLIPrompt(null) {};
 
     final Map<String, BaseCLIPrompt> options = new LinkedHashMap<>();
-    options.put("First option", new BaseCLIPrompt(baseCLIPrompt));
+    options.put("First option", new BaseCLIPrompt(baseCLIPrompt) {});
     options.put("Second option", expectedResult);
     final var resultPrompt = baseCLIPrompt.readUserInputWithOptions(options);
 
