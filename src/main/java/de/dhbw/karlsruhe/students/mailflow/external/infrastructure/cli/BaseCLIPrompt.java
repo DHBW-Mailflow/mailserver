@@ -20,7 +20,7 @@ public abstract class BaseCLIPrompt implements Server {
   private int attemptCount;
   private Scanner scanner;
 
-  public BaseCLIPrompt(BaseCLIPrompt previousPrompt) {
+  protected BaseCLIPrompt(BaseCLIPrompt previousPrompt) {
     this.previousPrompt = previousPrompt;
   }
 
