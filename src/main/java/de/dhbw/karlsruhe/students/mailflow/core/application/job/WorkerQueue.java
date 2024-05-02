@@ -1,7 +1,6 @@
 package de.dhbw.karlsruhe.students.mailflow.core.application.job;
 
 import java.time.ZonedDateTime;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 

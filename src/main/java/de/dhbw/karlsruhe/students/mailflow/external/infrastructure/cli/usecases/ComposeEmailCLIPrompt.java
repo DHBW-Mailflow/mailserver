@@ -57,7 +57,7 @@ public final class ComposeEmailCLIPrompt extends BaseCLIPrompt {
             ucCollectionSettings.scheduledSendTimeParserUseCase()
                 .parseScheduledSendDateTime(userResponse);
       } catch (IllegalArgumentException e) {
-        printWarning("Couldn't parse given time, please try again.");
+        printWarning("Invalid time provided: %s".formatted(e.getMessage()));
         continue;
       }
 

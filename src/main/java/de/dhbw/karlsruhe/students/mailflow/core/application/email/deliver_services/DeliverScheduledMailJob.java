@@ -36,7 +36,7 @@ public class DeliverScheduledMailJob implements Job {
       for (Address recipient : recipients) {
         deliverUseCase.deliverEmailTo(recipient, email);
       }
-    } catch (Throwable e) {
+    } catch (Exception e) {
       throw new JobExecutionException(e);
     }
   }
