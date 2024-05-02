@@ -15,6 +15,6 @@ public class LocalUserCreator implements UserCreator {
   @Override
   public User createUser(Address email, String password) throws HashingFailedException {
     String salt = PasswordHasher.generateSalt();
-    return new User(email, hashPassword(password.trim(), salt), salt);
+    return new User(email, hashPassword(password, salt), salt);
   }
 }

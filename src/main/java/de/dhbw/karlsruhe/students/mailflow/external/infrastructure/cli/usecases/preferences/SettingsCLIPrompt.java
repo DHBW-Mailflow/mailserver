@@ -29,8 +29,7 @@ public class SettingsCLIPrompt extends BaseCLIPrompt {
     Map<String, BaseCLIPrompt> promptMap = new LinkedHashMap<>();
 
     promptMap.put("Change password",
-        new ChangePasswordCLIPrompt(this, collectionSettings.changePasswordUseCase(),
-            collectionSettings.authSessionUseCase()));
+        new ChangePasswordCLIPrompt(this, collectionSettings.changePasswordUseCase()));
 
     promptMap.put(
         "Change signature",

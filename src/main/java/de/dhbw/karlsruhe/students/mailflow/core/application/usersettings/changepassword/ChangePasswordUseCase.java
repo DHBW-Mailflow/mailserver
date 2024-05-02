@@ -7,7 +7,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Addre
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.SaveUserException;
 
 public interface ChangePasswordUseCase {
-  void changePassword(Address user, String newPassword)
+  void changePassword(String newPassword)
       throws AuthorizationException, LoadingUsersException, SaveUserException,
       HashingFailedException;
 }

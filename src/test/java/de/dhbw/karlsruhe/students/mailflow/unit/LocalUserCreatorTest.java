@@ -30,7 +30,7 @@ class LocalUserCreatorTest {
     var localUserAuthenticator = new LocalUserCreator();
     User user =
         localUserAuthenticator.createUser(expectedUser.getAddress(), expectedUser.getPassword());
-    assertThat(user).isLenientEqualsToByIgnoringFields(expectedUser, "password");
+    assertThat(user).isLenientEqualsToByIgnoringFields(expectedUser, "password", "salt");
     assertFalse(user.getPassword().isEmpty());
   }
 }

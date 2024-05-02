@@ -22,10 +22,11 @@ public class ChangePasswordService implements ChangePasswordUseCase {
   }
 
   @Override
-  public void changePassword(Address userAddress, String newPassword)
+  public void changePassword(String newPassword)
       throws AuthorizationException, LoadingUsersException, SaveUserException,
       HashingFailedException {
-    Optional<User> userFindResult = repository.findByEmail(userAddress);
+    Optional<User> userFindResult =
+        repository.findByEmail(authSessionUseCase.getSessionUserAddress());
 
     if (userFindResult.isEmpty()) {
       throw new IllegalStateException(

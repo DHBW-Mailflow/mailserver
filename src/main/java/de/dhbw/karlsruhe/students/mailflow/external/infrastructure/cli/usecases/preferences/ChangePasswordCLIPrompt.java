@@ -11,24 +11,22 @@ import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPr
 public class ChangePasswordCLIPrompt extends BaseCLIPrompt {
 
   private final ChangePasswordUseCase changePasswordUseCase;
-  private final AuthSessionUseCase authSession;
 
 
   protected ChangePasswordCLIPrompt(BaseCLIPrompt previousPrompt,
-      ChangePasswordUseCase changePasswordUseCase, AuthSessionUseCase authSession) {
+      ChangePasswordUseCase changePasswordUseCase) {
     super(previousPrompt);
     this.changePasswordUseCase = changePasswordUseCase;
-    this.authSession = authSession;
   }
 
   @Override
   public void start() {
     super.start();
 
-    String newPassword = simplePrompt("Enter new password:").trim();
+    String newPassword = simplePrompt("Enter new password:");
 
     try {
-      changePasswordUseCase.changePassword(authSession.getSessionUserAddress(), newPassword);
+      changePasswordUseCase.changePassword(newPassword);
       printDefault("Password updated successfully");
       getPreviousPrompt().start();
     } catch (AuthorizationException | LoadingUsersException | SaveUserException
