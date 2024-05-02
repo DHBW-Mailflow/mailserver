@@ -1,6 +1,7 @@
 package de.dhbw.karlsruhe.students.mailflow.core.application.email.send;
 
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
+import java.time.ZonedDateTime;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.InvalidRecipients;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
@@ -23,4 +24,6 @@ public interface EmailSendUseCase {
   void setMessage(String message);
 
   void setPreviousMail(Email emailToAnswer);
+
+  void setScheduledSendDate(ZonedDateTime sendDate);
 }

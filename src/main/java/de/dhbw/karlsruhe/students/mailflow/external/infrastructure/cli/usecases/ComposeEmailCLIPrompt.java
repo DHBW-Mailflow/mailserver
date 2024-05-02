@@ -1,5 +1,6 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases;
 
+import java.time.ZonedDateTime;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.send.EmailSendUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.UCCollectionSettings;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.InvalidRecipients;
@@ -34,7 +35,35 @@ public final class ComposeEmailCLIPrompt extends BaseCLIPrompt {
       return;
     }
     askTextContent();
+    askScheduledSend();
     sendEmail();
+  }
+
+  private void askScheduledSend() {
+    while (true) {
+      String userResponse = simplePrompt(
+          "In case you want to schedule sending the e-mail at a later time,"
+              + " please now specify the time to send the mail [leave empty for immediate sending, pattern YYYY-MM-DD HH:mm]:");
+
+      userResponse = userResponse.trim();
+
+      if (userResponse.isEmpty()) {
+        break;
+      }
+
+      ZonedDateTime scheduledDate;
+      try {
+        scheduledDate =
+            ucCollectionSettings.scheduledSendTimeParserUseCase()
+                .parseScheduledSendDateTime(userResponse);
+      } catch (IllegalArgumentException e) {
+        printWarning("Invalid time provided: %s".formatted(e.getMessage()));
+        continue;
+      }
+
+      emailSendUseCase.setScheduledSendDate(scheduledDate);
+      break;
+    }
   }
 
   private void sendEmail() {

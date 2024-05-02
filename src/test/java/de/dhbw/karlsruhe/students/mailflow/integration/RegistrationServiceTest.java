@@ -48,9 +48,8 @@ class RegistrationServiceTest {
     // Assert
     Assertions.assertDoesNotThrow(
         // Act
-        () ->
-            registerService.register(
-                notYetRegisteredUser.email().toString(), notYetRegisteredUser.password()));
+        () -> registerService.register(
+            notYetRegisteredUser.email().toString(), notYetRegisteredUser.password()));
   }
 
   @Test
@@ -84,8 +83,22 @@ class RegistrationServiceTest {
     Assertions.assertThrows(
         AuthorizationException.class,
         // Act
-        () ->
-            registerService.register(
-                alreadyRegisteredUser.email().toString(), alreadyRegisteredUser.password()));
+        () -> registerService.register(
+            alreadyRegisteredUser.email().toString(), alreadyRegisteredUser.password()));
+  }
+
+  @Test
+  /**
+   * #BugFix
+   */
+  void registerWithInvalidEmail() {
+    // Arrange
+    RegistrationService registrationService = new RegistrationService(null, null);
+
+    // Assert
+    Assertions.assertThrows(
+        AuthorizationException.class,
+        // Act
+        () -> registrationService.register("", "asd"));
   }
 }

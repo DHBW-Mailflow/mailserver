@@ -1,5 +1,6 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli;
 
+import de.dhbw.karlsruhe.students.mailflow.core.application.job.WorkerQueue;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.server.Server;
@@ -28,6 +29,8 @@ public abstract class BaseCLIPrompt implements Server {
   /** Starts the server or CLIPrompt */
   @Override
   public void start() {
+    WorkerQueue.getInstance().performDueJobs();
+
     scanner = new Scanner(System.in);
   }
 

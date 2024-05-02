@@ -15,29 +15,35 @@ import java.util.Optional;
  */
 public class RegistrationService implements RegisterUseCase {
 
-    private final UserRepository userRepository;
+  private final UserRepository userRepository;
 
-    private final UserCreator userCreator;
+  private final UserCreator userCreator;
 
-    public RegistrationService(UserRepository userRepository, UserCreator userCreator) {
-        this.userRepository = userRepository;
-        this.userCreator = userCreator;
-    }
+  public RegistrationService(UserRepository userRepository, UserCreator userCreator) {
+    this.userRepository = userRepository;
+    this.userCreator = userCreator;
+  }
 
   @Override
   public boolean register(String email, String password)
       throws AuthorizationException, LoadingUsersException, SaveUserException {
-    Address address = Address.from(email);
-    Optional<User> user = userRepository.findByEmail(address);
-        if (user.isPresent()) {
-            throw new AuthorizationException("User is already registered");
-        }
-
-        try {
-      User toRegister = userCreator.createUser(address, password);
-            return userRepository.save(toRegister);
-        } catch (SaveUserException | HashingFailedException e) {
-            throw new AuthorizationException("Could not save user");
-        }
+    Address address;
+    try {
+      address = Address.from(email);
+    } catch (IllegalArgumentException e) {
+      throw new AuthorizationException("Invalid e-mail supplied", e);
     }
+
+    Optional<User> user = userRepository.findByEmail(address);
+    if (user.isPresent()) {
+      throw new AuthorizationException("User is already registered");
+    }
+
+    try {
+      User toRegister = userCreator.createUser(address, password);
+      return userRepository.save(toRegister);
+    } catch (SaveUserException | HashingFailedException e) {
+      throw new AuthorizationException("Could not save user");
+    }
+  }
 }

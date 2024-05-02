@@ -78,6 +78,11 @@ public final class EmailBuilder {
     return this;
   }
 
+  public EmailBuilder withSentDate(SentDate sentDate) {
+    this.sentDate = sentDate;
+    return this;
+  }
+
   public EmailBuilder withMetaData(EmailMetadata metadata) {
     this.recipientsBCC = metadata.recipients().bcc();
     this.recipientsCC = metadata.recipients().cc();

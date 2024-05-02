@@ -6,6 +6,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.application.email.organize.UCCol
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.provide.UCCollectionProvideEmails;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.UCCollectionSearchEmail;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.send.EmailSendUseCase;
+import de.dhbw.karlsruhe.students.mailflow.core.application.job.WorkerQueue;
 import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.UCCollectionSettings;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.ComposeEmailCLIPrompt;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.LoginCLIPrompt;
@@ -84,11 +85,12 @@ public final class MainCLIPrompt extends BaseCLIPrompt {
   public void start() {
     super.start();
     while (true) {
-
       while (!collectionAuth.authSession().isLoggedIn()) {
         BaseCLIPrompt registerOrEmailPrompt = showRegisterOrEmailPrompt();
         registerOrEmailPrompt.start();
       }
+
+      WorkerQueue.getInstance().performDueJobs();
 
       BaseCLIPrompt action = showActionMenuPrompt();
       action.start();
