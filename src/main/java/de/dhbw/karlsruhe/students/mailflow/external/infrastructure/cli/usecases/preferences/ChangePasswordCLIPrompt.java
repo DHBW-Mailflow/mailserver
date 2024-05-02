@@ -1,6 +1,5 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.preferences;
 
-import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthSessionUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.changepassword.ChangePasswordUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.AuthorizationException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.HashingFailedException;
