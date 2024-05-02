@@ -9,7 +9,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.InvalidSa
 /**
  * @author seiferla
  */
-public class User {
+public final class User {
 
   private Address address;
   private String password;
