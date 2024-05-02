@@ -90,7 +90,7 @@ class RegistrationServiceTest {
   /**
    * #BugFix
    */
-  void registerWithInvalidgetAddress() {
+  void registerWithInvalidAddress() {
     // Arrange
     RegistrationService registrationService = new RegistrationService(null, null);
 
