@@ -46,11 +46,10 @@ public class MarkEmailsCLIPrompt extends BaseCLIPrompt {
       printDefault("No emails found");
       return getPreviousPrompt();
     }
-    printDefault(
-        "Which email do you want to mark as %s?".formatted(markUseCase.getActionName()));
+    printDefault("Which email do you want to mark as %s?".formatted(markUseCase.getActionName()));
     Map<String, BaseCLIPrompt> promptMap = new LinkedHashMap<>();
     for (Email email : emailList) {
-      promptMap.put(formatEmail(email), new ReadEmailCLIPrompt(this, email, markUseCase, false));
+      promptMap.put(formatEmailListing(email), new ReadEmailCLIPrompt(this, email, markUseCase));
     }
     return readUserInputWithOptions(promptMap);
   }

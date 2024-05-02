@@ -10,6 +10,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Subje
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import javax.annotation.Nullable;
 
 /**
  * Representation of an e-mail as AggregateRoot
@@ -20,22 +21,37 @@ public final class Email extends AggregateRoot<EmailId> {
   private final EmailMetadata emailMetadata;
   private final String content;
   private final Set<Attachment> attachments;
+  private final Email previousMail;
 
   private Email(
-      EmailId id, String content, EmailMetadata emailMetadata, Set<Attachment> attachments) {
+      EmailId id,
+      String content,
+      EmailMetadata emailMetadata,
+      Set<Attachment> attachments,
+      Email previousMail) {
     super(id);
     this.emailMetadata = emailMetadata;
     this.content = content;
     this.attachments = attachments;
+    this.previousMail = previousMail;
   }
 
   public static Email create(
-      String content, EmailMetadata emailMetadata, Set<Attachment> attachments) {
-    return new Email(EmailId.createUnique(), content, emailMetadata, attachments);
+      String content,
+      EmailMetadata emailMetadata,
+      Email previousMail,
+      Set<Attachment> attachments) {
+    return new Email(EmailId.createUnique(), content, emailMetadata, attachments, previousMail);
+  }
+
+  public static Email create(
+      String content, EmailMetadata emailMetadata, @Nullable Email previousMail) {
+    return new Email(
+        EmailId.createUnique(), content, emailMetadata, Collections.emptySet(), previousMail);
   }
 
   public static Email create(String content, EmailMetadata emailMetadata) {
-    return new Email(EmailId.createUnique(), content, emailMetadata, Collections.emptySet());
+    return new Email(EmailId.createUnique(), content, emailMetadata, Collections.emptySet(), null);
   }
 
   public String getContent() {
@@ -81,6 +97,10 @@ public final class Email extends AggregateRoot<EmailId> {
   }
 
   public Email withoutBCCRecipients() {
-    return Email.create(getContent(), emailMetadata.withoutBCCRecipients());
+    return Email.create(getContent(), emailMetadata.withoutBCCRecipients(), previousMail);
+  }
+
+  public Email getPreviousMail() {
+    return previousMail;
   }
 }

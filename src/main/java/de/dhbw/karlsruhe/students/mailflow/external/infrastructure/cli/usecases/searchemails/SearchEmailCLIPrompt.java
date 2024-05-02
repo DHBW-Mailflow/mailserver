@@ -1,12 +1,13 @@
 package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.searchemails;
 
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.answer.UCCollectionAnswerEmails;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.organize.mark.MarkEmailUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.content.SearchEmailUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.showemails.ReadEmailCLIPrompt;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.showemails.ReadEmailContentCLIPrompt;
 import java.time.DateTimeException;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -22,13 +23,16 @@ public class SearchEmailCLIPrompt extends BaseCLIPrompt {
   private final MarkEmailUseCase markEmailUseCase;
 
   private final String placeHolder;
+  private final UCCollectionAnswerEmails answerEmails;
 
   public SearchEmailCLIPrompt(
       BaseCLIPrompt previousPrompt,
       SearchEmailUseCase searchEmailUseCase,
-      MarkEmailUseCase markEmailUseCase) {
+      MarkEmailUseCase markEmailUseCase,
+      UCCollectionAnswerEmails answerEmails) {
     super(previousPrompt);
     this.searchEmailUseCase = searchEmailUseCase;
+    this.answerEmails = answerEmails;
     this.placeHolder = "";
     this.markEmailUseCase = markEmailUseCase;
   }
@@ -37,11 +41,13 @@ public class SearchEmailCLIPrompt extends BaseCLIPrompt {
       BaseCLIPrompt previousPrompt,
       SearchEmailUseCase searchEmailUseCase,
       MarkEmailUseCase markEmailUseCase,
+      UCCollectionAnswerEmails answerEmails,
       String placeHolder) {
     super(previousPrompt);
     this.searchEmailUseCase = searchEmailUseCase;
     this.placeHolder = " (%s)".formatted(placeHolder);
     this.markEmailUseCase = markEmailUseCase;
+    this.answerEmails = answerEmails;
   }
 
   @Override
@@ -63,7 +69,8 @@ public class SearchEmailCLIPrompt extends BaseCLIPrompt {
     Map<String, BaseCLIPrompt> promptMap = new LinkedHashMap<>();
     for (Email email : emailList) {
       promptMap.put(
-          formatEmail(email), new ReadEmailCLIPrompt(this, email, markEmailUseCase, true));
+          formatEmailListing(email),
+          new ReadEmailContentCLIPrompt(this, email, markEmailUseCase, answerEmails));
     }
     return readUserInputWithOptions(promptMap);
   }

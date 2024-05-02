@@ -21,6 +21,7 @@ public final class EmailBuilder {
   private String content;
   private List<Header> headers;
   private SentDate sentDate;
+  private Email previousMail;
 
   public EmailBuilder() {
     this.content = "";
@@ -39,7 +40,7 @@ public final class EmailBuilder {
     final Recipients recipients = new Recipients(recipientsTo, recipientsCC, recipientsBCC);
     final EmailMetadata emailMetadata =
         new EmailMetadata(subject, sender, headers, recipients, sentDate);
-    return Email.create(content, emailMetadata);
+    return Email.create(content, emailMetadata, previousMail);
   }
 
   public EmailBuilder withSubject(Subject subject) {
@@ -85,6 +86,11 @@ public final class EmailBuilder {
     this.sender = metadata.sender();
     this.sentDate = metadata.sentDate();
     this.headers = metadata.headers();
+    return this;
+  }
+
+  public EmailBuilder withPreviousMail(Email previousMail) {
+    this.previousMail = previousMail;
     return this;
   }
 }

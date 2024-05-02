@@ -24,11 +24,12 @@ public class EmailSendService implements EmailSendUseCase {
   private final AuthSessionUseCase authSession;
   private final MailboxRepository mailboxRepository;
   private final MailboxRule spamDetector;
-  private List<Address> bccAddresses;
-  private List<Address> ccAddresses;
-  private List<Address> toAddresses;
+  private List<Address> bccAddresses = List.of();
+  private List<Address> ccAddresses = List.of();
+  private List<Address> toAddresses = List.of();
   private String message;
   private Subject subject;
+  private Email previousMail;
 
   public EmailSendService(
       AuthSessionUseCase authSession,
@@ -78,6 +79,7 @@ public class EmailSendService implements EmailSendUseCase {
             .withRecipientsBCC(bccAddresses)
             .withRecipientsCC(ccAddresses)
             .withContent(message)
+            .withPreviousMail(previousMail)
             .build();
 
     saveToSenderMailbox(email);
@@ -89,6 +91,7 @@ public class EmailSendService implements EmailSendUseCase {
     sendToRecipients(addresses, email);
   }
 
+  // TODO fix BCC recipients do not see their own address. The BCC field is empty.
   private void sendToRecipients(List<Address> recipients, Email email)
       throws MailboxLoadingException, MailboxSavingException {
     // put the email into the INBOX folder of the respective recipient
@@ -134,5 +137,10 @@ public class EmailSendService implements EmailSendUseCase {
   @Override
   public void setMessage(String message) {
     this.message = message;
+  }
+
+  @Override
+  public void setPreviousMail(Email emailToAnswer) {
+    previousMail = emailToAnswer;
   }
 }
