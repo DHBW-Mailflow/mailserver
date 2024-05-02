@@ -11,7 +11,6 @@ import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.UC
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.send.EmailSendService;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.send.EmailSendUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.UCCollectionSettings;
-import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.changepassword.ChangePasswordService;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.PasswordChecker;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.UserCreator;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.server.Server;
@@ -22,7 +21,6 @@ import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.MainCLIPrompt;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.parsing.FileMailboxRepository;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.parsing.JSONMailboxConverter;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.parsing.ScheduledSendTimeParserService;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.mailbox_rules.spam.DetectSpamOnIncomingMailMailboxRule;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.preferences.FileUserRepository;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.preferences.FileUserSettingsRepository;
@@ -56,9 +54,7 @@ public class App {
     final UCCollectionSearchEmail searchEmails =
         UCCollectionSearchEmail.init(provideEmails.provideAllEmailsService());
     final UCCollectionSettings collectionSettings =
-        UCCollectionSettings.init(authSession, userSettingsRepository,
-            new ScheduledSendTimeParserService(),
-            new ChangePasswordService(userRepository, authSession));
+        UCCollectionSettings.init(authSession, userSettingsRepository, userRepository);
     final UCCollectionAnswerEmails answerEmails = UCCollectionAnswerEmails.init(sendEmails);
 
     /// Start
