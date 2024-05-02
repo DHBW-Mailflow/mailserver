@@ -84,13 +84,18 @@ public class FileUserRepository implements UserRepository {
   @Override
   public Optional<User> findByEmail(Address email) throws LoadingUsersException, SaveUserException {
     loadUsers();
-    return users.stream().filter(user -> user.hasEmail(email)).findFirst();
+    return users.stream().filter(user -> user.hasAddress(email)).findFirst();
   }
 
   @Override
   public boolean save(User user) throws SaveUserException, LoadingUsersException {
     loadUsers();
+
+    // forcefully use the given object, e.g. if the password has changed even if equals() say
+    // they're equal (because of the same addresses used)
+    users.remove(user);
     users.add(user);
+
     try {
       fileHelper.saveToFile(filePath, gson.toJson(users));
       return true;

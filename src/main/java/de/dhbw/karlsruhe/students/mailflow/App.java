@@ -11,6 +11,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.UC
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.send.EmailSendService;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.send.EmailSendUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.UCCollectionSettings;
+import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.changepassword.ChangePasswordService;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.PasswordChecker;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.UserCreator;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.server.Server;
@@ -56,7 +57,8 @@ public class App {
         UCCollectionSearchEmail.init(provideEmails.provideAllEmailsService());
     final UCCollectionSettings collectionSettings =
         UCCollectionSettings.init(authSession, userSettingsRepository,
-            new ScheduledSendTimeParserService());
+            new ScheduledSendTimeParserService(),
+            new ChangePasswordService(userRepository, authSession));
     final UCCollectionAnswerEmails answerEmails = UCCollectionAnswerEmails.init(sendEmails);
 
     /// Start

@@ -112,7 +112,7 @@ class FileUserRepositoryTest {
         "[{\"email\":{\"localPart\":\"test\",\"domain\":\"test.de\"},\"password\":\"password\",\"salt\":\"salt\"},{\"email\":{\"localPart\":\"test2\",\"domain\":\"test.de\"},\"password\":\"password\",\"salt\":\"salt\"}]");
 
     // Act
-    Optional<User> foundUser = fileUserRepository.findByEmail(user.email());
+    Optional<User> foundUser = fileUserRepository.findByEmail(user.getAddress());
 
     // Assert
     assertTrue(foundUser.isPresent());
@@ -129,6 +129,6 @@ class FileUserRepositoryTest {
     assertThrows(
         LoadingUsersException.class,
         // Act
-        () -> fileUserRepository.findByEmail(user.email()));
+        () -> fileUserRepository.findByEmail(user.getAddress()));
   }
 }

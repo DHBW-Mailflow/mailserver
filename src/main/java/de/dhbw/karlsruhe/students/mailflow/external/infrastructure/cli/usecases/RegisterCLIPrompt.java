@@ -22,7 +22,7 @@ public final class RegisterCLIPrompt extends BaseCLIPrompt {
     super.start();
 
     String email = simplePrompt("What's your new email?");
-    String password = simplePrompt("What's your new password?");
+    String password = simplePrompt("What's your new password?").trim();
     try {
       registerUseCase.register(email, password);
     } catch (AuthorizationException | LoadingUsersException | SaveUserException e) {

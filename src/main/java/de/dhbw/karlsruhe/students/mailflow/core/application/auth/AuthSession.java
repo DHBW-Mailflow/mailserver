@@ -17,7 +17,7 @@ public class AuthSession implements AuthSessionUseCase {
   @Override
   public Address getSessionUserAddress() {
     ensureLoggedIn();
-    return sessionUser.email();
+    return sessionUser.getAddress();
   }
 
   @Override
