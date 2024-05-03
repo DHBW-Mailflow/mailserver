@@ -35,12 +35,16 @@ public class FileUserSettingsRepository implements UserSettingsRepository {
     fileHelper = new FileHelper();
   }
 
+  private UserSettings getDefaultSettings(Address address) {
+    return new UserSettings(address, "");
+  }
+
   private void initFile(Address address) throws IOException {
 
     if (fileHelper.existsFile(USERS_SETTINGS_FILE)) {
       return;
     }
-    Set<UserSettings> userSettings = Set.of(new UserSettings(address, ""));
+    Set<UserSettings> userSettings = Set.of(getDefaultSettings(address));
     defaultFileContent = gson.toJson(userSettings);
     fileHelper.saveToFile(USERS_SETTINGS_FILE, defaultFileContent);
   }
@@ -89,6 +93,6 @@ public class FileUserSettingsRepository implements UserSettingsRepository {
     return usersSettings.stream()
         .filter(userSettings -> userSettings.address().equals(address))
         .findFirst()
-        .orElseThrow(() -> new LoadSettingsException("Could not find user settings"));
+        .orElse(getDefaultSettings(address));
   }
 }
