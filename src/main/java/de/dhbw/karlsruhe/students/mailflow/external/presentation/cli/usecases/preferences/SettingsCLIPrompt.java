@@ -28,7 +28,8 @@ public class SettingsCLIPrompt extends BaseCLIPrompt {
     printDefault("Which setting do you want to change?");
     Map<String, BaseCLIPrompt> promptMap = new LinkedHashMap<>();
 
-    promptMap.put("Change password",
+    promptMap.put(
+        "Change password",
         new ChangePasswordCLIPrompt(this, collectionSettings.changePasswordUseCase()));
 
     promptMap.put(

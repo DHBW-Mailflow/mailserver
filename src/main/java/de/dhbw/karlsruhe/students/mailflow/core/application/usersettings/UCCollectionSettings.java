@@ -34,6 +34,6 @@ public record UCCollectionSettings(
         new ChangeSignatureService(userSettingsRepository, authSessionUseCase),
         new ScheduledSendTimeParserService(),
         new ChangePasswordService(userRepository, authSessionUseCase),
-        new MailboxExportService(mailboxRepository, exportFileRepository));
+        new MailboxExportService(authSessionUseCase, mailboxRepository, exportFileRepository));
   }
 }

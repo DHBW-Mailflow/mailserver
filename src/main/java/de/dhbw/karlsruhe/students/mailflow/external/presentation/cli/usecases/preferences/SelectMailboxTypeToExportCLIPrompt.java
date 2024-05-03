@@ -1,8 +1,10 @@
-package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.preferences;
+package de.dhbw.karlsruhe.students.mailflow.external.presentation.cli.usecases.preferences;
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.export.MailboxExportUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
+import de.dhbw.karlsruhe.students.mailflow.external.presentation.cli.BaseCLIPrompt;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class SelectMailboxTypeToExportCLIPrompt extends BaseCLIPrompt {
 
@@ -22,11 +24,13 @@ public class SelectMailboxTypeToExportCLIPrompt extends BaseCLIPrompt {
   }
 
   private BaseCLIPrompt showActionMenuPrompt() {
-
+    Map<String, BaseCLIPrompt> promptMap = new LinkedHashMap<>();
     printDefault("Which mailbox type do you want to export?");
     for (MailboxType mailboxType : MailboxType.values()) {
-      printDefault(mailboxType.toString());
+      promptMap.put(
+          mailboxType.toString(),
+          new ExportMailboxCLIPrompt(this, mailboxExportUseCase, mailboxType));
     }
-    return getPreviousPrompt();
+    return readUserInputWithOptions(promptMap);
   }
 }
