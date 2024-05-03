@@ -6,7 +6,6 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.UserCreator;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.User;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserRepository;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserSettings;
 import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -49,7 +48,7 @@ class RegistrationServiceTest {
     Assertions.assertDoesNotThrow(
         // Act
         () -> registerService.register(
-            notYetRegisteredUser.email().toString(), notYetRegisteredUser.password()));
+            notYetRegisteredUser.getAddress().toString(), notYetRegisteredUser.getPassword()));
   }
 
   @Test
@@ -84,14 +83,14 @@ class RegistrationServiceTest {
         AuthorizationException.class,
         // Act
         () -> registerService.register(
-            alreadyRegisteredUser.email().toString(), alreadyRegisteredUser.password()));
+            alreadyRegisteredUser.getAddress().toString(), alreadyRegisteredUser.getPassword()));
   }
 
   @Test
   /**
    * #BugFix
    */
-  void registerWithInvalidEmail() {
+  void registerWithInvalidAddress() {
     // Arrange
     RegistrationService registrationService = new RegistrationService(null, null);
 

@@ -27,6 +27,10 @@ public class SettingsCLIPrompt extends BaseCLIPrompt {
   private BaseCLIPrompt showActionMenuPrompt() {
     printDefault("Which setting do you want to change?");
     Map<String, BaseCLIPrompt> promptMap = new LinkedHashMap<>();
+
+    promptMap.put("Change password",
+        new ChangePasswordCLIPrompt(this, collectionSettings.changePasswordUseCase()));
+
     promptMap.put(
         "Change signature",
         new ChangeSignatureCLIPrompt(this, collectionSettings.changeSignatureService()));

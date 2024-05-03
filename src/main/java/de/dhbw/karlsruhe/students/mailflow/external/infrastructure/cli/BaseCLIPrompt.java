@@ -65,11 +65,11 @@ public abstract class BaseCLIPrompt implements Server {
 
   /**
    * @param question the question to display
-   * @return the client answer input
+   * @return the (trimmed) client answer input
    */
   public String simplePrompt(String question) {
     printDefault(question);
-    return readUserInput();
+    return readUserInput().trim();
   }
 
   /**
@@ -92,8 +92,7 @@ public abstract class BaseCLIPrompt implements Server {
   }
 
   /**
-   * @return the string the user input
-   * @throws NoSuchElementException when the user pressed Ctrl + D
+   * @return the (untrimmed) string consisting of the user input
    */
   // TODO handle ^D at the end of multiline input
   private String readUserInput() {

@@ -34,6 +34,6 @@ final class MockedAuthorizedSession implements AuthSessionUseCase {
 
   @Override
   public void setSessionUser(User user) {
-    address = user.email();
+    address = user.getAddress();
   }
 }

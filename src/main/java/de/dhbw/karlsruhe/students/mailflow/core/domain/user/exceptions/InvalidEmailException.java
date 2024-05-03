@@ -1,4 +1,5 @@
 package de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions;
+
 /**
  * @author seiferla
  */

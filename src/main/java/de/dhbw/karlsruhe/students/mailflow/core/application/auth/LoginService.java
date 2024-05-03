@@ -46,7 +46,7 @@ public class LoginService implements LoginUseCase {
 
     var user = foundUser.get();
 
-    if (!passwordChecker.checkPassword(password, user)) {
+    if (!passwordChecker.checkPassword(password.trim(), user)) {
       throw new AuthorizationException("Credentials are incorrect");
     }
 

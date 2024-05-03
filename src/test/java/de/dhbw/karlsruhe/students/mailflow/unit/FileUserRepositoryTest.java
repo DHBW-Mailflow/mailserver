@@ -55,7 +55,7 @@ class FileUserRepositoryTest {
     final User user = new User(new Address("test", "test.de"), "password", "salt");
 
     final String exceptedContent =
-        "[{\"email\":{\"localPart\":\"test\",\"domain\":\"test.de\"},\"password\":\"password\",\"salt\":\"salt\"}]";
+        "[{\"address\":{\"localPart\":\"test\",\"domain\":\"test.de\"},\"password\":\"password\",\"salt\":\"salt\"}]";
 
     // Act
     fileUserRepository.save(user);
@@ -72,7 +72,7 @@ class FileUserRepositoryTest {
     final User user = new User(new Address("test", "test.de"), "password", "salt");
 
     final String exceptedContent =
-        "[{\"email\":{\"localPart\":\"test\",\"domain\":\"test.de\"},\"password\":\"password\",\"salt\":\"salt\"}]";
+        "[{\"address\":{\"localPart\":\"test\",\"domain\":\"test.de\"},\"password\":\"password\",\"salt\":\"salt\"}]";
 
     // Act
     fileUserRepository.save(user);
@@ -91,7 +91,7 @@ class FileUserRepositoryTest {
     final User user2 = new User(new Address("test2", "test.de"), "password", "salt");
 
     final String exceptedContent =
-        "[{\"email\":{\"localPart\":\"test2\",\"domain\":\"test.de\"},\"password\":\"password\",\"salt\":\"salt\"},{\"email\":{\"localPart\":\"test1\",\"domain\":\"test.de\"},\"password\":\"password\",\"salt\":\"salt\"}]";
+        "[{\"address\":{\"localPart\":\"test1\",\"domain\":\"test.de\"},\"password\":\"password\",\"salt\":\"salt\"},{\"address\":{\"localPart\":\"test2\",\"domain\":\"test.de\"},\"password\":\"password\",\"salt\":\"salt\"}]";
 
     // Act
     fileUserRepository.save(user1);
@@ -109,10 +109,10 @@ class FileUserRepositoryTest {
     User user = new User(new Address("test2", "test.de"), "password", "salt");
     Files.writeString(
         registeredUsersFile.toPath(),
-        "[{\"email\":{\"localPart\":\"test\",\"domain\":\"test.de\"},\"password\":\"password\",\"salt\":\"salt\"},{\"email\":{\"localPart\":\"test2\",\"domain\":\"test.de\"},\"password\":\"password\",\"salt\":\"salt\"}]");
+        "[{\"address\":{\"localPart\":\"test\",\"domain\":\"test.de\"},\"password\":\"password\",\"salt\":\"salt\"},{\"address\":{\"localPart\":\"test2\",\"domain\":\"test.de\"},\"password\":\"password\",\"salt\":\"salt\"}]");
 
     // Act
-    Optional<User> foundUser = fileUserRepository.findByEmail(user.email());
+    Optional<User> foundUser = fileUserRepository.findByEmail(user.getAddress());
 
     // Assert
     assertTrue(foundUser.isPresent());
@@ -129,6 +129,6 @@ class FileUserRepositoryTest {
     assertThrows(
         LoadingUsersException.class,
         // Act
-        () -> fileUserRepository.findByEmail(user.email()));
+        () -> fileUserRepository.findByEmail(user.getAddress()));
   }
 }

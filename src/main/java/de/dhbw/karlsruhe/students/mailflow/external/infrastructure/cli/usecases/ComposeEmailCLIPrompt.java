@@ -45,8 +45,6 @@ public final class ComposeEmailCLIPrompt extends BaseCLIPrompt {
           "In case you want to schedule sending the e-mail at a later time,"
               + " please now specify the time to send the mail [leave empty for immediate sending, pattern YYYY-MM-DD HH:mm]:");
 
-      userResponse = userResponse.trim();
-
       if (userResponse.isEmpty()) {
         break;
       }
@@ -114,7 +112,7 @@ public final class ComposeEmailCLIPrompt extends BaseCLIPrompt {
 
   private void askRecipientTo() {
     String recipientsString =
-        simplePrompt("Please write the TO-recipients (separated by a comma):").trim();
+        simplePrompt("Please write the TO-recipients (separated by a comma):");
     try {
       emailSendUseCase.setToRecipients(recipientsString);
     } catch (InvalidRecipients e) {
@@ -125,7 +123,7 @@ public final class ComposeEmailCLIPrompt extends BaseCLIPrompt {
 
   private void askRecipientCC() {
     String recipientsString =
-        simplePrompt("Please write the CC-recipients (separated by a comma):").trim();
+        simplePrompt("Please write the CC-recipients (separated by a comma):");
     try {
       emailSendUseCase.setCCRecipients(recipientsString);
     } catch (InvalidRecipients e) {
@@ -136,7 +134,7 @@ public final class ComposeEmailCLIPrompt extends BaseCLIPrompt {
 
   private void askRecipientBCC() {
     String recipientsString =
-        simplePrompt("Please write the BCC-recipients (separated by a comma):").trim();
+        simplePrompt("Please write the BCC-recipients (separated by a comma):");
     try {
       emailSendUseCase.setBCCRecipients(recipientsString);
     } catch (InvalidRecipients e) {
