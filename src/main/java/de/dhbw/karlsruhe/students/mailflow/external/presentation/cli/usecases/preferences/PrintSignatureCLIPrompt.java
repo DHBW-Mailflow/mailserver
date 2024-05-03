@@ -1,7 +1,7 @@
-package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.preferences;
+package de.dhbw.karlsruhe.students.mailflow.external.presentation.cli.usecases.preferences;
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.changesignature.ChangeSignatureUseCase;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
+import de.dhbw.karlsruhe.students.mailflow.external.presentation.cli.BaseCLIPrompt;
 
 public class PrintSignatureCLIPrompt extends BaseCLIPrompt {
 

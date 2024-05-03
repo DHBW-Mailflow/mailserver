@@ -1,7 +1,7 @@
-package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.preferences;
+package de.dhbw.karlsruhe.students.mailflow.external.presentation.cli.usecases.preferences;
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.UCCollectionSettings;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
+import de.dhbw.karlsruhe.students.mailflow.external.presentation.cli.BaseCLIPrompt;
 import java.util.LinkedHashMap;
 import java.util.Map;
 

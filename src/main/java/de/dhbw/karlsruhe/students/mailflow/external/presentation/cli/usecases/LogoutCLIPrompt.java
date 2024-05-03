@@ -1,8 +1,8 @@
-package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases;
+package de.dhbw.karlsruhe.students.mailflow.external.presentation.cli.usecases;
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.LogoutUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
+import de.dhbw.karlsruhe.students.mailflow.external.presentation.cli.BaseCLIPrompt;
 
 /**
  * @author Jonas-Karl

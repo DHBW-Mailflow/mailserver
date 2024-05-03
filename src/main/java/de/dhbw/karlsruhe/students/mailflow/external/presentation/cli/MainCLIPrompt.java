@@ -1,4 +1,4 @@
-package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli;
+package de.dhbw.karlsruhe.students.mailflow.external.presentation.cli;
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.UCCollectionAuth;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.answer.UCCollectionAnswerEmails;
@@ -8,14 +8,14 @@ import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.UC
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.send.EmailSendUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.job.WorkerQueue;
 import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.UCCollectionSettings;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.ComposeEmailCLIPrompt;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.LoginCLIPrompt;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.LogoutCLIPrompt;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.OrganizeEmailsCLIPrompt;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.RegisterCLIPrompt;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.preferences.SettingsCLIPrompt;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.searchemails.SearchEmailTypesCLIPrompt;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.showemails.ShowEmailTypesCLIPrompt;
+import de.dhbw.karlsruhe.students.mailflow.external.presentation.cli.usecases.ComposeEmailCLIPrompt;
+import de.dhbw.karlsruhe.students.mailflow.external.presentation.cli.usecases.LoginCLIPrompt;
+import de.dhbw.karlsruhe.students.mailflow.external.presentation.cli.usecases.LogoutCLIPrompt;
+import de.dhbw.karlsruhe.students.mailflow.external.presentation.cli.usecases.OrganizeEmailsCLIPrompt;
+import de.dhbw.karlsruhe.students.mailflow.external.presentation.cli.usecases.RegisterCLIPrompt;
+import de.dhbw.karlsruhe.students.mailflow.external.presentation.cli.usecases.preferences.SettingsCLIPrompt;
+import de.dhbw.karlsruhe.students.mailflow.external.presentation.cli.usecases.searchemails.SearchEmailTypesCLIPrompt;
+import de.dhbw.karlsruhe.students.mailflow.external.presentation.cli.usecases.showemails.ShowEmailTypesCLIPrompt;
 import java.util.LinkedHashMap;
 import java.util.Map;
 

@@ -1,4 +1,4 @@
-package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli;
+package de.dhbw.karlsruhe.students.mailflow.external.presentation.cli;
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.job.WorkerQueue;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
