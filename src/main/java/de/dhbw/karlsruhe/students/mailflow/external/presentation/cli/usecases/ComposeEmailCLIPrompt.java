@@ -1,6 +1,5 @@
-package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases;
+package de.dhbw.karlsruhe.students.mailflow.external.presentation.cli.usecases;
 
-import java.time.ZonedDateTime;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.send.EmailSendUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.UCCollectionSettings;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.InvalidRecipients;
@@ -8,7 +7,8 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxL
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.LoadSettingsException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.SaveSettingsException;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
+import de.dhbw.karlsruhe.students.mailflow.external.presentation.cli.BaseCLIPrompt;
+import java.time.ZonedDateTime;
 
 /**
  * @author jens1o
@@ -40,27 +40,24 @@ public final class ComposeEmailCLIPrompt extends BaseCLIPrompt {
   }
 
   private void askScheduledSend() {
-    while (true) {
-      String userResponse = simplePrompt(
-          "In case you want to schedule sending the e-mail at a later time,"
-              + " please now specify the time to send the mail [leave empty for immediate sending, pattern YYYY-MM-DD HH:mm]:");
+    String userResponse =
+        simplePrompt(
+            "In case you want to schedule sending the e-mail at a later time,"
+                + " please now specify the time to send the mail [leave empty for immediate sending, pattern YYYY-MM-DD HH:mm]:");
 
-      if (userResponse.isEmpty()) {
-        break;
-      }
+    if (userResponse.isEmpty()) {
+      return;
+    }
 
-      ZonedDateTime scheduledDate;
-      try {
-        scheduledDate =
-            ucCollectionSettings.scheduledSendTimeParserUseCase()
-                .parseScheduledSendDateTime(userResponse);
-      } catch (IllegalArgumentException e) {
-        printWarning("Invalid time provided: %s".formatted(e.getMessage()));
-        continue;
-      }
-
+    try {
+      ZonedDateTime scheduledDate =
+          ucCollectionSettings
+              .scheduledSendTimeParserUseCase()
+              .parseScheduledSendDateTime(userResponse);
       emailSendUseCase.setScheduledSendDate(scheduledDate);
-      break;
+    } catch (IllegalArgumentException e) {
+      printWarning("Invalid time provided: %s".formatted(e.getMessage()));
+      askScheduledSend();
     }
   }
 

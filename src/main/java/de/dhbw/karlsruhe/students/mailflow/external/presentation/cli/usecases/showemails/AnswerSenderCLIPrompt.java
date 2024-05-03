@@ -1,11 +1,11 @@
-package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.showemails;
+package de.dhbw.karlsruhe.students.mailflow.external.presentation.cli.usecases.showemails;
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.answer.AnswerEmailUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.InvalidRecipients;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
+import de.dhbw.karlsruhe.students.mailflow.external.presentation.cli.BaseCLIPrompt;
 
 /**
  * @author Jonas-Karl

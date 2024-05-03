@@ -1,11 +1,11 @@
-package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.showemails;
+package de.dhbw.karlsruhe.students.mailflow.external.presentation.cli.usecases.showemails;
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.answer.UCCollectionAnswerEmails;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.organize.mark.MarkEmailUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
+import de.dhbw.karlsruhe.students.mailflow.external.presentation.cli.BaseCLIPrompt;
 import java.util.LinkedHashMap;
 import java.util.Map;
 

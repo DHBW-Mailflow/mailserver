@@ -1,10 +1,10 @@
-package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.searchemails;
+package de.dhbw.karlsruhe.students.mailflow.external.presentation.cli.usecases.searchemails;
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.answer.UCCollectionAnswerEmails;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.organize.mark.MarkEmailUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.UCCollectionSearchEmail;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.searchemail.date.HelperParsing;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
+import de.dhbw.karlsruhe.students.mailflow.external.presentation.cli.BaseCLIPrompt;
 import java.util.LinkedHashMap;
 import java.util.Map;
 

@@ -1,11 +1,11 @@
-package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.usecases.preferences;
+package de.dhbw.karlsruhe.students.mailflow.external.presentation.cli.usecases.preferences;
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.changepassword.ChangePasswordUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.AuthorizationException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.HashingFailedException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.LoadingUsersException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.SaveUserException;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli.BaseCLIPrompt;
+import de.dhbw.karlsruhe.students.mailflow.external.presentation.cli.BaseCLIPrompt;
 
 public class ChangePasswordCLIPrompt extends BaseCLIPrompt {
 
