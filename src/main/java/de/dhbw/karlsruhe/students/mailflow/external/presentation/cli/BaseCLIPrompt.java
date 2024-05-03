@@ -1,4 +1,4 @@
-package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.cli;
+package de.dhbw.karlsruhe.students.mailflow.external.presentation.cli;
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.job.WorkerQueue;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
@@ -94,12 +94,11 @@ public abstract class BaseCLIPrompt implements Server {
   /**
    * @return the (untrimmed) string consisting of the user input
    */
-  // TODO handle ^D at the end of multiline input
   private String readUserInput() {
     try {
       return scanner.nextLine();
     } catch (NoSuchElementException ignored) {
-      printWarning("Ctrl + D detected. Exiting...");
+      printWarning("Detected shutdown shortcut. Exiting...");
       stop();
       return "";
     }
