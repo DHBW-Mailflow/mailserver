@@ -40,27 +40,24 @@ public final class ComposeEmailCLIPrompt extends BaseCLIPrompt {
   }
 
   private void askScheduledSend() {
-    while (true) {
-      String userResponse = simplePrompt(
-          "In case you want to schedule sending the e-mail at a later time,"
-              + " please now specify the time to send the mail [leave empty for immediate sending, pattern YYYY-MM-DD HH:mm]:");
+    String userResponse =
+        simplePrompt(
+            "In case you want to schedule sending the e-mail at a later time,"
+                + " please now specify the time to send the mail [leave empty for immediate sending, pattern YYYY-MM-DD HH:mm]:");
 
-      if (userResponse.isEmpty()) {
-        break;
-      }
+    if (userResponse.isEmpty()) {
+      return;
+    }
 
-      ZonedDateTime scheduledDate;
-      try {
-        scheduledDate =
-            ucCollectionSettings.scheduledSendTimeParserUseCase()
-                .parseScheduledSendDateTime(userResponse);
-      } catch (IllegalArgumentException e) {
-        printWarning("Invalid time provided: %s".formatted(e.getMessage()));
-        continue;
-      }
-
+    try {
+      ZonedDateTime scheduledDate =
+          ucCollectionSettings
+              .scheduledSendTimeParserUseCase()
+              .parseScheduledSendDateTime(userResponse);
       emailSendUseCase.setScheduledSendDate(scheduledDate);
-      break;
+    } catch (IllegalArgumentException e) {
+      printWarning("Invalid time provided: %s".formatted(e.getMessage()));
+      askScheduledSend();
     }
   }
 
