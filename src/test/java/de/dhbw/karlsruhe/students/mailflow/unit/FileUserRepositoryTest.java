@@ -8,7 +8,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.auth.LoadingUsersExceptio
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.User;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.SaveUserException;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.preferences.FileUserRepository;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization.FileUserRepository;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
