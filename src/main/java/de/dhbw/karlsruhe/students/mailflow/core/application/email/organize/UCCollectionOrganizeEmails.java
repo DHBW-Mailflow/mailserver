@@ -3,7 +3,7 @@ package de.dhbw.karlsruhe.students.mailflow.core.application.email.organize;
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthSessionUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.organize.mark.MarkAsReadService;
 import de.dhbw.karlsruhe.students.mailflow.core.application.email.organize.mark.MarkAsUnreadService;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.MailboxRepository;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.parsing.FileMailboxRepository;
 
 /**
  * @author Jonas-Karl
@@ -15,7 +15,7 @@ public record UCCollectionOrganizeEmails(
     MarkAsNotSpamService markAsNotSpamService,
     DeleteEmailService deleteEmailService) {
   public static UCCollectionOrganizeEmails init(
-      AuthSessionUseCase authSession, MailboxRepository mailboxRepository) {
+      AuthSessionUseCase authSession, FileMailboxRepository mailboxRepository) {
     return new UCCollectionOrganizeEmails(
         new MarkAsReadService(authSession, mailboxRepository),
         new MarkAsUnreadService(authSession, mailboxRepository),

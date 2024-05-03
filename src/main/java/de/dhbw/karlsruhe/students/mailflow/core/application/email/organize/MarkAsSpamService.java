@@ -1,9 +1,7 @@
 package de.dhbw.karlsruhe.students.mailflow.core.application.email.organize;
 
-import de.dhbw.karlsruhe.students.mailflow.core.application.email.organize.mark.MarkEmailUseCase;
-import java.util.Optional;
-import java.util.Set;
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthSessionUseCase;
+import de.dhbw.karlsruhe.students.mailflow.core.application.email.organize.mark.MarkEmailUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.MailboxRepository;
@@ -11,6 +9,9 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.Label;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.parsing.FileMailboxRepository;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * @author jens1o
@@ -20,7 +21,8 @@ public class MarkAsSpamService implements MarkEmailUseCase {
   private final AuthSessionUseCase authSession;
   private final MailboxRepository mailboxRepository;
 
-  public MarkAsSpamService(AuthSessionUseCase authSession, MailboxRepository mailboxRepository) {
+  public MarkAsSpamService(
+      AuthSessionUseCase authSession, FileMailboxRepository mailboxRepository) {
     this.authSession = authSession;
     this.mailboxRepository = mailboxRepository;
   }
