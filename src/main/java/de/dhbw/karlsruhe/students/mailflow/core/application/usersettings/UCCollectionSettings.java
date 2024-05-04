@@ -6,12 +6,12 @@ import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.changep
 import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.changesignature.ChangeSignatureService;
 import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.export.MailboxExportService;
 import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.export.ExportUseCase;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.MailboxExportRepository;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.MailboxRepository;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserRepository;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserSettingsRepository;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.parsing.ScheduledSendTimeParserService;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.parsing.ScheduledSendTimeParserUseCase;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.preferences.ExportMailboxRepository;
 
 /**
  * @author seiferla
@@ -28,12 +28,12 @@ public record UCCollectionSettings(
       UserSettingsRepository userSettingsRepository,
       UserRepository userRepository,
       MailboxRepository mailboxRepository,
-      ExportMailboxRepository exportMailboxRepository) {
+      MailboxExportRepository mailboxExportRepository) {
     return new UCCollectionSettings(
         authSessionUseCase,
         new ChangeSignatureService(userSettingsRepository, authSessionUseCase),
         new ScheduledSendTimeParserService(),
         new ChangePasswordService(userRepository, authSessionUseCase),
-        new MailboxExportService(authSessionUseCase, mailboxRepository, exportMailboxRepository));
+        new MailboxExportService(authSessionUseCase, mailboxRepository, mailboxExportRepository));
   }
 }

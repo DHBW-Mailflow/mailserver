@@ -22,7 +22,7 @@ public class ExportMailboxRepository implements MailboxExportRepository {
   }
 
   @Override
-  public File exportMailbox(ExportableMailbox mailbox) throws ExportMailboxException {
+  public void exportMailbox(ExportableMailbox mailbox) throws ExportMailboxException {
     File file =
         new File(
             EXPORTS_DIRECTORY,
@@ -38,7 +38,6 @@ public class ExportMailboxRepository implements MailboxExportRepository {
     } catch (Exception e) {
       throw new ExportMailboxException("Could not export mailbox", e);
     }
-    return file;
   }
 
   private String parseExportedDate(LocalDateTime localDateTime) {

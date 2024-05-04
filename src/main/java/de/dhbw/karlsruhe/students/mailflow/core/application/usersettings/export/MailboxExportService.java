@@ -15,7 +15,6 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Expor
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.ExportableRecipients;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Header;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.preferences.ExportMailboxException;
-import java.io.File;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +84,7 @@ public class MailboxExportService implements ExportUseCase {
   }
 
   @Override
-  public File exportMailbox(MailboxType type)
+  public void exportMailbox(MailboxType type)
       throws ExportMailboxException, MailboxSavingException, MailboxLoadingException {
     Mailbox mailbox =
         mailboxRepository.findByAddressAndType(authSession.getSessionUserAddress(), type);
@@ -94,6 +93,6 @@ public class MailboxExportService implements ExportUseCase {
       throw new MailboxLoadingException("Mailbox could not be loaded");
     }
     ExportableMailbox exportableMailbox = convertToExportableMailbox(mailbox);
-    return mailboxExportRepository.exportMailbox(exportableMailbox);
+    mailboxExportRepository.exportMailbox(exportableMailbox);
   }
 }
