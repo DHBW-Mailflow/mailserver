@@ -11,7 +11,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserRepository;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserSettingsRepository;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.parsing.ScheduledSendTimeParserService;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.parsing.ScheduledSendTimeParserUseCase;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.preferences.ExportFileRepository;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.preferences.ExportMailboxRepository;
 
 /**
  * @author seiferla
@@ -28,12 +28,12 @@ public record UCCollectionSettings(
       UserSettingsRepository userSettingsRepository,
       UserRepository userRepository,
       MailboxRepository mailboxRepository,
-      ExportFileRepository exportFileRepository) {
+      ExportMailboxRepository exportMailboxRepository) {
     return new UCCollectionSettings(
         authSessionUseCase,
         new ChangeSignatureService(userSettingsRepository, authSessionUseCase),
         new ScheduledSendTimeParserService(),
         new ChangePasswordService(userRepository, authSessionUseCase),
-        new MailboxExportService(authSessionUseCase, mailboxRepository, exportFileRepository));
+        new MailboxExportService(authSessionUseCase, mailboxRepository, exportMailboxRepository));
   }
 }

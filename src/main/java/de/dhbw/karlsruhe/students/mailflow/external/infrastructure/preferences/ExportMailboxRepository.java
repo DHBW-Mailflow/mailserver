@@ -8,13 +8,13 @@ import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.utils.FileHel
 import java.io.File;
 import java.time.LocalDateTime;
 
-public class ExportFileRepository implements MailboxExportRepository {
+public class ExportMailboxRepository implements MailboxExportRepository {
 
   private final Gson gson;
 
   private static final String EXPORTS_DIRECTORY = "exports/";
 
-  public ExportFileRepository() {
+  public ExportMailboxRepository() {
     this.gson =
         new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
