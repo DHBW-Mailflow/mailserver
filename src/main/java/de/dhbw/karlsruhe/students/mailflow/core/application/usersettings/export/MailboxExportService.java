@@ -21,7 +21,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
+/**
+ * @author seiferla, Jonas-Karl
+ */
 public class MailboxExportService implements ExportUseCase {
 
   private final MailboxRepository mailboxRepository;
@@ -93,6 +95,6 @@ public class MailboxExportService implements ExportUseCase {
       throw new MailboxLoadingException("Mailbox could not be loaded");
     }
     ExportableMailbox exportableMailbox = convertToExportableMailbox(mailbox);
-    mailboxExportRepository.exportMailbox(exportableMailbox);
+    mailboxExportRepository.saveMailbox(exportableMailbox);
   }
 }

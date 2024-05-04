@@ -10,6 +10,8 @@ import java.time.LocalDateTime;
  * Adapter for Gson to handle LocalDateTime objects during serialization and deserialization. The
  * write method converts a LocalDateTime object into a JSON string. The read method converts a JSON
  * string into a LocalDateTime object.
+ *
+ * @author seiferla, Jonas-Karl
  */
 public class LocalDateTimeAdapter extends TypeAdapter<LocalDateTime> {
 

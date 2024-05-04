@@ -2,7 +2,9 @@ package de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects;
 
 import java.time.LocalDateTime;
 import java.util.Map;
-
+/**
+ * @author seiferla, Jonas-Karl
+ */
 public record ExportableEmails(
     String subject,
     String content,

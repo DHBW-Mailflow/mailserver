@@ -5,5 +5,5 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.ExportMa
 
 public interface MailboxExportRepository {
 
-  void exportMailbox(ExportableMailbox mailbox) throws ExportMailboxException;
+  void saveMailbox(ExportableMailbox mailbox) throws ExportMailboxException;
 }

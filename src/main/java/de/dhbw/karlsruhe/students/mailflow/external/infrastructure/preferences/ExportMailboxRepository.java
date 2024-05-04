@@ -8,7 +8,9 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Expor
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.utils.FileHelper;
 import java.io.File;
 import java.time.LocalDateTime;
-
+/**
+ * @author seiferla
+ */
 public class ExportMailboxRepository implements MailboxExportRepository {
 
   private final Gson gson;
@@ -23,7 +25,7 @@ public class ExportMailboxRepository implements MailboxExportRepository {
   }
 
   @Override
-  public void exportMailbox(ExportableMailbox mailbox) throws ExportMailboxException {
+  public void saveMailbox(ExportableMailbox mailbox) throws ExportMailboxException {
     File file =
         new File(
             EXPORTS_DIRECTORY,
