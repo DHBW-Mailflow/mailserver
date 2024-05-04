@@ -9,5 +9,5 @@ import java.io.File;
 
 public interface ExportUseCase {
 
-  File exportMailbox(MailboxType type) throws ExportMailboxException, MailboxSavingException, MailboxLoadingException;
+  void exportMailbox(MailboxType type) throws ExportMailboxException, MailboxSavingException, MailboxLoadingException;
 }
