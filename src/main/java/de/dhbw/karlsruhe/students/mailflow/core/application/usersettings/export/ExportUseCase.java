@@ -7,7 +7,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxS
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.preferences.ExportMailboxException;
 import java.io.File;
 
-public interface MailboxExportUseCase {
+public interface ExportUseCase {
 
   File exportMailbox(MailboxType type) throws ExportMailboxException, MailboxSavingException, MailboxLoadingException;
 }

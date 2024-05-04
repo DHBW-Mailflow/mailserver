@@ -5,7 +5,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.changep
 import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.changepassword.ChangePasswordUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.changesignature.ChangeSignatureService;
 import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.export.MailboxExportService;
-import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.export.MailboxExportUseCase;
+import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.export.ExportUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.MailboxRepository;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserRepository;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserSettingsRepository;
@@ -21,7 +21,7 @@ public record UCCollectionSettings(
     ChangeSignatureService changeSignatureService,
     ScheduledSendTimeParserUseCase scheduledSendTimeParserUseCase,
     ChangePasswordUseCase changePasswordUseCase,
-    MailboxExportUseCase mailboxExportUseCase) {
+    ExportUseCase exportUseCase) {
 
   public static UCCollectionSettings init(
       AuthSessionUseCase authSessionUseCase,

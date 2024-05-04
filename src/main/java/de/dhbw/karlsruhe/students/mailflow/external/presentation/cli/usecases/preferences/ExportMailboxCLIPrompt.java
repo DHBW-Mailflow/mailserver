@@ -1,6 +1,6 @@
 package de.dhbw.karlsruhe.students.mailflow.external.presentation.cli.usecases.preferences;
 
-import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.export.MailboxExportUseCase;
+import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.export.ExportUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
@@ -9,16 +9,14 @@ import de.dhbw.karlsruhe.students.mailflow.external.presentation.cli.BaseCLIProm
 
 public class ExportMailboxCLIPrompt extends BaseCLIPrompt {
 
-  private final MailboxExportUseCase mailboxExportUseCase;
+  private final ExportUseCase exportUseCase;
 
   private final MailboxType mailboxType;
 
   public ExportMailboxCLIPrompt(
-      BaseCLIPrompt previousPrompt,
-      MailboxExportUseCase mailboxExportUseCase,
-      MailboxType mailboxType) {
+      BaseCLIPrompt previousPrompt, ExportUseCase exportUseCase, MailboxType mailboxType) {
     super(previousPrompt);
-    this.mailboxExportUseCase = mailboxExportUseCase;
+    this.exportUseCase = exportUseCase;
     this.mailboxType = mailboxType;
   }
 
@@ -26,10 +24,10 @@ public class ExportMailboxCLIPrompt extends BaseCLIPrompt {
   public void start() {
     super.start();
     try {
-      mailboxExportUseCase.exportMailbox(mailboxType);
+      exportUseCase.exportMailbox(mailboxType);
       printDefault("Mailbox successfully exported");
     } catch (MailboxSavingException | ExportMailboxException | MailboxLoadingException e) {
-      e.printStackTrace();
+      printWarning("Could not export mailbox: " + e.getMessage());
     }
   }
 }

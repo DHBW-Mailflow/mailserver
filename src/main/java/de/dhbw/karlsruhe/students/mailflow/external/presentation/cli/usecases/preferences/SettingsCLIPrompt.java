@@ -43,7 +43,7 @@ public class SettingsCLIPrompt extends BaseCLIPrompt {
         new PrintSignatureCLIPrompt(this, collectionSettings.changeSignatureService()));
     promptMap.put(
         "Export mailbox",
-        new SelectMailboxTypeToExportCLIPrompt(this, collectionSettings.mailboxExportUseCase()));
+        new SelectMailboxTypeToExportCLIPrompt(this, collectionSettings.exportUseCase()));
     return readUserInputWithOptions(promptMap);
   }
 }

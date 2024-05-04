@@ -1,6 +1,10 @@
 package de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects;
 
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
+import java.time.LocalDateTime;
+import java.util.List;
 
-public record ExportableMailbox(Address owner, MailboxType type, Mailbox mailbox) {}
+public record ExportableMailbox(
+    String ownerAddress,
+    String mailBoxType,
+    List<ExportableEmails> exportableEmailsList,
+    LocalDateTime exportedDate) {}
