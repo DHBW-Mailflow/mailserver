@@ -29,7 +29,7 @@ public class ExportMailboxCLIPrompt extends BaseCLIPrompt {
       mailboxExportUseCase.exportMailbox(mailboxType);
       printDefault("Mailbox successfully exported");
     } catch (MailboxSavingException | ExportMailboxException | MailboxLoadingException e) {
-      printWarning("Could not export mailbox");
+      e.printStackTrace();
     }
   }
 }
