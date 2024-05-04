@@ -14,7 +14,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Expor
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.ExportableMailbox;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.ExportableRecipients;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Header;
-import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.preferences.ExportMailboxException;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.ExportMailboxException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;

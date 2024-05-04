@@ -3,6 +3,7 @@ package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.preferences;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.MailboxExportRepository;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.ExportMailboxException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.ExportableMailbox;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.utils.FileHelper;
 import java.io.File;

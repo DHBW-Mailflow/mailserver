@@ -1,4 +1,4 @@
-package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.preferences;
+package de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions;
 
 public class ExportMailboxException extends Exception {
   public ExportMailboxException(String message, Throwable cause) {
