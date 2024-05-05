@@ -7,33 +7,70 @@ The vision is a fully functional mailserver to manage your emails.
 
 `docker build --no-cache -t mailflow .; docker run -it mailflow`
 
+## Our Domain
+
+### Value Objects
+
+- [Address](src/main/java/de/dhbw/karlsruhe/students/mailflow/core/domain/email/value_objects/Address.java): Representation of an email address, consisting of a localPart and a domain, separated by an `@` sign.
+- [Attachment](src/main/java/de/dhbw/karlsruhe/students/mailflow/core/domain/email/value_objects/Attachment.java): Representation of an email attachment, consisting of the data bytes, content-type and filename
+- [EmailId](src/main/java/de/dhbw/karlsruhe/students/mailflow/core/domain/email/value_objects/EmailId.java): Holds the unique ID of an email
+- [EmailMetadata](src/main/java/de/dhbw/karlsruhe/students/mailflow/core/domain/email/value_objects/EmailMetadata.java): Consists of all the metadata of an email
+  - [Address](src/main/java/de/dhbw/karlsruhe/students/mailflow/core/domain/email/value_objects/Address.java): Representation of an email address, consisting of a localPart and a domain, separated by an `@` sign.
+  - List<[Header](src/main/java/de/dhbw/karlsruhe/students/mailflow/core/domain/email/value_objects/Header.java)>: Has a name and a value, e.g. `Content-Language: de`
+  - [Recipients](src/main/java/de/dhbw/karlsruhe/students/mailflow/core/domain/email/value_objects/Recipients.java): Holds the addresses To, CC and BCC recipients
+  - [SentDate](src/main/java/de/dhbw/karlsruhe/students/mailflow/core/domain/email/value_objects/SentDate.java): Represents the date and time an email has been send
+  - [Subject](src/main/java/de/dhbw/karlsruhe/students/mailflow/core/domain/email/value_objects/Subject.java): Holds the subject of the email
+
+- [ExportableEmail](src/main/java/de/dhbw/karlsruhe/students/mailflow/core/domain/email/value_objects/ExportableEmail.java): Special representation of an email used for exporting to a different format
+- [ExportableMailbox](src/main/java/de/dhbw/karlsruhe/students/mailflow/core/domain/email/value_objects/ExportableMailbox.java): Special representation of a mailbox used for exporting to a different format
+- [ExportableRecipients](src/main/java/de/dhbw/karlsruhe/students/mailflow/core/domain/email/value_objects/ExportableRecipients.java): Special representation of the recipients used for exporting to a different format
+- [MailboxId](src/main/java/de/dhbw/karlsruhe/students/mailflow/core/domain/email/value_objects/MailboxId.java): Holds the unique ID of a mailbox
+
+### Use Cases
+
+- [LoginUseCase](src/main/java/de/dhbw/karlsruhe/students/mailflow/core/application/auth/LoginUseCase.java)
+- [LogoutUseCase](src/main/java/de/dhbw/karlsruhe/students/mailflow/core/application/auth/LogoutUseCase.java)
+- [RegisterUseCase](src/main/java/de/dhbw/karlsruhe/students/mailflow/core/application/auth/RegisterUseCase.java)
+- [AnswerEmailUseCase](src/main/java/de/dhbw/karlsruhe/students/mailflow/core/application/email/answer/AnswerEmailUseCase.java)
+- [DeliverUseCase](src/main/java/de/dhbw/karlsruhe/students/mailflow/core/application/email/deliver_services/DeliverUseCase.java)
+- [DeleteEmailsUseCase](src/main/java/de/dhbw/karlsruhe/students/mailflow/core/application/email/organize/DeleteEmailsUseCase.java)
+- [MarkEmailUseCase](src/main/java/de/dhbw/karlsruhe/students/mailflow/core/application/email/organize/mark/MarkEmailUseCase.java)
+- [ProvideEmailsUseCase](src/main/java/de/dhbw/karlsruhe/students/mailflow/core/application/email/provide/ProvideEmailsUseCase.java)
+- [SearchEmailUseCase](src/main/java/de/dhbw/karlsruhe/students/mailflow/core/application/email/searchemail/content/SearchEmailUseCase.java)
+- [EmailSendUseCase](src/main/java/de/dhbw/karlsruhe/students/mailflow/core/application/email/send/EmailSendUseCase.java)
+- [ChangePasswordUseCase](src/main/java/de/dhbw/karlsruhe/students/mailflow/core/application/usersettings/changepassword/ChangePasswordUseCase.java)
+- [ChangeSignatureUseCase](src/main/java/de/dhbw/karlsruhe/students/mailflow/core/application/usersettings/changesignature/ChangeSignatureUseCase.java)
+- [ExportUseCase](src/main/java/de/dhbw/karlsruhe/students/mailflow/core/application/usersettings/export/ExportUseCase.java)
+- [ScheduledSendTimeParserUseCase](src/main/java/de/dhbw/karlsruhe/students/mailflow/external/infrastructure/email/parsing/ScheduledSendTimeParserUseCase.java)
+
 ## Functionality
 
-- [ ] Receive Emails
+- [x] Receive Emails
   - [x] Parse incoming Emails.
-  - [ ] Store Emails in a Mailbox.
-    - [ ] Create a Mailbox with multiple Emails.
-  - [ ] Store Emails in a Folder.
-  - [ ] Send Emails to the cc, bcc, to-Addresses.
+  - [x] Store Emails in a Mailbox.
+    - [x] Create a Mailbox with multiple Emails.
+  - [x] Store Emails in a Folder.
+  - [x] Send Emails to the cc, bcc, to-Addresses.
 - [ ] Synchronization
   - [ ] provide a list of emails when a client connects.
   - [ ] provide a list of emails when a client requests a refresh.
   - [ ] provide a list of emails with according folders instead.
-- [ ] Filtering
-  - [ ] Filter incoming messages Spam to a spam folder
-- [ ] Authorization / Authentication
+- [x] Filtering
+  - [x] Filter incoming messages Spam to a spam folder
+- [x] Authorization / Authentication
   - [x] implicit registration
-  - [ ] login to get access to own mailbox
+  - [x] login to get access to own mailbox
 
 ## Domains
 
 ## Ubiquitous Language
 
 - `Recieving Email` : Emails that are sent to this server. This can happen by a client or in the future by another mailserver
-- `Folders`: A folder is a collections of emails. In the future, there might be a folder of `unread`-, filtered `spam`- or `sent`-Emails.
-- `Mailbox`: A mailbox is a collection of folders. It is linked to an EmailAddress.
+- `Account`: Has multiple mailboxes that contain `unread`-, filtered `spam`- or `sent`-Emails.
+- `Mailbox`: A mailbox is a collection of e-mails that are grouped together (e.g. all `spam` emails are in the `spam` Mailbox of one User)
 - `Email`: An email is a message that can be sent to a mailbox.
 - `Address`: An address is a unique identifier for a user. They are represented by a string like `some@mail.de`.
+- `User`: A user is linked with one account.
 
 ## Architecture
 
