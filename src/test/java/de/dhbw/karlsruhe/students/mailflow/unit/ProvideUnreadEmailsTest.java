@@ -37,24 +37,7 @@ class ProvideUnreadEmailsTest {
 
     Map<Email, Set<Label>> mailboxMap = Map.of(email, Set.of(Label.UNREAD));
     Mailbox mailbox = Mailbox.create(address, mailboxMap, mailboxType);
-    MailboxRepository mailboxRepository =
-        new MailboxRepository() {
-          @Override
-          public Mailbox findByAddressAndType(Address address, MailboxType type) {
-            return mailbox;
-          }
-
-          @Override
-          public void save(Mailbox mailbox) {
-            // not tested
-          }
-
-          @Override
-          public List<Mailbox> findAllOtherInboxes(Address sender) {
-            throw new UnsupportedOperationException("Unimplemented method 'findAll'");
-          }
-        };
-
+    MailboxRepository mailboxRepository = new MockedMailboxRepository(mailbox);
     ProvideEmailsUseCase provideEmailsService =
         new ProvideInboxUnreadEmailsService(mockedAuth, mailboxRepository);
 

@@ -29,23 +29,7 @@ class ProvideAllEmailsServiceTest {
   private static ProvideAllEmailsService getProvideAllEmailsService(
       Map<MailboxType, Mailbox> allMailboxes, AuthSessionUseCase mockedAuth) {
     final MailboxRepository mockedMailboxRepository =
-        new MailboxRepository() {
-          @Override
-          public Mailbox findByAddressAndType(Address address, MailboxType type) {
-            return allMailboxes.get(type);
-          }
-
-          @Override
-          public void save(Mailbox mailbox) {
-            // not tested
-          }
-
-          @Override
-          public List<Mailbox> findAllOtherInboxes(Address sender) {
-            // not tested
-            return List.of();
-          }
-        };
+        new MockedForAllMailboxRepository(allMailboxes);
     return new ProvideAllEmailsService(mockedAuth, mockedMailboxRepository);
   }
 

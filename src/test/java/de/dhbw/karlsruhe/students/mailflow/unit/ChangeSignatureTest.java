@@ -6,25 +6,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthSessionUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.changesignature.ChangeSignatureService;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserSettings;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.UserSettingsRepository;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.LoadSettingsException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.SaveSettingsException;
 import org.junit.jupiter.api.Test;
 
 class ChangeSignatureTest {
+
   Address testAddress = new Address("test", "example.com");
 
-  UserSettingsRepository mockUserSettingsRepository =
-      new UserSettingsRepository() {
-        @Override
-        public void updateUserSettings(UserSettings userSettings) {}
-
-        @Override
-        public UserSettings getSettings(Address address) {
-          return new UserSettings(testAddress, "Test Signature");
-        }
-      };
+  UserSettingsRepository mockUserSettingsRepository = new MockedUserSettingsRepository(testAddress);
 
   AuthSessionUseCase mockAuthSession = new MockedAuthorizedSession(testAddress);
 

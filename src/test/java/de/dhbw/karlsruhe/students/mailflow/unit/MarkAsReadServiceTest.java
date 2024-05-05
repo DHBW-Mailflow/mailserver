@@ -25,21 +25,7 @@ class MarkAsReadServiceTest {
       Address loggedInUser, Mailbox mailboxOfUser) {
     AuthSessionUseCase mockedAuthSession = new MockedAuthorizedSession(loggedInUser);
 
-    MailboxRepository mockedMailboxRepository =
-        new MailboxRepository() {
-          @Override
-          public Mailbox findByAddressAndType(Address address, MailboxType type) {
-            return mailboxOfUser;
-          }
-
-          @Override
-          public void save(Mailbox mailbox) {}
-
-          @Override
-          public List<Mailbox> findAllOtherInboxes(Address sender) {
-            return List.of();
-          }
-        };
+    MailboxRepository mockedMailboxRepository = new MockedMailboxRepository(mailboxOfUser);
 
     return new MarkAsReadService(mockedAuthSession, mockedMailboxRepository);
   }
