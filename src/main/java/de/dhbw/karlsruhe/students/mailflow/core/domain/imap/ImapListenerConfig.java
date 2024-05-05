@@ -2,14 +2,23 @@ package de.dhbw.karlsruhe.students.mailflow.core.domain.imap;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.util.Objects;
 
 /**
  * @author jens1o, Jonas-Karl
  */
-public record ImapListenerConfig(String host, int port) {
+public final class ImapListenerConfig {
+  private final String host;
+  private final int port;
+
+  /** */
+  public ImapListenerConfig(String host, int port) {
+    this.host = host;
+    this.port = port;
+  }
 
   public static ImapListenerConfig createLocalConfig() throws IOException {
-      return new ImapListenerConfig("127.0.0.1", ImapListenerConfig.getFreePort());
+    return new ImapListenerConfig("127.0.0.1", ImapListenerConfig.getFreePort());
   }
 
   /**
@@ -29,4 +38,29 @@ public record ImapListenerConfig(String host, int port) {
     throw new IOException("unable to find free port");
   }
 
+  public String host() {
+    return host;
+  }
+
+  public int port() {
+    return port;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj == this) return true;
+    if (obj == null || obj.getClass() != this.getClass()) return false;
+    var that = (ImapListenerConfig) obj;
+    return Objects.equals(this.host, that.host) && this.port == that.port;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(host, port);
+  }
+
+  @Override
+  public String toString() {
+    return "ImapListenerConfig[" + "host=" + host + ", " + "port=" + port + ']';
+  }
 }

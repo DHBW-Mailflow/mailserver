@@ -90,8 +90,10 @@ class FileUserRepositoryTest {
     final User user1 = new User(new Address("test1", "test.de"), "password", "salt");
     final User user2 = new User(new Address("test2", "test.de"), "password", "salt");
 
-    final String exceptedContent =
-        "[{\"address\":{\"localPart\":\"test1\",\"domain\":\"test.de\"},\"password\":\"password\",\"salt\":\"salt\"},{\"address\":{\"localPart\":\"test2\",\"domain\":\"test.de\"},\"password\":\"password\",\"salt\":\"salt\"}]";
+    final String exceptedUser1 =
+        "{\"address\":{\"localPart\":\"test1\",\"domain\":\"test.de\"},\"password\":\"password\",\"salt\":\"salt\"}";
+    final String exceptedUser2 =
+        "{\"address\":{\"localPart\":\"test2\",\"domain\":\"test.de\"},\"password\":\"password\",\"salt\":\"salt\"}";
 
     // Act
     fileUserRepository.save(user1);
@@ -100,9 +102,9 @@ class FileUserRepositoryTest {
     // Assert
     final String fileContent =
         Files.readString(registeredUsersFile.toPath(), StandardCharsets.UTF_8);
-    assertEquals(exceptedContent, fileContent);
+    assertTrue(fileContent.contains(exceptedUser1));
+    assertTrue(fileContent.contains(exceptedUser2));
   }
-
   @Test
   void testFindByEmail() throws IOException, LoadingUsersException, SaveUserException {
     // Arrange

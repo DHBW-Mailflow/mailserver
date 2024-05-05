@@ -6,7 +6,15 @@ import java.util.Objects;
 /**
  * @author seiferla
  */
-public record UserSettings(Address address, String signature) {
+public final class UserSettings {
+  private final Address address;
+  private final String signature;
+
+  /** */
+  public UserSettings(Address address, String signature) {
+    this.address = address;
+    this.signature = signature;
+  }
 
   @Override
   public boolean equals(Object obj) {
@@ -23,5 +31,18 @@ public record UserSettings(Address address, String signature) {
   @Override
   public int hashCode() {
     return Objects.hash(address);
+  }
+
+  public Address address() {
+    return address;
+  }
+
+  public String signature() {
+    return signature;
+  }
+
+  @Override
+  public String toString() {
+    return "UserSettings[" + "address=" + address + ", " + "signature=" + signature + ']';
   }
 }
