@@ -1,4 +1,4 @@
-package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.preferences;
+package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
