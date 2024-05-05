@@ -24,7 +24,7 @@ public class ProvideInboxUnreadEmailsService implements ProvideEmailsUseCase {
     this.authSession = authSession;
     this.mailboxRepository = mailboxRepository;
     this.mailboxType = MailboxType.INBOX;
-    this.labels = new Label[] {Label.UNERAD};
+    this.labels = new Label[] {Label.UNREAD};
   }
 
   public int getEmailCount() {
