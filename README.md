@@ -271,7 +271,6 @@ The vision is a fully functional mailserver to manage your emails.
   - `ExportUseCase`: A interface to handle the exporting of emails.
   - `MailboxExportService`: Represents a service to export a mailbox.
 - `UCCollectionSettings`: A collection of all use cases for the user settings domain.
-### External Layer
 </details>
 
 
@@ -376,6 +375,6 @@ The vision is a fully functional mailserver to manage your emails.
 
 </details>
 
-- `BaseCLIPrompt`: Represents a base command line interface that implements the Server interface.
-- `MainCLIPrompt`: Represents the main command line interface that extends the BaseCLIPrompt.
+- `BaseCLIPrompt`: Represents a base command line interface that implements the Server interface and provides reusable functionality for other CLIPrompts
+- `MainCLIPrompt`: Represents the main command line interface which is the CLI-Entrypoint to this application.
 
