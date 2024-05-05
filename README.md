@@ -129,13 +129,6 @@ The vision is a fully functional mailserver to manage your emails.
   - `UserRepository`: A interface to save and find users.
   - `UserSettings`: Represents the settings of a user. A user has a `Signature` linked to it.
   - `UserSettingsRepository`: A interface to update and get user settings.
-There are the following domains:
-
-  - `Content`: Represents the content of an email. Currently, it is a mutable String object inside the Email entity.
-  - `Address`: Represents an Email-Address like `some@mail.de`. It is a value object.
-    - `SentDate`: Represents the date when an email was sent. It is a value object.
-    
-    - `Attachment`: Represents an attachment of an email. The attachment has a `name` and the data is represented in a byte-array. It is a value object.
 
 ### Application Layer
 
@@ -234,10 +227,66 @@ There are the following domains:
 
 #### Infrastructure 
 
+- authorization
+  - `FileUserRepository`: A implementation of the `UserRepository` interface to save and find users in a file.
+  - `LocalPasswordChecker`: A implementation of the `PasswordChecker` interface to check the password of a user.
+  - `LocalUserCreater`: A implementation of the `UserCreater` interface to create a user.
+  - `PasswordHasher`: Represents a service to hash a password.
+- email
+  - parsing
+    - `FileMailboxRepository`: A implementation of the `MailboxRepository` interface to save and find mailboxes in a file.
+    - `JSONMailboxConverter`: A implementation of the `MailboxConverter` interface to deserialize and serialize a mailbox.
+    - `MailboxConverter`: A interface to deserialize and serialize a mailbox.
+    - `ScheduledSendTimeParserService`: Represents a service to parse a scheduled send time.
+    - `ScheduledSendTimeParserUseCase`: A interface to handle the parsing of a scheduled send time.
+  - `CreateEmailHelper`: A helper class to create emails.
+  - `EmailMetadataFactory`: A factory to create domain EmailMetadata objects by passing information of the external library jakarta.
+  - `EmlParser`: An implementation of the `EmailParser` interface to parse .eml files to domain Email objects.
+- james
+  - `JamesImapListener`: An implementation of the `ImapListener` interface to listen, configure and handle incoming IMAP connections with Apache James.
+  - `JamesImapProcessor`: An implementation of the `ImapProcessor` interface to process incoming IMAP connections with Apache James.
+- mailbox_rules.spam
+  - strategies
+    - `ContentAnalysisSpamDetectionStrategy`: An implementation of the `SpamDetectionStrategy` interface to detect spam by analyzing the content of an email.
+    - `ReputationAnalysisSpamDetectionStrategy`: An implementation of the `SpamDetectionStrategy` interface to detect spam by analyzing the reputation of an email.
+    - `UnusualSenderSpamDetectionStrategy`: An implementation of the `SpamDetectionStrategy` interface to detect spam by analyzing the sender of an email.
+  - `DetectSpamOnIncomingEmailService`: Represents a service to detect spam on incoming emails.
+- preferences
+  - `FileExportableMailboxRepository`: A implementation of the `ExportableMailboxRepository` interface to save mailboxes in a file.
+  - `FileUserSettingsRepository`: A implementation of the `UserSettingsRepository` interface to update and get user settings in a file.
+  - `LocalDateTimeAdapter`: A adapter for Gson to handle LocalDateTime objects during serialization and deserialization.
+- utils
+  - `FileHelper`: A helper class to handle file operations.
 
 #### Presentation
 
-- emails:
-  - `EmailMetadataFactory`: A factory to create domain EmailMetadata objects by passing information of the external library jakarta.
-  - `EmlParser`: An implementation of the `EmailParser` interface to parse .eml files to domain Email objects.
-  - 
+- usecases
+  - delete
+    - `DeleteEmailsCLIPrompt`: Represents a command line interface to delete emails.
+    - `ShowDeleteEmailsCLIPrompt`: Represents a command line interface to show possible deletion emails.
+  - preferences
+    - `ChangePasswordCLIPrompt`: Represents a command line interface to change the password of a user.
+    - `ChangeSignatureCLIPrompt`: Represents a command line interface to change the signature of a user.
+    - `ExportMailboxCLIPrompt`: Represents a command line interface to export a mailbox.
+    - `PrintSignatureCLIPrompt`: Represents a command line interface to print the signature of a user.
+    - `ResetSignatureCLIPrompt`: Represents a command line interface to reset the signature of a user.
+    - `SelectMailboxTypeToExportCLIPrompt`: Represents a command line interface to select the mailbox type to export.
+    - `SettingsCLIPrompt`: Represents a command line interface to handle user settings.
+  - searchemails
+    - `SearchEmailsCLIPrompt`: Represents a command line interface to search emails.
+    - `SearchEmailTypesCLIPrompt`: Represents a command line interface to select the type of search.
+  - showemails
+    - `AnswerEmailCLIPrompt`: Represents a command line interface to answer an email.
+    - `ReadEmailCLIPrompt`: Represents a command line interface to read an email.
+    - `ReadEmailContentCLIPrompt`: Represents a command line interface to read the content of an email.
+    - `ShowEmailsCLIPrompt`: Represents a command line interface to show emails.
+    - `ShowEmailsTypesCLIPrompt`: Represents a command line interface to select the type of emails to show.
+  - `ComposeEmailCLIPrompt`: Represents a command line interface to compose an email.
+  - `LoginCLIPrompt`: Represents a command line interface to log in a user.
+  - `LogoutCLIPrompt`: Represents a command line interface to log out a user.
+  - `MarkEmailCLIPrompt`: Represents a command line interface to mark an email.
+  - `OrganizeEmailsCLIPrompt`: Represents a command line interface to organize emails.
+  - `RegisterCLIPrompt`: Represents a command line interface to register a user.
+- `BaseCLIPrompt`: Represents a base command line interface that implements the Server interface.
+- `MainCLIPrompt`: Represents the main command line interface that extends the BaseCLIPrompt.
+- 
