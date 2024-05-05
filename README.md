@@ -76,18 +76,65 @@ The vision is a fully functional mailserver to manage your emails.
 
 ### Domain Layer
 
+- auth
+  - `AuthorizationException`: A custom exception to handle authorization errors.
+  - `HashingFailedException`: A custom exception to handle hashing errors.
+  - `LoadingUserException`: A custom exception to handle loading user errors.
+  - `PasswordChecker`: A interface to check the password of a user.
+  - `UserCreater`: A interface to create a user.
+- common.models
+  - `AggregateRoot`: An abstract class template for every AggregateRoot object that will be created.
+  - `Entity`: An abstract class template for every Entity object that will be created.
+- email
+  - enums
+    - `Label`: Represents the label of an email. An email can be `READ`, `UNREAD`.
+    - `MailboxType`: Represents the type of mailbox. A mailbox can be `INBOX`, `SENT`, `SPAM`, `DELETED` and `DRAFT`.
+  - exceptions
+    - `ExportMailboxException`: A custom exception to handle exporting errors.
+    - `MailboxLoadingException`: A custom exception to handle loading mailbox errors.
+    - `MailboxSavingException`: A custom exception to handle saving mailbox errors.
+  - value_objects
+    - `Address`: Represents an Email-Address like `user@mail.de`.
+    - `Attachment`: Represents an attachment of an email. The attachment has a `name` and the data is represented in a byte-array.
+    - `EmailId`: Represents the unique id of an email. 
+    - `EmailMetadata`: Represents the metadata of an email. It contains the `sentDate`, `subject` and `attachments`.
+    - `ExportableEmail`: Represents an email that can be exported. It contains the `Subject`, `Content`, `Senderaddress` ,`ExportableRecipients`, `SentDate`, `isRead` and `Header`.
+    - `ExportableMailbox`: Represents a mailbox that can be exported. It contains the `Address`, `MailboxType`, `ExportableEmail` and `Exporteddate`.
+    - `ExportableRecipients`: Represents the recipients of an email that can be exported. It contains the `To`, `CC` and `BCC` recipients.
+    - `Header`: Represents the header of an email. A header could look like this: `From: someone@example.com`.
+    - `MailboxId`: Represents the unique id of a mailbox.
+    - `Recipients`: Represents the recipients of an email. It contains the `To`, `CC` and `BCC` recipients.
+    - `SentDate`: Represents the date when an email was sent.
+    - `Subject`: Represents the subject the short title of an email.
+  - `Email`: Represents an email. An email has a `EmailId`, `Content`, `Address`, `Header` and `EmailMetadata` linked to it.
+  - `EmailBuilder`: A builder to build emails.
+  - `ExportableMailboxRepository`: A interface to save mailboxes.
+  - `InvalidRecipients`: A custom exception to handle invalid recipients.
+  - `Mailbox`: Represents a mailbox. A Mailbox has a `MailboxId` and a EmailAddress `Address` linked to it.
+  - `MailboxRepository`: A interface to save and find mailboxes.
+- imap
+  - `ImapListenerConfig`: Represents the configuration of an IMAP listener.
+  - `ImapListenerException`: A custom exception to handle IMAP listener errors.
+- server
+  - `Server`: A interface to start and stop a server.
+- user
+  - exceptions
+    - `InvalidEmailException`: A custom exception to handle invalid email errors.
+    - `InvalidPasswordException`: A custom exception to handle invalid password errors.
+    - `InvalidSaltException`: A custom exception to handle invalid salt errors.
+    - `LoadSettingsException`: A custom exception to handle loading settings errors.
+    - `SaveSettingsException`: A custom exception to handle saving settings errors.
+    - `SaveUserException`: A custom exception to handle saving user errors.
+  - `User`: Represents a user. A user has a `Address`, `Password` and a `Salt` linked to it.
+  - `UserRepository`: A interface to save and find users.
+  - `UserSettings`: Represents the settings of a user. A user has a `Signature` linked to it.
+  - `UserSettingsRepository`: A interface to update and get user settings.
 There are the following domains:
 
-- `Common`: Contains common interfaces like `AggregateRoot`, `Entity` and `ValueObject` which are implemented in the other domains.
-- `Mailbox`: Represents a mailbox. A Mailbox has a `MailboxId` and a EmailAddress `Address` linked to it.
-- `Email`: Represents a user with all its attributes. There is an extra `Email.Metadata` class for further attributes.
-  - `EmailId`: Represents the unique id of an email. It is a value object.
   - `Content`: Represents the content of an email. Currently, it is a mutable String object inside the Email entity.
   - `Address`: Represents an Email-Address like `some@mail.de`. It is a value object.
-  - `Header`: Represents the header of an email. A header could look like this: `From: someone@example.com`.
-  - `EmailMetadata`: Represents the metadata of an email. It contains the `sentDate`, `subject` and `attachments`. It is a value object.
     - `SentDate`: Represents the date when an email was sent. It is a value object.
-    - `Subject`: Represents the subject the short title of an email. It is a value object.
+    
     - `Attachment`: Represents an attachment of an email. The attachment has a `name` and the data is represented in a byte-array. It is a value object.
 
 ### Application Layer
@@ -183,7 +230,12 @@ There are the following domains:
     - `ExportUseCase`: A interface to handle the exporting of emails.
     - `MailboxExportService`: Represents a service to export a mailbox.
   - `UCCollectionSettings`: A collection of all use cases for the user settings domain.
-### Infrastructure Layer
+### External Layer
+
+#### Infrastructure 
+
+
+#### Presentation
 
 - emails:
   - `EmailMetadataFactory`: A factory to create domain EmailMetadata objects by passing information of the external library jakarta.
