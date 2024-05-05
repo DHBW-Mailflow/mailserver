@@ -2,11 +2,12 @@ package de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.export
 
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthSessionUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.ExportableMailboxRepository;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.MailboxRepository;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.Label;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.ExportMailboxException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
@@ -14,13 +15,13 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Expor
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.ExportableMailbox;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.ExportableRecipients;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Header;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.ExportMailboxException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
 /**
  * @author seiferla, Jonas-Karl
  */
