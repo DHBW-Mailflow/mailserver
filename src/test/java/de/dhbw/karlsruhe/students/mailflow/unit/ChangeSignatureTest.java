@@ -13,18 +13,10 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.SaveSetti
 import org.junit.jupiter.api.Test;
 
 class ChangeSignatureTest {
+
   Address testAddress = new Address("test", "example.com");
 
-  UserSettingsRepository mockUserSettingsRepository =
-      new UserSettingsRepository() {
-        @Override
-        public void updateUserSettings(UserSettings userSettings) {}
-
-        @Override
-        public UserSettings getSettings(Address address) {
-          return new UserSettings(testAddress, "Test Signature");
-        }
-      };
+  UserSettingsRepository mockUserSettingsRepository = new MockedUserSettingsRepository();
 
   AuthSessionUseCase mockAuthSession = new MockedAuthorizedSession(testAddress);
 
