@@ -16,7 +16,7 @@ class ChangeSignatureTest {
 
   Address testAddress = new Address("test", "example.com");
 
-  UserSettingsRepository mockUserSettingsRepository = new MockedUserSettingsRepository();
+  UserSettingsRepository mockUserSettingsRepository = new MockedUserSettingsRepository(testAddress);
 
   AuthSessionUseCase mockAuthSession = new MockedAuthorizedSession(testAddress);
 

@@ -38,19 +38,10 @@ class FileMailboxRepositoryTest {
     Address mailboxOwner = new Address("someOwner", "someDomain.de");
     Mailbox searchingMailbox = Mailbox.create(mailboxOwner, Map.of(), mailboxType);
 
-    MailboxConverter mockedMailboxConverter =
-        new MailboxConverter() {
-          @Override
-          public String serializeMailbox(Mailbox mailbox) {
-            // not tested
-            return "someSerializedMailboxJson";
-          }
+    String expectedSerializedMailboxJson = "someSerializedMailboxJson";
 
-          @Override
-          public Mailbox deserializeMailboxFile(File mailboxFile) {
-            return searchingMailbox;
-          }
-        };
+    MailboxConverter mockedMailboxConverter =
+        new MockedMailboxConverter(searchingMailbox, expectedSerializedMailboxJson);
 
     this.fileMailboxRepository =
         new FileMailboxRepository(mockedMailboxConverter, allMailboxesDirectory);
@@ -70,18 +61,8 @@ class FileMailboxRepositoryTest {
 
     String expectedSerializedMailboxJson = "someSerializedMailboxJson";
     MailboxConverter mockedMailboxConverter =
-        new MailboxConverter() {
-          @Override
-          public String serializeMailbox(Mailbox mailbox) {
-            return expectedSerializedMailboxJson;
-          }
+        new MockedMailboxConverter(mailboxToSave, expectedSerializedMailboxJson);
 
-          @Override
-          public Mailbox deserializeMailboxFile(File mailboxFile) {
-            // not tested
-            return mailboxToSave;
-          }
-        };
     this.fileMailboxRepository =
         new FileMailboxRepository(mockedMailboxConverter, allMailboxesDirectory);
 
