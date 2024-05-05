@@ -2,22 +2,25 @@ package de.dhbw.karlsruhe.students.mailflow.external.infrastructure.preferences;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.MailboxExportRepository;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.ExportableMailboxRepository;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.ExportMailboxException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.ExportableMailbox;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.utils.FileHelper;
 import java.io.File;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+
 /**
  * @author seiferla
  */
-public class ExportMailboxRepository implements MailboxExportRepository {
+public class FileExportableMailboxRepository implements ExportableMailboxRepository {
 
   private final Gson gson;
 
   private static final String EXPORTS_DIRECTORY = "exports/";
 
-  public ExportMailboxRepository() {
+  public FileExportableMailboxRepository() {
     this.gson =
         new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
@@ -44,8 +47,10 @@ public class ExportMailboxRepository implements MailboxExportRepository {
   }
 
   private String parseExportedDate(LocalDateTime localDateTime) {
-    return "%s-%s-%s"
-        .formatted(
-            localDateTime.getYear(), localDateTime.getMonthValue(), localDateTime.getDayOfMonth());
+    final DateTimeFormatter formatter =
+        new DateTimeFormatterBuilder()
+            .appendPattern("yyyy-MM-dd_HH-mm-ss")
+            .toFormatter();
+    return localDateTime.format(formatter);
   }
 }

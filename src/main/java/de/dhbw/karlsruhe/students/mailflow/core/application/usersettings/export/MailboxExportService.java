@@ -3,7 +3,7 @@ package de.dhbw.karlsruhe.students.mailflow.core.application.usersettings.export
 import de.dhbw.karlsruhe.students.mailflow.core.application.auth.AuthSessionUseCase;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Email;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.MailboxExportRepository;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.ExportableMailboxRepository;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.MailboxRepository;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.Label;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
@@ -27,15 +27,15 @@ import java.util.stream.Stream;
 public class MailboxExportService implements ExportUseCase {
 
   private final MailboxRepository mailboxRepository;
-  private final MailboxExportRepository mailboxExportRepository;
+  private final ExportableMailboxRepository exportableMailboxRepository;
   private final AuthSessionUseCase authSession;
 
   public MailboxExportService(
       AuthSessionUseCase authSession,
       MailboxRepository mailboxRepository,
-      MailboxExportRepository mailboxExportRepository) {
+      ExportableMailboxRepository exportableMailboxRepository) {
     this.mailboxRepository = mailboxRepository;
-    this.mailboxExportRepository = mailboxExportRepository;
+    this.exportableMailboxRepository = exportableMailboxRepository;
     this.authSession = authSession;
   }
 
@@ -95,6 +95,6 @@ public class MailboxExportService implements ExportUseCase {
       throw new MailboxLoadingException("Mailbox could not be loaded");
     }
     ExportableMailbox exportableMailbox = convertToExportableMailbox(mailbox);
-    mailboxExportRepository.saveMailbox(exportableMailbox);
+    exportableMailboxRepository.saveMailbox(exportableMailbox);
   }
 }
