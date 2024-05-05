@@ -13,11 +13,14 @@ import java.util.List;
 /**
  * @author seiferla, Jonas-Karl
  */
-public class ProvideAllEmailsService extends AbstractProvideEmailsService {
+public class ProvideAllEmailsService implements ProvideEmailsUseCase {
+  private final MailboxRepository mailboxRepository;
+  private final AuthSessionUseCase authSession;
 
   public ProvideAllEmailsService(
       AuthSessionUseCase authSession, MailboxRepository mailboxRepository) {
-    super(authSession, mailboxRepository);
+    this.mailboxRepository = mailboxRepository;
+    this.authSession = authSession;
   }
 
   @Override
@@ -35,5 +38,13 @@ public class ProvideAllEmailsService extends AbstractProvideEmailsService {
   @Override
   public String getMailboxName() {
     return "all";
+  }
+
+  public int getEmailCount() {
+    try {
+      return provideEmails().size();
+    } catch (MailboxSavingException | MailboxLoadingException e) {
+      return 0;
+    }
   }
 }

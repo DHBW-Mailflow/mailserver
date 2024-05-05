@@ -14,11 +14,14 @@ import java.util.List;
 /**
  * @author Jonas-Karl
  */
-public class ProvideAllReadEmailsService extends AbstractProvideEmailsService {
+public class ProvideAllReadEmailsService implements ProvideEmailsUseCase {
+  private final MailboxRepository mailboxRepository;
+  private final AuthSessionUseCase authSession;
 
   public ProvideAllReadEmailsService(
       AuthSessionUseCase authSession, MailboxRepository mailboxRepository) {
-    super(authSession, mailboxRepository);
+    this.mailboxRepository = mailboxRepository;
+    this.authSession = authSession;
   }
 
   @Override
@@ -37,5 +40,13 @@ public class ProvideAllReadEmailsService extends AbstractProvideEmailsService {
   @Override
   public String getMailboxName() {
     return "read";
+  }
+
+  public int getEmailCount() {
+    try {
+      return provideEmails().size();
+    } catch (MailboxSavingException | MailboxLoadingException e) {
+      return 0;
+    }
   }
 }
