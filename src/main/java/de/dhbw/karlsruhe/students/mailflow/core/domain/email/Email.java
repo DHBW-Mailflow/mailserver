@@ -93,7 +93,7 @@ public final class Email extends AggregateRoot<EmailId> {
     return this.emailMetadata.sender();
   }
 
-  public List<Header> getHeader() {
+  public List<Header> getHeaders() {
     return this.emailMetadata.headers();
   }
 

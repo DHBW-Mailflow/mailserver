@@ -8,5 +8,5 @@ import java.util.List;
 public record ExportableMailbox(
     String ownerAddress,
     String mailBoxType,
-    List<ExportableEmails> exportableEmailsList,
+    List<ExportableEmail> exportableEmailList,
     LocalDateTime exportedDate) {}

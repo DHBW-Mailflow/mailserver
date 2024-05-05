@@ -10,7 +10,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.ExportableEmails;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.ExportableEmail;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.ExportableMailbox;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.ExportableRecipients;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Header;
@@ -44,11 +44,11 @@ public class MailboxExportService implements ExportUseCase {
 
     List<Email> unreadEmails = mailbox.getEmailsWithLabel(Label.UNREAD);
 
-    List<ExportableEmails> exportableReadEmails = getExportableEmails(readEmails, true);
+    List<ExportableEmail> exportableReadEmails = getExportableEmails(readEmails, true);
 
-    List<ExportableEmails> exportableUnreadEmails = getExportableEmails(unreadEmails, false);
+    List<ExportableEmail> exportableUnreadEmails = getExportableEmails(unreadEmails, false);
 
-    List<ExportableEmails> allExportableEmails =
+    List<ExportableEmail> allExportableEmails =
         Stream.concat(exportableReadEmails.stream(), exportableUnreadEmails.stream()).toList();
 
     LocalDateTime exportedDate = LocalDateTime.now();
@@ -60,19 +60,19 @@ public class MailboxExportService implements ExportUseCase {
         exportedDate);
   }
 
-  private List<ExportableEmails> getExportableEmails(List<Email> readEmails, boolean isRead) {
-    List<ExportableEmails> exportableEmailsList = new ArrayList<>();
+  private List<ExportableEmail> getExportableEmails(List<Email> readEmails, boolean isRead) {
+    List<ExportableEmail> exportableEmailList = new ArrayList<>();
     for (Email email : readEmails) {
       Map<String, String> headerMap =
-          email.getHeader().stream().collect(Collectors.toMap(Header::name, Header::value));
+          email.getHeaders().stream().collect(Collectors.toMap(Header::name, Header::value));
       ExportableRecipients exportableRecipients =
           new ExportableRecipients(
               email.getRecipientBCC().stream().map(Address::toString).toList(),
               email.getRecipientCC().stream().map(Address::toString).toList(),
               email.getRecipientTo().stream().map(Address::toString).toList());
 
-      ExportableEmails exportableEmails =
-          new ExportableEmails(
+      ExportableEmail exportableEmail =
+          new ExportableEmail(
               email.getSubject().subject(),
               email.getContent(),
               email.getSender().toString(),
@@ -80,9 +80,9 @@ public class MailboxExportService implements ExportUseCase {
               email.getSendDate().date(),
               isRead,
               headerMap);
-      exportableEmailsList.add(exportableEmails);
+      exportableEmailList.add(exportableEmail);
     }
-    return exportableEmailsList;
+    return exportableEmailList;
   }
 
   @Override
