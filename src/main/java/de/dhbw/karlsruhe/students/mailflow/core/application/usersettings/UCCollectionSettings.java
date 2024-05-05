@@ -18,7 +18,6 @@ import java.util.Objects;
  * @author seiferla
  */
 public final class UCCollectionSettings {
-  private final AuthSessionUseCase authSessionUseCase;
   private final ChangeSignatureService changeSignatureService;
   private final ScheduledSendTimeParserUseCase scheduledSendTimeParserUseCase;
   private final ChangePasswordUseCase changePasswordUseCase;
@@ -26,12 +25,10 @@ public final class UCCollectionSettings {
 
   /** */
   public UCCollectionSettings(
-      AuthSessionUseCase authSessionUseCase,
       ChangeSignatureService changeSignatureService,
       ScheduledSendTimeParserUseCase scheduledSendTimeParserUseCase,
       ChangePasswordUseCase changePasswordUseCase,
       ExportUseCase exportUseCase) {
-    this.authSessionUseCase = authSessionUseCase;
     this.changeSignatureService = changeSignatureService;
     this.scheduledSendTimeParserUseCase = scheduledSendTimeParserUseCase;
     this.changePasswordUseCase = changePasswordUseCase;
@@ -45,16 +42,12 @@ public final class UCCollectionSettings {
       MailboxRepository mailboxRepository,
       MailboxExportRepository mailboxExportRepository) {
     return new UCCollectionSettings(
-        authSessionUseCase,
         new ChangeSignatureService(userSettingsRepository, authSessionUseCase),
         new ScheduledSendTimeParserService(),
         new ChangePasswordService(userRepository, authSessionUseCase),
         new MailboxExportService(authSessionUseCase, mailboxRepository, mailboxExportRepository));
   }
 
-  public AuthSessionUseCase authSessionUseCase() {
-    return authSessionUseCase;
-  }
 
   public ChangeSignatureService changeSignatureService() {
     return changeSignatureService;
@@ -77,8 +70,7 @@ public final class UCCollectionSettings {
     if (obj == this) return true;
     if (obj == null || obj.getClass() != this.getClass()) return false;
     var that = (UCCollectionSettings) obj;
-    return Objects.equals(this.authSessionUseCase, that.authSessionUseCase)
-        && Objects.equals(this.changeSignatureService, that.changeSignatureService)
+    return Objects.equals(this.changeSignatureService, that.changeSignatureService)
         && Objects.equals(this.scheduledSendTimeParserUseCase, that.scheduledSendTimeParserUseCase)
         && Objects.equals(this.changePasswordUseCase, that.changePasswordUseCase)
         && Objects.equals(this.exportUseCase, that.exportUseCase);
@@ -87,7 +79,6 @@ public final class UCCollectionSettings {
   @Override
   public int hashCode() {
     return Objects.hash(
-        authSessionUseCase,
         changeSignatureService,
         scheduledSendTimeParserUseCase,
         changePasswordUseCase,
@@ -97,9 +88,6 @@ public final class UCCollectionSettings {
   @Override
   public String toString() {
     return "UCCollectionSettings["
-        + "authSessionUseCase="
-        + authSessionUseCase
-        + ", "
         + "changeSignatureService="
         + changeSignatureService
         + ", "
