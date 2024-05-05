@@ -92,12 +92,100 @@ There are the following domains:
 
 ### Application Layer
 
-- parsing
-  - `EmailParser`: An interface to parse Email of any format to a domain Email object.
-  - `EmailParsingException`: A custom exception to handle parsing errors.
-
+- auth
+  - `AuthSession`: Represents a user session. It contains a user object that represents the user currently logged in.
+  - `AuthSessionUseCase`: A interface to handle the login and logout of a user.
+  - `LoginService`: Represents a service to login and authorize a user.
+  - `LoginUseCase`: A interface to handle the login of a user.
+  - `LogoutService`: Represents a service to logout a user.
+  - `LogoutUseCase`: A interface to handle the logout of a user.
+  - `RegisterService`: Represents a service to register a user.
+  - `RegisterUseCase`: A interface to handle the registration of a user.
+  - `UCCollectionAuth`: A collection of all use cases for the auth domain.
+- email
+     - answer
+        - `AnswerEmailUseCase`: A interface to handle the answering of an email.
+        - `AnswerEmailService`: Represents a service to answer an email.
+        - `UCCollectionAnswerEmails`: A collection of all use cases for the answer domain.
+     - deliver_services
+        - `DeliverUseCase`: A interface to handle the delivery of an email.
+        - `DeliverInInboxService`: Represents a service to deliver an email to the inbox of a user.
+        - `DeliverInSentService`: Represents a service to deliver an email to the sent folder of a user.
+        - `DeliverIntoFolderService`: Represents a service to deliver an email to a specific folder of a user.
+        - `DeliverIntoSpamService`: Represents a service to deliver an email to the spam folder of a user.
+        - `DeliverScheduledMailJob`: Represents a job to deliver a scheduled email.
+     - organize
+        - mark
+           - `MarkAsReadService`: Represents a service to mark an email as read.
+           - `MarkAsUnreadService`: Represents a service to mark an email as unread.
+           - `MarkEmailUseCase`: A interface to handle the marking of an email.
+        - `DeleteEmailService`: Represents a service to delete an email from a mailbox.
+        - `DeleteEmailsUseCase`: A interface to handle the deletion of emails.
+        - `MarkAsNotSpamService`: Represents a service to mark an email as not spam.
+        - `MarkAsSpamService`: Represents a service to mark an email as spam.
+        - `UCCollectionOrganizeEmails`: A collection of all use cases for the organize domain.
+  - parsing
+    - `EmailParser`: An interface to parse Email of any format to a domain Email object.
+    - `EmailParsingException`: A custom exception to handle parsing errors.
+  - provide
+    - `AbstractProvideEmailsService`: Represents a service to provide emails and count of emails.
+    - `AbstractProvideMailboxTypeEmailsService`: Represents a service to provide emails of a specific type.
+    - `ProvideAllEmailsService`: Represents a service to provide all emails of a mailbox.
+    - `ProvideAllInboxEmailsService`: Represents a service to provide all inbox emails of a mailbox.
+    - `ProvideAllReadEmailsService`: Represents a service to provide all read emails of a mailbox.
+    - `ProvideAllUnreadEmailsService`: Represents a service to provide all unread emails of a mailbox.
+    - `ProvideDeletedEmailsService`: Represents a service to provide all deleted emails of a mailbox.
+    - `ProvideEmailsUseCase`: A interface to handle the providing of emails and count of emails.
+    - `ProvideInboxReadEmailsService`: Represents a service to provide all read inbox emails of a mailbox.
+    - `ProvideInboxUnreadEmailsService`: Represents a service to provide all unread inbox emails of a mailbox.
+    - `ProvideSentEmailsService`: Represents a service to provide all sent emails of a mailbox.
+    - `ProvideSpamEmailsService`: Represents a service to provide all spam emails of a mailbox.
+    - `UCCollectionProvideEmails`: A collection of all use cases for the provide domain.
+  - rules
+    - `MailboxRule`: A interface to define a rule for a mailbox.
+    - `SpamDetectionStrategy`: A interface to define a spam detection strategy.
+  - searchemail
+    - content
+      - `SearchContentEmailService`: Represents a service to search emails by content.
+      - `SearchEmailUseCase`: A interface to handle the searching of emails.
+    - date
+      - `HelperParsing`: A helper class to parse a date string to a date object.
+      - `SearchAfterDateEmailService`: Represents a service to search emails after a specific date.
+      - `SearchBeforeDateEmailService`: Represents a service to search emails before a specific date.
+      - `SearchEqualDateEmailService`: Represents a service to search emails with a specific date.
+    - recipient
+      - `SearchRecipientEmailService`: Represents a service to search emails by recipient.
+    - sender
+      - `SearchSenderEmailService`: Represents a service to search emails by sender.
+    - subject 
+      - `SearchSubjectEmailService`: Represents a service to search emails by subject.
+    - `UCCollectionSearchEmails`: A collection of all use cases for the search email domain.
+  - send
+    - `EmailSendService`: Represents a service to send an email, prepare email for sending and validate Recipients.
+    - `EmailSendUseCase`: A interface to handle the sending of an email and validate Recipients.
+- imap
+  - `ImapListener`: A interface to listen, configure and handle incoming IMAP connections.
+  - `ListenerService`: A interface to listen to ports and handle incoming connections.
+  - `LocalListenerService`: Represents a service to listen to a local port and handle incoming connections.
+- job
+  - `Job`: A interface to define a job.
+  - `JobExecutionException`: A custom exception to handle job execution errors.
+  - `WorkerQueue`: Represents a queue to handle jobs.
+- usersettings
+  - changepassword
+    - `ChangePasswordService`: Represents a service to change the password of a user.
+    - `ChangePasswordUseCase`: A interface to handle the changing of the password of a user.
+  - changesignature
+    - `ChangeSignatureService`: Represents a service to change the signature of a user.
+    - `ChangeSignatureUseCase`: A interface to handle the changing of the signature of a user.
+    - `SettingsBuilder`: A builder to build settings.
+  - export
+    - `ExportUseCase`: A interface to handle the exporting of emails.
+    - `MailboxExportService`: Represents a service to export a mailbox.
+  - `UCCollectionSettings`: A collection of all use cases for the user settings domain.
 ### Infrastructure Layer
 
 - emails:
   - `EmailMetadataFactory`: A factory to create domain EmailMetadata objects by passing information of the external library jakarta.
   - `EmlParser`: An implementation of the `EmailParser` interface to parse .eml files to domain Email objects.
+  - 
