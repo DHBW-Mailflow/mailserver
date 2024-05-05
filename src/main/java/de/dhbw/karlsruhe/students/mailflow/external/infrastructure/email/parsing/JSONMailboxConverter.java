@@ -4,12 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonToken;
-import com.google.gson.stream.JsonWriter;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.preferences.LocalDateTimeAdapter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -44,27 +41,9 @@ public class JSONMailboxConverter implements MailboxConverter {
 
   private Gson getMailboxGson() {
     return new GsonBuilder()
-        .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeFormatter())
+        .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
         .enableComplexMapKeySerialization()
         .create();
   }
-
-  /**
-   * @author Jonas-Karl, seiferla
-   */
-  private static class LocalDateTimeFormatter extends TypeAdapter<LocalDateTime> {
-    @Override
-    public void write(JsonWriter out, LocalDateTime dateTime) throws IOException {
-      out.value(dateTime.toString());
-    }
-
-    @Override
-    public LocalDateTime read(JsonReader in) throws IOException {
-      if (in.peek() == JsonToken.NULL) {
-        in.nextNull();
-        return null;
-      }
-      return LocalDateTime.parse(in.nextString());
-    }
-  }
+  
 }

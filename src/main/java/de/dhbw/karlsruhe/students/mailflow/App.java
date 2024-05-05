@@ -22,6 +22,7 @@ import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.authorization
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.parsing.FileMailboxRepository;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.parsing.JSONMailboxConverter;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.mailbox_rules.spam.DetectSpamOnIncomingMailMailboxRule;
+import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.preferences.FileExportableMailboxRepository;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.preferences.FileUserSettingsRepository;
 import de.dhbw.karlsruhe.students.mailflow.external.presentation.cli.MainCLIPrompt;
 
@@ -40,6 +41,8 @@ public class App {
     final PasswordChecker passwordChecker = new LocalPasswordChecker();
     final MailboxRule spamDetector = new DetectSpamOnIncomingMailMailboxRule(mailboxRepository);
     final UserSettingsRepository userSettingsRepository = new FileUserSettingsRepository();
+    final FileExportableMailboxRepository exportMailboxRepository = new FileExportableMailboxRepository();
+
     /// UseCases / Services
     final AuthSessionUseCase authSession = new AuthSession();
 
@@ -54,7 +57,12 @@ public class App {
     final UCCollectionSearchEmail searchEmails =
         UCCollectionSearchEmail.init(provideEmails.provideAllEmailsService());
     final UCCollectionSettings collectionSettings =
-        UCCollectionSettings.init(authSession, userSettingsRepository, userRepository);
+        UCCollectionSettings.init(
+            authSession,
+            userSettingsRepository,
+            userRepository,
+            mailboxRepository,
+            exportMailboxRepository);
     final UCCollectionAnswerEmails answerEmails = UCCollectionAnswerEmails.init(sendEmails);
 
     /// Start

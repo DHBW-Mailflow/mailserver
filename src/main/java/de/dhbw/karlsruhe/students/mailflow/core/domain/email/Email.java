@@ -5,6 +5,7 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Addre
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Attachment;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.EmailId;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.EmailMetadata;
+import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Header;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.SentDate;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Subject;
 import java.util.Collections;
@@ -90,6 +91,10 @@ public final class Email extends AggregateRoot<EmailId> {
 
   public Address getSender() {
     return this.emailMetadata.sender();
+  }
+
+  public List<Header> getHeaders() {
+    return this.emailMetadata.headers();
   }
 
   public List<Address> getRecipientTo() {
