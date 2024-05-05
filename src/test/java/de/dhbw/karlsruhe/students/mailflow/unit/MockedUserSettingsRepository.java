@@ -8,15 +8,17 @@ import de.dhbw.karlsruhe.students.mailflow.core.domain.user.exceptions.SaveSetti
 
 public class MockedUserSettingsRepository implements UserSettingsRepository {
 
-  private final Address testAddress = new Address("test", "example.com");
+  private final Address testAddress;
+
+  public MockedUserSettingsRepository(Address testAddress) {
+    this.testAddress = testAddress;
+  }
 
   @Override
-  public void updateUserSettings(UserSettings userSettings)
-      throws LoadSettingsException, SaveSettingsException {}
+  public void updateUserSettings(UserSettings userSettings) {}
 
   @Override
-  public UserSettings getSettings(Address address)
-      throws LoadSettingsException, SaveSettingsException {
+  public UserSettings getSettings(Address address){
     return new UserSettings(testAddress, "Test Signature");
   }
 }

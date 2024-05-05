@@ -3,8 +3,6 @@ package de.dhbw.karlsruhe.students.mailflow.unit;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.MailboxRepository;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.enums.MailboxType;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxSavingException;
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.value_objects.Address;
 import java.util.List;
 
@@ -16,19 +14,17 @@ public class MockedMailboxRepository implements MailboxRepository {
     this.mailbox = mailbox;
   }
 
-
   @Override
-  public Mailbox findByAddressAndType(Address address, MailboxType type)
-      throws MailboxLoadingException, MailboxSavingException {
+  public Mailbox findByAddressAndType(Address address, MailboxType type) {
     return mailbox;
   }
 
   @Override
-  public void save(Mailbox mailbox) throws MailboxSavingException {}
+  public void save(Mailbox mailbox) {}
 
   @Override
   public List<Mailbox> findAllOtherInboxes(Address sender)
-      throws MailboxLoadingException, MailboxSavingException {
+      {
     throw new UnsupportedOperationException("Unimplemented method 'findAll'");
   }
 }

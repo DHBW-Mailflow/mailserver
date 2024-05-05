@@ -1,7 +1,6 @@
 package de.dhbw.karlsruhe.students.mailflow.unit;
 
 import de.dhbw.karlsruhe.students.mailflow.core.domain.email.Mailbox;
-import de.dhbw.karlsruhe.students.mailflow.core.domain.email.exceptions.MailboxLoadingException;
 import de.dhbw.karlsruhe.students.mailflow.external.infrastructure.email.parsing.MailboxConverter;
 import java.io.File;
 
@@ -9,7 +8,7 @@ public class MockedMailboxConverter implements MailboxConverter {
 
   private final Mailbox mailbox;
 
-  private String expectedSerializedMailboxJson;
+  private final String expectedSerializedMailboxJson;
 
   public MockedMailboxConverter(Mailbox mailbox, String expectedSerializedMailboxJson) {
     this.mailbox = mailbox;
@@ -17,7 +16,7 @@ public class MockedMailboxConverter implements MailboxConverter {
   }
 
   @Override
-  public Mailbox deserializeMailboxFile(File mailboxFile) throws MailboxLoadingException {
+  public Mailbox deserializeMailboxFile(File mailboxFile) {
     return mailbox;
   }
 
