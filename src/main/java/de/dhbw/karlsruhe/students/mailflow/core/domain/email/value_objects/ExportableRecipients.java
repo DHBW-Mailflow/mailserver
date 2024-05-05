@@ -19,18 +19,6 @@ public final class ExportableRecipients {
     this.toRecipients = toRecipients;
   }
 
-  public List<String> bccRecipients() {
-    return bccRecipients;
-  }
-
-  public List<String> ccRecipients() {
-    return ccRecipients;
-  }
-
-  public List<String> toRecipients() {
-    return toRecipients;
-  }
-
   @Override
   public boolean equals(Object obj) {
     if (obj == this) return true;

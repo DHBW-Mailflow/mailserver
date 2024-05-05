@@ -33,10 +33,6 @@ public final class ExportableMailbox {
     return mailBoxType;
   }
 
-  public List<ExportableEmail> exportableEmailList() {
-    return exportableEmailList;
-  }
-
   public LocalDateTime exportedDate() {
     return exportedDate;
   }

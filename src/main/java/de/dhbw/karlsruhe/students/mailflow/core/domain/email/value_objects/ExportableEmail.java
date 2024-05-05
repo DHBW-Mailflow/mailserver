@@ -42,18 +42,6 @@ public final class ExportableEmail {
     return content;
   }
 
-  public String senderAddress() {
-    return senderAddress;
-  }
-
-  public ExportableRecipients recipient() {
-    return recipient;
-  }
-
-  public LocalDateTime sendDate() {
-    return sendDate;
-  }
-
   public boolean isRead() {
     return isRead;
   }

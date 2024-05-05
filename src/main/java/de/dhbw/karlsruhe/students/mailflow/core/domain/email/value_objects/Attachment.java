@@ -51,15 +51,7 @@ public final class Attachment {
         + '}';
   }
 
-  public String filename() {
-    return filename;
-  }
-
   public byte[] content() {
     return content;
-  }
-
-  public String contentType() {
-    return contentType;
   }
 }
